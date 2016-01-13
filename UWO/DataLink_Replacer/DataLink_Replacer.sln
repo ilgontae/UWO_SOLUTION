@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DataLink_Replacer", "DataLink_Replacer.vbproj", "{BF92D05C-1370-43DB-9B3C-0B21D4DA269D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BF92D05C-1370-43DB-9B3C-0B21D4DA269D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF92D05C-1370-43DB-9B3C-0B21D4DA269D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF92D05C-1370-43DB-9B3C-0B21D4DA269D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF92D05C-1370-43DB-9B3C-0B21D4DA269D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
