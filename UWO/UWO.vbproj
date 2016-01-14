@@ -122,10 +122,10 @@
     <Compile Include="UWO_BROKEN_LINK.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UWO_CONVERTION.designer.vb">
-      <DependentUpon>UWO_CONVERTION.vb</DependentUpon>
+    <Compile Include="UWO_CONVERSION.designer.vb">
+      <DependentUpon>UWO_CONVERSION.vb</DependentUpon>
     </Compile>
-    <Compile Include="UWO_CONVERTION.vb">
+    <Compile Include="UWO_CONVERSION.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UWO_Rename.Designer.vb">
@@ -188,8 +188,8 @@
     <EmbeddedResource Include="UWO_BROKEN_LINK.resx">
       <DependentUpon>UWO_BROKEN_LINK.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UWO_CONVERTION.resx">
-      <DependentUpon>UWO_CONVERTION.vb</DependentUpon>
+    <EmbeddedResource Include="UWO_CONVERSION.resx">
+      <DependentUpon>UWO_CONVERSION.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UWO_Compare.resx">
       <DependentUpon>UWO_Compare.vb</DependentUpon>
