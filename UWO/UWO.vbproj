@@ -19,8 +19,8 @@
     <OptionInfer>On</OptionInfer>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <ManifestCertificateThumbprint>07699D3663DB5DB786B36356D6462781E35E816B</ManifestCertificateThumbprint>
-    <ManifestKeyFile>UWO_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestCertificateThumbprint>64469874D92AE58192BEF4E821DE11338CC01692</ManifestCertificateThumbprint>
+    <ManifestKeyFile>UWO_1_TemporaryKey.pfx</ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
     <SignManifests>true</SignManifests>
     <FileUpgradeFlags>
@@ -64,6 +64,9 @@
     <DocumentationFile>UWO.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
     <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -221,6 +224,7 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+    <None Include="UWO_1_TemporaryKey.pfx" />
     <None Include="UWO_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
