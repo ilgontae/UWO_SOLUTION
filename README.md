@@ -1,4 +1,4 @@
-# UWO SOLUTION
+# UWO Graphic to Web Page Converter
 ### Luke Westelaken
 This is where I have started making changes to the main repo.
 
