@@ -61,6 +61,7 @@ Partial Class UWO_conversion
 		Me.timeTextBox.Name = "timeTextBox"
 		Me.timeTextBox.Size = New System.Drawing.Size(100, 20)
 		Me.timeTextBox.TabIndex = 1
+		Me.timeTextBox.Text = "1"
 		'
 		'EnterTimeLapseLabel
 		'
