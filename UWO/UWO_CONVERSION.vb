@@ -32,13 +32,27 @@ Public Class UWO_conversion
     'Default value is 1 second
     Dim UserTimeLapse As Double = 1.0
 
+	Private Declare Function GetWindowText Lib "user32" Alias "GetWindowTextA" (ByVal hwnd As Long, ByVal lpString As String, ByVal cch As Long) As Long
+	Private Declare Function GetWindowTextLength Lib "user32" Alias "GetWindowTextLengthA" (ByVal hwnd As Long) As Long
+	Private Declare Function GetForegroundWindow Lib "user32" () As Long
+	Private MyStr As String, theHwnd As Long
+
 	Private Sub startButton_Click(sender As Object, e As EventArgs) Handles startButton.Click
 		'Dim Source As String = "W:\PUBLIC\Delta\Graphics"
 		Dim Source As String = "C:\Users\wescontrol\Desktop"
 		Dim Destination As String = "Z:\Graphics"
 		UserTimeLapse = 1000
+		Dim img = Image.FromFile("UWO_SOLUTION\UWO\menuimage.bmp")
+		Dim bmp As New Bitmap(img)
 		Try
-			If (timeTextBox.Enabled = True) Then
+			Using fp As New FastPix(img)
+
+			End Using
+		Catch ex As Exception
+
+		End Try
+		Try
+		If (timeTextBox.Enabled = True) Then
 				UserTimeLapse = timeTextBox.Text
 				If UserTimeLapse > 0 Then
 					UserTimeLapse = UserTimeLapse * 1000
@@ -118,6 +132,8 @@ Public Class UWO_conversion
 					Thread.Sleep(200)
 					SendKeys.SendWait("{ENTER}")            'graphics to webpage
 					Debug.WriteLine("ENTER")
+					theHwnd = GetForegroundWindow()
+					MyStr = String(GetWindowTextLength(theHwnd) + 1, Chr$(0))           ' should return a strign that contains a repeatign character fo a specified length apparnetly? not sure what this is used for exactly, have it bookmarked 
 					Thread.Sleep(200)
 					SendKeys.SendWait("{TAB}")
 					Debug.WriteLine("TAB")
@@ -146,25 +162,25 @@ Public Class UWO_conversion
 					SendKeys.SendWait("{ENTER}")
 					Debug.WriteLine("ENTER")
 					Thread.Sleep(UserTimeLapse)
-					'SendKeys.SendWait("{TAB}")               'too many tabs if folder location is already open
-					' ISSUES START HERE
-					'Debug.WriteLine("TAB")
-					'Threading.Thread.Sleep(UserTimeLapse)
-					'SendKeys.SendWait("{TAB}")
-					'Debug.WriteLine("TAB")
-					'Threading.Thread.Sleep(UserTimeLapse)
-					'SendKeys.SendWait("{TAB}")
-					'Debug.WriteLine("TAB")
-					'Threading.Thread.Sleep(UserTimeLapse)
-					'SendKeys.SendWait("{TAB}")
-					'Debug.WriteLine("TAB")
-					'Threading.Thread.Sleep(UserTimeLapse)
-					'SendKeys.SendWait("{TAB}")
-					'Debug.WriteLine("TAB")
-					'Threading.Thread.Sleep(UserTimeLapse)
-					'SendKeys.SendWait("{TAB}")
-					'Debug.WriteLine("TAB")
-					'Threading.Thread.Sleep(UserTimeLapse)
+					''SendKeys.SendWait("{TAB}")               'too many tabs if folder location is already open
+					'' ISSUES START HERE
+					''Debug.WriteLine("TAB")
+					''Threading.Thread.Sleep(UserTimeLapse)
+					''SendKeys.SendWait("{TAB}")
+					''Debug.WriteLine("TAB")
+					''Threading.Thread.Sleep(UserTimeLapse)
+					''SendKeys.SendWait("{TAB}")				'These were not necessary, and were breaking things
+					''Debug.WriteLine("TAB")
+					''Threading.Thread.Sleep(UserTimeLapse)
+					''SendKeys.SendWait("{TAB}")
+					''Debug.WriteLine("TAB")
+					''Threading.Thread.Sleep(UserTimeLapse)
+					''SendKeys.SendWait("{TAB}")
+					''Debug.WriteLine("TAB")
+					''Threading.Thread.Sleep(UserTimeLapse)
+					''SendKeys.SendWait("{TAB}")
+					''Debug.WriteLine("TAB")
+					''Threading.Thread.Sleep(UserTimeLapse)
 					'-------
 					SendKeys.SendWait("+{TAB}")
 					Thread.Sleep(UserTimeLapse)
