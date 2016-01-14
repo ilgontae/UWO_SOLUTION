@@ -8,6 +8,7 @@
 'Added combox-loaded values in design view, Added selected index code
 
 Imports System.IO
+Imports System
 Imports System.Threading
 Imports System.Windows.Forms
 
@@ -28,18 +29,22 @@ Public Class UWO_conversion
     Dim UserTimeLapse As Double = 1.0
 
 	Private Sub startButton_Click(sender As System.Object, e As System.EventArgs) Handles startButton.Click
-		Dim Source As String = "W:\PUBLIC\Delta\Graphics"
+		'Dim Source As String = "W:\PUBLIC\Delta\Graphics"
+		Dim Source As String = "C:\Users\wescontrol\Desktop"
 		Dim Destination As String = "Z:\Graphics"
-
+		UserTimeLapse = 1000
 		Try
-			UserTimeLapse = timeTextBox.Text
-
-			If UserTimeLapse > 0 Then
-				UserTimeLapse = UserTimeLapse * 1000
-			Else
-				MessageBox.Show("Amount must be greater than zero", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-				Return
+			If (timeTextBox.Enabled = True) Then
+				UserTimeLapse = timeTextBox.Text
+				If UserTimeLapse > 0 Then
+					UserTimeLapse = UserTimeLapse * 1000
+				Else
+					MessageBox.Show("Amount must be greater than zero", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+					Return
+				End If
 			End If
+
+
 		Catch ex As Exception
 			MessageBox.Show("Amount incorrect", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 			Return
@@ -52,6 +57,8 @@ Public Class UWO_conversion
 				Destination = "Y:\UWO\Graphics"
 			ElseIf DriveComboBox.SelectedIndex = 2 Then
 				Destination = "H:\Graphics"
+			ElseIf DriveComboBox.SelectedIndex = 3 Then
+				Destination = "C:\Users\wescontrol\Desktop"
 			Else
 				MessageBox.Show("Choose a drive", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 				Return
@@ -78,71 +85,110 @@ Public Class UWO_conversion
 				   Not String.Compare(dir.Name, "help files", True) = 0 And
 				   Not String.Compare(dir.Name, "temp", True) = 0 Then
 					If Directory.Exists(Dest) Then
-						Directory.Delete(Dest, True)
+						'Directory.Delete(Dest, True)
 					End If
 					Directory.CreateDirectory(Dest)
 					AppActivate("ORCAView")
-					SendKeys.SendWait("%t")                 ' % = alt, so this line means ALT+T
-					Threading.Thread.Sleep(UserTimeLapse)
+					SendKeys.SendWait("%t")                 ' % = alt, so this line means ALT+T\
+					Debug.WriteLine("%t")
+					Threading.Thread.Sleep(300)
 					SendKeys.SendWait("{DOWN}")
-					Threading.Thread.Sleep(UserTimeLapse)
+					Debug.WriteLine("DOWN")
+					Threading.Thread.Sleep(300)
 					SendKeys.SendWait("{DOWN}")
-					Threading.Thread.Sleep(UserTimeLapse)
+					Debug.WriteLine("DOWN")
+					Threading.Thread.Sleep(300)
 					SendKeys.SendWait("{DOWN}")
-					Threading.Thread.Sleep(UserTimeLapse)
+					Debug.WriteLine("DOWN")
+					Threading.Thread.Sleep(300)
 					SendKeys.SendWait("{DOWN}")
-					Threading.Thread.Sleep(UserTimeLapse)
+					Debug.WriteLine("DOWN")
+					Threading.Thread.Sleep(300)
                     'SendKeys.SendWait("{DOWN}")
-                    Threading.Thread.Sleep(UserTimeLapse)
+                    Threading.Thread.Sleep(300)
 					SendKeys.SendWait("{RIGHT}")
-					Threading.Thread.Sleep(UserTimeLapse)
+					Debug.WriteLine("RIGHT")
+					Threading.Thread.Sleep(300)
 					SendKeys.SendWait("{DOWN}")
-					Threading.Thread.Sleep(UserTimeLapse)
+					Debug.WriteLine("DOWN")
+					Threading.Thread.Sleep(300)
 					SendKeys.SendWait("{ENTER}")            'graphics to webpage
-					Threading.Thread.Sleep(UserTimeLapse)
+					Debug.WriteLine("ENTER")
+					Threading.Thread.Sleep(300)
 					SendKeys.SendWait("{TAB}")
-					Threading.Thread.Sleep(UserTimeLapse)
+					Debug.WriteLine("TAB")
+					Threading.Thread.Sleep(300)
 					SendKeys.SendWait("{TAB}")
-					Threading.Thread.Sleep(UserTimeLapse)
+					Debug.WriteLine("TAB")
+					Threading.Thread.Sleep(300)
 					SendKeys.SendWait("{TAB}")
-					Threading.Thread.Sleep(UserTimeLapse)
+					Debug.WriteLine("TAB")
+					Threading.Thread.Sleep(300)
 					SendKeys.SendWait("{TAB}")
-					Threading.Thread.Sleep(UserTimeLapse)
+					Debug.WriteLine("TAB")
+					Threading.Thread.Sleep(300)
 					SendKeys.SendWait("{TAB}")
-					Threading.Thread.Sleep(UserTimeLapse)
+					Debug.WriteLine("TAB")
+					Threading.Thread.Sleep(300)
 					SendKeys.SendWait("{TAB}")
-					Threading.Thread.Sleep(UserTimeLapse)
+					Debug.WriteLine("TAB")
+					Threading.Thread.Sleep(300)
 					SendKeys.SendWait("{ENTER}")            ' Add button
+					Debug.WriteLine("ENTER")
 					Threading.Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait(d)
+					Debug.WriteLine("SOURCE")
 					Threading.Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("{ENTER}")
+					Debug.WriteLine("ENTER")
 					Threading.Thread.Sleep(UserTimeLapse)
-					SendKeys.SendWait("{TAB}")               'too many tabs if folder location is already open
+					'SendKeys.SendWait("{TAB}")               'too many tabs if folder location is already open
+					' ISSUES START HERE
+					'Debug.WriteLine("TAB")
+					'Threading.Thread.Sleep(UserTimeLapse)
+					'SendKeys.SendWait("{TAB}")
+					'Debug.WriteLine("TAB")
+					'Threading.Thread.Sleep(UserTimeLapse)
+					'SendKeys.SendWait("{TAB}")
+					'Debug.WriteLine("TAB")
+					'Threading.Thread.Sleep(UserTimeLapse)
+					'SendKeys.SendWait("{TAB}")
+					'Debug.WriteLine("TAB")
+					'Threading.Thread.Sleep(UserTimeLapse)
+					'SendKeys.SendWait("{TAB}")
+					'Debug.WriteLine("TAB")
+					'Threading.Thread.Sleep(UserTimeLapse)
+					'SendKeys.SendWait("{TAB}")
+					'Debug.WriteLine("TAB")
+					'Threading.Thread.Sleep(UserTimeLapse)
+					'-------
+					SendKeys.SendWait("+{TAB}")
 					Threading.Thread.Sleep(UserTimeLapse)
-					SendKeys.SendWait("{TAB}")
-					Threading.Thread.Sleep(UserTimeLapse)
-					SendKeys.SendWait("{TAB}")
-					Threading.Thread.Sleep(UserTimeLapse)
-					SendKeys.SendWait("{TAB}")
-					Threading.Thread.Sleep(UserTimeLapse)
-					SendKeys.SendWait("{TAB}")
-					Threading.Thread.Sleep(UserTimeLapse)
-					SendKeys.SendWait("{TAB}")
-					Threading.Thread.Sleep(UserTimeLapse)
+					'-------
 					SendKeys.SendWait("^a")                 '^ is for CRTL, so this line means CTRL+A
+					Debug.WriteLine("CTRL A")
 					Threading.Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("{ENTER}")
+					Debug.WriteLine("ENTER")
+					'---
 					Threading.Thread.Sleep(UserTimeLapse)
+					SendKeys.SendWait("{ENTER}")
+					'---
+					Threading.Thread.Sleep(300)
 					SendKeys.SendWait("{TAB}")
-					Threading.Thread.Sleep(UserTimeLapse)
+					Debug.WriteLine("TAB")
+					Threading.Thread.Sleep(300)
 					SendKeys.SendWait("{TAB}")
-					Threading.Thread.Sleep(UserTimeLapse)
+					Debug.WriteLine("TAB")
+					Threading.Thread.Sleep(300)
 					SendKeys.SendWait("{TAB}")
-					Threading.Thread.Sleep(UserTimeLapse)
+					Debug.WriteLine("TAB")
+					Threading.Thread.Sleep(300)
 					SendKeys.SendWait(Dest)
+					Debug.WriteLine("DESTINATION")
 					Threading.Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("{ENTER}")
+					Debug.WriteLine("ENTER")
 					Dim wait As Integer = My.Computer.FileSystem.GetFiles(dir.FullName).Count * 200
 					If wait < 10000 Then
 						wait = 10000
@@ -152,7 +198,7 @@ Public Class UWO_conversion
 					Threading.Thread.Sleep(10)
 				End If
 			Next
-			L_convert.Text = "conversion Complete"
+			L_convert.Text = "Conversion Complete"
 		Catch
 			MessageBox.Show("Make Sure to login to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 		End Try
@@ -166,10 +212,10 @@ Public Class UWO_conversion
 	End Sub
 
 	Private Sub stopButton_Click(sender As System.Object, e As System.EventArgs) Handles stopButton.Click
-        End
-    End Sub
+		End
+	End Sub
 
-	Private Sub Label1_Click(sender As Object, e As EventArgs)
+	Private Sub DriveComboBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles DriveComboBox.SelectedIndexChanged
 
 	End Sub
 End Class
