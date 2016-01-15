@@ -37,20 +37,14 @@ Public Class UWO_conversion
 	Private Declare Function GetForegroundWindow Lib "user32" () As Long
 	Private MyStr As String, theHwnd As Long
 
+	'#Disable Warning BC42303 ' XML comment cannot appear within a method or a property   was getting an error even though the error was in a comment, so this supressed that error
+
 	Private Sub startButton_Click(sender As Object, e As EventArgs) Handles startButton.Click
 		'Dim Source As String = "W:\PUBLIC\Delta\Graphics"
-		Dim Source As String = "C:\Users\wescontrol\Desktop"
+		Dim Source As String = "C:\Users\lwestel\Desktop"
 		Dim Destination As String = "Z:\Graphics"
 		UserTimeLapse = 1000
-		Dim img = Image.FromFile("UWO_SOLUTION\UWO\menuimage.bmp")
-		Dim bmp As New Bitmap(img)
-		Try
-			Using fp As New FastPix(img)
 
-			End Using
-		Catch ex As Exception
-
-		End Try
 		Try
 		If (timeTextBox.Enabled = True) Then
 				UserTimeLapse = timeTextBox.Text
@@ -76,7 +70,7 @@ Public Class UWO_conversion
 			ElseIf DriveComboBox.SelectedIndex = 2 Then
 				Destination = "H:\Graphics"
 			ElseIf DriveComboBox.SelectedIndex = 3 Then
-				Destination = "C:\Users\wescontrol\Desktop"
+				Destination = "C:\Users\lwestel\Desktop"
 			Else
 				MessageBox.Show("Choose a drive", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 				Return
@@ -108,107 +102,118 @@ Public Class UWO_conversion
 					Directory.CreateDirectory(Dest)
 					AppActivate("ORCAView")
 					SendKeys.SendWait("%t")                 ' % = alt, so this line means ALT+T\
-					Debug.WriteLine("%t")
+					'Debug.WriteLine("%t")
 					Thread.Sleep(200)
 					SendKeys.SendWait("{DOWN}")
-					Debug.WriteLine("DOWN")
+					'Debug.WriteLine("DOWN")
 					Thread.Sleep(200)
 					SendKeys.SendWait("{DOWN}")
-					Debug.WriteLine("DOWN")
+					'Debug.WriteLine("DOWN")
 					Thread.Sleep(200)
 					SendKeys.SendWait("{DOWN}")
-					Debug.WriteLine("DOWN")
+					'Debug.WriteLine("DOWN")
 					Thread.Sleep(200)
 					SendKeys.SendWait("{DOWN}")
-					Debug.WriteLine("DOWN")
+					'Debug.WriteLine("DOWN")
 					Thread.Sleep(200)
                     'SendKeys.SendWait("{DOWN}")
                     Thread.Sleep(200)
 					SendKeys.SendWait("{RIGHT}")
-					Debug.WriteLine("RIGHT")
+					'Debug.WriteLine("RIGHT")
 					Thread.Sleep(200)
 					SendKeys.SendWait("{DOWN}")
-					Debug.WriteLine("DOWN")
+					'Debug.WriteLine("DOWN")
 					Thread.Sleep(200)
 					SendKeys.SendWait("{ENTER}")            'graphics to webpage
-					Debug.WriteLine("ENTER")
+					'Debug.WriteLine("ENTER")
+					Thread.Sleep(200)
+					SendKeys.SendWait("{TAB}")
 					theHwnd = GetForegroundWindow()
-					MyStr = String(GetWindowTextLength(theHwnd) + 1, Chr$(0))           ' should return a strign that contains a repeatign character fo a specified length apparnetly? not sure what this is used for exactly, have it bookmarked 
+					Dim length As Integer
+					length = GetWindowTextLength(theHwnd) + 1
+					Dim buf As String = Space$(length)
+					length = GetWindowText(theHwnd, buf, length)
+					Dim var As String = buf.Substring(0, length)
+					Debug.WriteLine(var)
+					'If (var <> "Convert Graphics to Web Page") Then
+					If (var <> "Convert Graphics to Web Page") Then
+						MessageBox.Show("Make Sure to login to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+						Exit For
+					End If
+					'Debug.WriteLine("TAB")
 					Thread.Sleep(200)
 					SendKeys.SendWait("{TAB}")
-					Debug.WriteLine("TAB")
+					'Debug.WriteLine("TAB")
 					Thread.Sleep(200)
 					SendKeys.SendWait("{TAB}")
-					Debug.WriteLine("TAB")
+					'Debug.WriteLine("TAB")
 					Thread.Sleep(200)
 					SendKeys.SendWait("{TAB}")
-					Debug.WriteLine("TAB")
+					'Debug.WriteLine("TAB")
 					Thread.Sleep(200)
 					SendKeys.SendWait("{TAB}")
-					Debug.WriteLine("TAB")
+					'Debug.WriteLine("TAB")
 					Thread.Sleep(200)
 					SendKeys.SendWait("{TAB}")
-					Debug.WriteLine("TAB")
-					Thread.Sleep(200)
-					SendKeys.SendWait("{TAB}")
-					Debug.WriteLine("TAB")
+					'Debug.WriteLine("TAB")
 					Thread.Sleep(200)
 					SendKeys.SendWait("{ENTER}")            ' Add button
-					Debug.WriteLine("ENTER")
+					'Debug.WriteLine("ENTER")
 					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait(d)
-					Debug.WriteLine("SOURCE")
+					'Debug.WriteLine("SOURCE")
 					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("{ENTER}")
-					Debug.WriteLine("ENTER")
+					'Debug.WriteLine("ENTER")
 					Thread.Sleep(UserTimeLapse)
-					''SendKeys.SendWait("{TAB}")               'too many tabs if folder location is already open
-					'' ISSUES START HERE
+
+					'SendKeys.SendWait("{TAB}")               'too many tabs if folder location is already open
+					' ISSUES START HERE
 					''Debug.WriteLine("TAB")
-					''Threading.Thread.Sleep(UserTimeLapse)
-					''SendKeys.SendWait("{TAB}")
+					'Threading.Thread.Sleep(UserTimeLapse)
+					'SendKeys.SendWait("{TAB}")
 					''Debug.WriteLine("TAB")
-					''Threading.Thread.Sleep(UserTimeLapse)
-					''SendKeys.SendWait("{TAB}")				'These were not necessary, and were breaking things
+					'Threading.Thread.Sleep(UserTimeLapse)
+					'SendKeys.SendWait("{TAB}")				'These were not necessary, and were breaking things
 					''Debug.WriteLine("TAB")
-					''Threading.Thread.Sleep(UserTimeLapse)
-					''SendKeys.SendWait("{TAB}")
+					'Threading.Thread.Sleep(UserTimeLapse)
+					'SendKeys.SendWait("{TAB}")
 					''Debug.WriteLine("TAB")
-					''Threading.Thread.Sleep(UserTimeLapse)
-					''SendKeys.SendWait("{TAB}")
+					'Threading.Thread.Sleep(UserTimeLapse)
+					'SendKeys.SendWait("{TAB}")
 					''Debug.WriteLine("TAB")
-					''Threading.Thread.Sleep(UserTimeLapse)
-					''SendKeys.SendWait("{TAB}")
+					'Threading.Thread.Sleep(UserTimeLapse)
+					'SendKeys.SendWait("{TAB}")
 					''Debug.WriteLine("TAB")
-					''Threading.Thread.Sleep(UserTimeLapse)
+					'Threading.Thread.Sleep(UserTimeLapse)
 					'-------
 					SendKeys.SendWait("+{TAB}")
 					Thread.Sleep(UserTimeLapse)
 					'-------
 					SendKeys.SendWait("^a")                 '^ is for CRTL, so this line means CTRL+A
-					Debug.WriteLine("CTRL A")
+					'Debug.WriteLine("CTRL A")
 					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("{ENTER}")
-					Debug.WriteLine("ENTER")
+					'Debug.WriteLine("ENTER")
 					'---
 					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("{ENTER}")
 					'---
 					Thread.Sleep(200)
 					SendKeys.SendWait("{TAB}")
-					Debug.WriteLine("TAB")
+					'Debug.WriteLine("TAB")
 					Thread.Sleep(200)
 					SendKeys.SendWait("{TAB}")
-					Debug.WriteLine("TAB")
+					'Debug.WriteLine("TAB")
 					Thread.Sleep(200)
 					SendKeys.SendWait("{TAB}")
-					Debug.WriteLine("TAB")
+					'Debug.WriteLine("TAB")
 					Thread.Sleep(200)
 					SendKeys.SendWait(Dest)
-					Debug.WriteLine("DESTINATION")
+					'Debug.WriteLine("DESTINATION")
 					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("{ENTER}")
-					Debug.WriteLine("ENTER")
+					'Debug.WriteLine("ENTER")
 					Dim wait As Integer = My.Computer.FileSystem.GetFiles(dir.FullName).Count * 200
 					If wait < 10000 Then
 						wait = 10000
@@ -217,7 +222,7 @@ Public Class UWO_conversion
 					SendKeys.SendWait("{ENTER}")
 					Thread.Sleep(10)
 				End If
-			Next
+            Next
 			L_convert.Text = "Conversion Complete"
 		Catch
 			MessageBox.Show("Make Sure to login to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
