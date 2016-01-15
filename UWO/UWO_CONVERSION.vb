@@ -41,9 +41,9 @@ Public Class UWO_conversion
 
 	Private Sub startButton_Click(sender As Object, e As EventArgs) Handles startButton.Click
 		'Dim Source As String = "W:\PUBLIC\Delta\Graphics"
-		Dim Source As String = "Environment.SpecialFolder.Desktop"
+		Dim Source As String = "C:\Users\lwestel\Desktop"
 		'Dim Destination As String = "Z:\Graphics"
-		Dim Destination As String = "Environment.SpecialFolder.Desktop"
+		Dim Destination As String = "C:\Users\lwestel\Desktop"
 		UserTimeLapse = 1000
 
 		Try
@@ -71,7 +71,7 @@ Public Class UWO_conversion
 			ElseIf DriveComboBox.SelectedIndex = 2 Then
 				Destination = "H:\Graphics"
 			ElseIf DriveComboBox.SelectedIndex = 3 Then
-				Destination = "Environment.SpecialFolder.Desktop"
+				Destination = "C:\Users\lwestel\Desktop"
 			Else
 				MessageBox.Show("Choose a drive", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 				Return
