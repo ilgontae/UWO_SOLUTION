@@ -42,7 +42,8 @@ Public Class UWO_conversion
 	Private Sub startButton_Click(sender As Object, e As EventArgs) Handles startButton.Click
 		'Dim Source As String = "W:\PUBLIC\Delta\Graphics"
 		Dim Source As String = "C:\Users\lwestel\Desktop"
-		Dim Destination As String = "Z:\Graphics"
+		'Dim Destination As String = "Z:\Graphics"
+		Dim Destination As String = "C:\Users\lwestel\Desktop"
 		UserTimeLapse = 1000
 
 		Try
@@ -108,6 +109,7 @@ Public Class UWO_conversion
 					End If
 					AppActivate("ORCAView")
 					SendKeys.SendWait("%t")                 ' % = alt, so this line means ALT+T\
+
 					'Check to see if ORCAView is the front program, as sometimes it activates the wrong portion of orcaview (e.g. activated my orcaview splash screen thing, not the actual application)
 					theHwnd = GetForegroundWindow()
 					Dim length As Integer
@@ -122,25 +124,25 @@ Public Class UWO_conversion
 						MessageBox.Show("Make Sure to log in to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 						Exit For
 					End If
-					Thread.Sleep(200)
+
+					Thread.Sleep(100)
 					SendKeys.SendWait("{DOWN}")
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait("{DOWN}")
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait("{DOWN}")
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait("{DOWN}")
 					If (cancel = True) Then
 						Exit For
 					End If
-					Thread.Sleep(200)
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait("{RIGHT}")
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait("{DOWN}")
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait("{ENTER}")            'graphics to webpage
-					Thread.Sleep(200)
+					Thread.Sleep(300)
 					SendKeys.SendWait("{TAB}")
 
 					'Check to see if orcaview is the foreground window
@@ -156,20 +158,20 @@ Public Class UWO_conversion
 						Exit For
 					End If
 
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait("{TAB}")
 					If (cancel = True) Then
 						Exit For
 					End If
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait("{ENTER}")            ' Add button
 					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait(d)
@@ -182,7 +184,7 @@ Public Class UWO_conversion
 					'Threading.Thread.Sleep(UserTimeLapse)
 					'SendKeys.SendWait("{TAB}")
 					'Threading.Thread.Sleep(UserTimeLapse)
-					'SendKeys.SendWait("{TAB}")				'These were not necessary, and were breaking things
+					'SendKeys.SendWait("{TAB}")
 					'Threading.Thread.Sleep(UserTimeLapse)
 					'SendKeys.SendWait("{TAB}")
 					'Threading.Thread.Sleep(UserTimeLapse)
@@ -194,20 +196,20 @@ Public Class UWO_conversion
 					SendKeys.SendWait("+{TAB}")
 					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("^a")                 '^ is for CRTL, so this line means CTRL+A
-					Thread.Sleep(UserTimeLapse)
+					Thread.Sleep(100)
 					If (cancel = True) Then
 						Exit For
 					End If
 					SendKeys.SendWait("{ENTER}")
 					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("{ENTER}")
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait(Dest)
 					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("{ENTER}")
@@ -219,17 +221,23 @@ Public Class UWO_conversion
 					'Thread.Sleep(wait)
 					Thread.Sleep(1000)
 					SendKeys.SendWait("{ENTER}")
+					'Conversion done
 					Thread.Sleep(10)
 				End If
 			Next
-			L_convert.Text = "Conversion Complete"
+			If (cancel <> True) Then
+				L_convert.Text = "Conversion Complete"
+			Else
+				L_convert.Text = "Conversion Cancelled"
+			End If
+
 		Catch
 			MessageBox.Show("Make Sure to log in to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 		End Try
 	End Sub
 
 	Private Sub stopButton_Click(sender As Object, e As EventArgs) Handles stopButton.Click
-		cancel = True
+		cancel = True       'Cancel the progression of the conversion macro (NOT the actual conversion itself, that cannot be canclled)
 	End Sub
 End Class
 
