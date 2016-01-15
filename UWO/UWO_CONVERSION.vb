@@ -149,7 +149,6 @@ Public Class UWO_conversion
 					buf = Space$(length)
 					length = GetWindowText(theHwnd, buf, length)
 					var = buf.Substring(0, length)
-
 					'if orcaview is not the foreground window, exit the loop, as continuing the macro is silly
 					If (var <> "Convert Graphics to Web Page") Then
 						SendKeys.SendWait("{ESC}")
@@ -191,7 +190,6 @@ Public Class UWO_conversion
 					'Threading.Thread.Sleep(UserTimeLapse)
 					'SendKeys.SendWait("{TAB}")
 					'Threading.Thread.Sleep(UserTimeLapse)
-
 
 					SendKeys.SendWait("+{TAB}")
 					Thread.Sleep(UserTimeLapse)
