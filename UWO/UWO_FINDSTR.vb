@@ -9,25 +9,25 @@ Imports System.IO
 Public Class UWO_FINDSTR
 	Dim count As Integer
 
-	Private Sub TB_Dir_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles TB_Dir.DoubleClick
+	Private Sub TB_Dir_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles TB_Dir.DoubleClick
 		Browser.ShowDialog()
 		TB_Dir.Text = Browser.SelectedPath
 	End Sub
 
-	Private Sub B_Ok_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles B_Ok.Click
+	Private Sub B_Ok_Click(ByVal sender As Object, ByVal e As EventArgs) Handles B_Ok.Click
 		LV_Files.Items.Clear()
 		B_Ok.Enabled = False
 		listFiles(TB_Dir.Text)
 		B_Ok.Enabled = True
 	End Sub
 
-	Private Sub TB_Dir_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TB_Dir.KeyUp
+	Private Sub TB_Dir_KeyUp(ByVal sender As Object, ByVal e As KeyEventArgs) Handles TB_Dir.KeyUp
 		If e.KeyCode = Keys.Enter Then
 			B_Ok_Click(sender, e)
 		End If
 	End Sub
 
-	Private Sub TB_Dir_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TB_Dir.TextChanged
+	Private Sub TB_Dir_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TB_Dir.TextChanged
 		If Not TB_Dir.Text = "" Then
 			If Directory.Exists(TB_Dir.Text) Then
 				B_Ok.Enabled = True
@@ -90,7 +90,7 @@ Public Class UWO_FINDSTR
 		End If
 	End Sub
 
-	Private Sub Main_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+	Private Sub Main_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 		TB_Dir.Text = "W:\PUBLIC\Delta\Graphics"
 	End Sub
 End Class

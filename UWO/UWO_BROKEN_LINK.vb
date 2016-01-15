@@ -6,20 +6,20 @@
 Imports System.IO
 
 Public Class UWO_BROKEN_LINK
-	Private Sub TB_Directory_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles TB_Directory.DoubleClick
+	Private Sub TB_Directory_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles TB_Directory.DoubleClick
 		FBD_Directory.SelectedPath = "W:\PUBLIC\Delta\Graphics"
 
 		FBD_Directory.ShowDialog()
 		TB_Directory.Text = FBD_Directory.SelectedPath
 	End Sub
 
-	Private Sub TB_Directory_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TB_Directory.KeyUp
+	Private Sub TB_Directory_KeyUp(ByVal sender As Object, ByVal e As KeyEventArgs) Handles TB_Directory.KeyUp
 		If e.KeyCode = Keys.Enter Then
 			B_Search_Click(sender, e)
 		End If
 	End Sub
 
-	Private Sub TB_Directory_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TB_Directory.TextChanged
+	Private Sub TB_Directory_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TB_Directory.TextChanged
 		Dim DirSearch As String = TB_Directory.Text
 		If Directory.Exists(TB_Directory.Text) Then
 			TB_Directory.ForeColor = Color.Black
@@ -28,7 +28,7 @@ Public Class UWO_BROKEN_LINK
 		End If
 	End Sub
 
-	Private Sub B_Search_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles B_Search.Click
+	Private Sub B_Search_Click(ByVal sender As Object, ByVal e As EventArgs) Handles B_Search.Click
 		B_Search.Enabled = False
 		LV_BrokenList.Items.Clear()
 		getfile(TB_Directory.Text)
@@ -111,11 +111,11 @@ Public Class UWO_BROKEN_LINK
 		End If
 	End Sub
 
-	Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+	Private Sub Form1_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 		TB_Directory.Text = "W:\PUBLIC\Delta\Graphics"
 	End Sub
 
-	Private Sub LV_BrokenList_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles LV_BrokenList.DoubleClick
+	Private Sub LV_BrokenList_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles LV_BrokenList.DoubleClick
 		For Each it As Integer In New ReverseIterator(LV_BrokenList.SelectedIndices)
 			If LV_BrokenList.Items(it).Text.StartsWith("------->") Then
 				Dim last As Boolean

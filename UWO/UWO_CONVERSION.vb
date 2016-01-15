@@ -73,16 +73,16 @@ Public Class UWO_conversion
 			ElseIf DriveComboBox.SelectedIndex = 3 Then
 				Destination = "C:\Users\lwestel\Desktop"
 			Else
-				MessageBox.Show("Choose a drive", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+				MessageBox.Show("No drive selected", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 				Return
 			End If
 
 			If Not Directory.Exists(Source) Then
-				MessageBox.Show("Make Sure You Have Access To The Source Drive", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+				MessageBox.Show("Make sure you have access to the source drive.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 				Exit Try
 			End If
 			If Not Directory.Exists(Destination) Then
-				MessageBox.Show("Make Sure You Have Access To " + Destination, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+				MessageBox.Show("Make sure you have access to " + Destination, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 				Exit Try
 			End If
 
@@ -105,6 +105,8 @@ Public Class UWO_conversion
 					Directory.CreateDirectory(Dest)
 					If (My.Computer.FileSystem.GetFiles(dir.FullName).Count = 0) Then
 						Continue For
+						L_convert.Text = "Folder skipped, no files"
+						Thread.Sleep(500)
 					End If
 					AppActivate("ORCAView")
 					SendKeys.SendWait("%t")                 ' % = alt, so this line means ALT+T\
@@ -120,7 +122,7 @@ Public Class UWO_conversion
 					'if orcaview is not the foreground window, exit the loop, as continuing the macro is silly
 					If (var.Contains("ORCAview") <> True) And (var <> "ORCAview Products") Then
 						SendKeys.SendWait("{ESC}")
-						MessageBox.Show("Make Sure to log in to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+						MessageBox.Show("Make sure you are logged in to ORCAview", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 						Exit For
 					End If
 
@@ -153,7 +155,7 @@ Public Class UWO_conversion
 					'if orcaview is not the foreground window, exit the loop, as continuing the macro is silly
 					If (var <> "Convert Graphics to Web Page") Then
 						SendKeys.SendWait("{ESC}")
-						MessageBox.Show("Make Sure to log in to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+						MessageBox.Show("Make sure you are logged in to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 						Exit For
 					End If
 
@@ -197,13 +199,6 @@ Public Class UWO_conversion
 					SendKeys.SendWait(Dest)
 					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("{ENTER}")
-
-					'Not sure what this was for, exactly. Seemed to just slow things down
-					'Dim wait As Integer = My.Computer.FileSystem.GetFiles(dir.FullName).Count * 200
-					'If wait < 10000 Then
-					'	wait = 10000
-					'End If
-					'Thread.Sleep(wait)
 					Thread.Sleep(10000)
 					SendKeys.SendWait("{ENTER}")
 					'Conversion done
@@ -217,13 +212,13 @@ Public Class UWO_conversion
 			End If
 
 		Catch       ' Catch error if ORCAview is not even running
-			MessageBox.Show("Make Sure to log in to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+			MessageBox.Show("Make sure you are logged in to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 		End Try
 	End Sub
 
 	Private Sub stopButton_Click(sender As Object, e As EventArgs) Handles stopButton.Click
 		cancel = True       'Cancel the progression of the conversion macro (NOT the actual conversion itself, that cannot be cancelled)
-		MessageBox.Show("Conversion Cancelled", "Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+		MessageBox.Show("Conversion cancelled!", "Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Warning)
 	End Sub
 End Class
 

@@ -18,7 +18,7 @@ Public Class UWO_Rename
         Dim FExt As String
     End Structure
 
-    Private Sub TB_Directory_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TB_Directory.TextChanged
+    Private Sub TB_Directory_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TB_Directory.TextChanged
         Dir = TB_Directory.Text
         If Directory.Exists(Dir) Then
             TB_Directory.ForeColor = Color.Black
@@ -35,7 +35,7 @@ Public Class UWO_Rename
         Return temp
     End Function
 
-    Private Sub TB_Extension_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TB_Extension.TextChanged
+    Private Sub TB_Extension_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TB_Extension.TextChanged
         If TB_Extension.Text.StartsWith(".") Then
             Ext = TB_Extension.Text
         ElseIf TB_Extension.Text = "" Then
@@ -46,7 +46,7 @@ Public Class UWO_Rename
         GetFiles()
     End Sub
 
-    Private Sub TB_Prefix_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TB_Prefix.TextChanged
+    Private Sub TB_Prefix_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TB_Prefix.TextChanged
         If TB_Prefix.Text = "" Then
             B_Rename.Enabled = False
             Prefix = ""
@@ -104,7 +104,7 @@ Public Class UWO_Rename
         End If
     End Sub
 
-    Private Sub B_Rename_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles B_Rename.Click
+    Private Sub B_Rename_Click(ByVal sender As Object, ByVal e As EventArgs) Handles B_Rename.Click
         For Each temp As ItemList In DirFiles
             Dim t As String = Prefix + "_" + temp.FName
             If CB_UpperCase.Checked = True Then
@@ -120,7 +120,7 @@ Public Class UWO_Rename
         GetFiles()
     End Sub
 
-    Private Sub FileList_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles FileList.DoubleClick
+    Private Sub FileList_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles FileList.DoubleClick
         If B_Rename.Enabled = True Then
             Dim a As String = FileList.SelectedItems(0).Text
             For Each temp As ItemList In DirFiles
@@ -141,7 +141,7 @@ Public Class UWO_Rename
         End If
     End Sub
 
-    Private Sub B_Browse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles B_Browse.Click
+    Private Sub B_Browse_Click(ByVal sender As Object, ByVal e As EventArgs) Handles B_Browse.Click
         FBD_Dir.ShowDialog()
         TB_Directory.Text = FBD_Dir.SelectedPath
     End Sub

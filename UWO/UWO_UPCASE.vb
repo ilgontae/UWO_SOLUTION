@@ -7,14 +7,14 @@ Imports System.IO
 
 Public Class UWO_UPCASE
 
-    Private Sub TB_Directory_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles TB_Directory.DoubleClick
+    Private Sub TB_Directory_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles TB_Directory.DoubleClick
         FBD_DIR.SelectedPath = "W:\PUBLIC\Delta\Graphics"
         FBD_DIR.ShowNewFolderButton = False
         FBD_DIR.ShowDialog()
         TB_Directory.Text = FBD_DIR.SelectedPath
     End Sub
 
-    Private Sub TB_Directory_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TB_Directory.TextChanged
+    Private Sub TB_Directory_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TB_Directory.TextChanged
         Dim DirSearch As String = TB_Directory.Text
         If Directory.Exists(TB_Directory.Text) Then
             TB_Directory.ForeColor = Color.Black
@@ -23,7 +23,7 @@ Public Class UWO_UPCASE
         End If
     End Sub
 
-    Private Sub B_OK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles B_OK.Click
+    Private Sub B_OK_Click(ByVal sender As Object, ByVal e As EventArgs) Handles B_OK.Click
         Me.Enabled = False
         BackgroundWorker1.RunWorkerAsync()
         B_OK.Enabled = True
@@ -40,7 +40,7 @@ Public Class UWO_UPCASE
         Next
     End Sub
 
-    Private Sub UWO_UPCASE_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Private Sub UWO_UPCASE_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         TB_Directory.Text = "W:\PUBLIC\Delta\Graphics"
     End Sub
 

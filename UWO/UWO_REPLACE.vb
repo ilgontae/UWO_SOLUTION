@@ -76,19 +76,19 @@ Public Class UWO_REPLACE
 		End If
 	End Sub
 
-	Private Sub TB_Find_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TB_Find.TextChanged
+	Private Sub TB_Find_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TB_Find.TextChanged
 		FindCheck()
 	End Sub
 
-	Private Sub TB_Directory_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TB_Directory.TextChanged
+	Private Sub TB_Directory_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TB_Directory.TextChanged
 		FindCheck()
 	End Sub
 
-	Private Sub TB_Replace_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TB_Replace.TextChanged
+	Private Sub TB_Replace_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TB_Replace.TextChanged
 		ReplaceCheck()
 	End Sub
 
-	Private Sub TB_Ext_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TB_Ext.TextChanged
+	Private Sub TB_Ext_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TB_Ext.TextChanged
 		Try
 			If TB_Ext.Text(0) = "." Then
 				Ext = TB_Ext.Text.Remove(0, 1)
@@ -105,14 +105,14 @@ Public Class UWO_REPLACE
 		B_Remove.Enabled = True
 	End Sub
 
-	Private Sub Main_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+	Private Sub Main_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 		TB_Find.CharacterCasing = CharacterCasing.Upper
 		TB_Replace.CharacterCasing = CharacterCasing.Upper
 		TB_Directory.Text = "W:\PUBLIC\Delta\Graphics"
 		Wildcard.Enabled = True
 	End Sub
 
-	Private Sub B_Find_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles B_Find.Click
+	Private Sub B_Find_Click(ByVal sender As Object, ByVal e As EventArgs) Handles B_Find.Click
 		B_Save.Enabled = False
 		L_Matches.Visible = False
 		L_Left.Visible = False
@@ -129,7 +129,7 @@ Public Class UWO_REPLACE
 		End Try
 	End Sub
 
-	Private Sub B_Save_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles B_Save.Click
+	Private Sub B_Save_Click(ByVal sender As Object, ByVal e As EventArgs) Handles B_Save.Click
 		SFD_SaveList.DefaultExt = ".txt"
 		SFD_SaveList.FileName = "DLR_"
 		SFD_SaveList.Filter = "Text Files (*.txt)|*.txt|Excel Files (*.xls)|*.xls"
@@ -137,7 +137,7 @@ Public Class UWO_REPLACE
 		SFD_SaveList.ShowDialog()
 	End Sub
 
-	Private Sub B_Remove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles B_Remove.Click
+	Private Sub B_Remove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles B_Remove.Click
 		For Each it As Integer In New ReverseIterator(ListView1.SelectedIndices)
 			ListView1.Items.Remove(ListView1.Items(it))
 			FileList.RemoveAt(it)
@@ -147,7 +147,7 @@ Public Class UWO_REPLACE
 
 
 
-	Private Sub B_Replace_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles B_Replace.Click
+	Private Sub B_Replace_Click(ByVal sender As Object, ByVal e As EventArgs) Handles B_Replace.Click
 		Try
 			L_Left.Visible = True
 			If Not Directory.Exists(TB_Directory.Text) Then
@@ -250,12 +250,12 @@ Public Class UWO_REPLACE
 		Next
 	End Sub
 
-	Private Sub TB_Directory_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles TB_Directory.DoubleClick
+	Private Sub TB_Directory_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles TB_Directory.DoubleClick
 		FBD_Directory.ShowDialog()
 		TB_Directory.Text = FBD_Directory.SelectedPath
 	End Sub
 
-	Private Sub Wildcard_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Wildcard.Click
+	Private Sub Wildcard_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Wildcard.Click
 		If WildcardEnable = False Then
 			WildcardEnable = True
 			Wildcard.Text = "Disable Wildcard"

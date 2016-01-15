@@ -134,7 +134,7 @@ Partial Class UWO_MAIN
 		Me.MainMenuStrip = Me.MenuStrip1
 		Me.Name = "UWO_MAIN"
 		Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-		Me.Text = "WES CONTROL"
+		Me.Text = "WES Control Conversion program"
 		Me.MenuStrip1.ResumeLayout(False)
 		Me.MenuStrip1.PerformLayout()
 		Me.ResumeLayout(False)

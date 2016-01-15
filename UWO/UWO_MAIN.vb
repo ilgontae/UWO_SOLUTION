@@ -6,11 +6,11 @@
 'Revision By: Luke Westelaken
 'Date: January 13, 2016
 'Revisions made: added github source control at https://github.com/ilgontae/UWO_SOLUTION
-' all revisions will be made and recorded there
+'				 all revisions will be made and recorded there
 
 Public Class UWO_MAIN
 
-	Private Sub MenuCompare_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MenuCompare.Click
+	Private Sub MenuCompare_Click(ByVal sender As Object, ByVal e As EventArgs) Handles MenuCompare.Click
 		If UWO_DirSelect.Visible = True Then
 			UWO_DirSelect.BringToFront()
 		Else
@@ -19,7 +19,7 @@ Public Class UWO_MAIN
 		End If
 	End Sub
 
-	Private Sub MenuAddPrefix_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MenuAddPrefix.Click
+	Private Sub MenuAddPrefix_Click(ByVal sender As Object, ByVal e As EventArgs) Handles MenuAddPrefix.Click
 		If UWO_Rename.Visible = True Then
 			UWO_Rename.BringToFront()
 		Else
@@ -28,7 +28,7 @@ Public Class UWO_MAIN
 		End If
 	End Sub
 
-	Private Sub UPPERCASEToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles UPPERCASEToolStripMenuItem.Click
+	Private Sub UPPERCASEToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles UPPERCASEToolStripMenuItem.Click
 		If UWO_UPCASE.Visible = True Then
 			UWO_UPCASE.BringToFront()
 		Else
@@ -37,7 +37,7 @@ Public Class UWO_MAIN
 		End If
 	End Sub
 
-	Private Sub CONVERTToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CONVERTToolStripMenuItem.Click
+	Private Sub CONVERTToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles CONVERTToolStripMenuItem.Click
 		If UWO_conversion.Visible = True Then
 			UWO_conversion.BringToFront()
 		Else
@@ -56,7 +56,7 @@ Public Class UWO_MAIN
 		End If
 	End Sub
 
-	Private Sub CHECKLINKSToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CHECKLINKSToolStripMenuItem.Click
+	Private Sub CHECKLINKSToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles CHECKLINKSToolStripMenuItem.Click
 		If UWO_BROKEN_LINK.Visible = True Then
 			UWO_BROKEN_LINK.BringToFront()
 		Else
@@ -65,7 +65,7 @@ Public Class UWO_MAIN
 		End If
 	End Sub
 
-	Private Sub REPLACELINKSToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles REPLACELINKSToolStripMenuItem.Click
+	Private Sub REPLACELINKSToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles REPLACELINKSToolStripMenuItem.Click
 		If UWO_REPLACE.Visible = True Then
 			UWO_REPLACE.BringToFront()
 		Else
@@ -74,7 +74,7 @@ Public Class UWO_MAIN
 		End If
 	End Sub
 
-	Private Sub LINKEDINToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles LINKEDINToolStripMenuItem.Click
+	Private Sub LINKEDINToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles LINKEDINToolStripMenuItem.Click
 		If UWO_FINDSTR.Visible = True Then
 			UWO_FINDSTR.BringToFront()
 		Else
@@ -83,7 +83,7 @@ Public Class UWO_MAIN
 		End If
 	End Sub
 
-	Private Sub UWO_MAIN_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Resize
+	Private Sub UWO_MAIN_Resize(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Resize
 		If UWO_conversion.Visible = True Then
 			UWO_conversion.Width = Me.Width - 13
 			UWO_conversion.L_convert.Width = UWO_conversion.Width
@@ -94,7 +94,7 @@ Public Class UWO_MAIN
 		End If
 	End Sub
 
-	Private Sub NOTLINKEDToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles NOTLINKEDToolStripMenuItem.Click
+	Private Sub NOTLINKEDToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles NOTLINKEDToolStripMenuItem.Click
 		If UWO_No_links.Visible = True Then
 			UWO_No_links.BringToFront()
 		Else
