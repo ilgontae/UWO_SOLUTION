@@ -37,12 +37,13 @@ Public Class UWO_conversion
 	Private Declare Function GetForegroundWindow Lib "user32" () As Long
 	Private MyStr As String, theHwnd As Long
 
-	'#Disable Warning BC42303 ' XML comment cannot appear within a method or a property   was getting an error even though the error was in a comment, so this supressed that error
+#Disable Warning BC42303 ' XML comment cannot appear within a method or a property   was getting an error even though the error was in a comment, so this supressed that error
 
 	Private Sub startButton_Click(sender As Object, e As EventArgs) Handles startButton.Click
 		'Dim Source As String = "W:\PUBLIC\Delta\Graphics"
 		Dim Source As String = "C:\Users\lwestel\Desktop"
-		Dim Destination As String = "Z:\Graphics"
+		'Dim Destination As String = "Z:\Graphics"
+		Dim Destination As String = "C:\Users\lwestel\Desktop"
 		UserTimeLapse = 1000
 
 		Try
@@ -108,6 +109,7 @@ Public Class UWO_conversion
 					End If
 					AppActivate("ORCAView")
 					SendKeys.SendWait("%t")                 ' % = alt, so this line means ALT+T\
+
 					'Check to see if ORCAView is the front program, as sometimes it activates the wrong portion of orcaview (e.g. activated my orcaview splash screen thing, not the actual application)
 					theHwnd = GetForegroundWindow()
 					Dim length As Integer
@@ -119,28 +121,28 @@ Public Class UWO_conversion
 					'if orcaview is not the foreground window, exit the loop, as continuing the macro is silly
 					If (var.Contains("ORCAview") <> True) And (var <> "ORCAview Products") Then
 						SendKeys.SendWait("{ESC}")
-						MessageBox.Show("Make Sure to login to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+						MessageBox.Show("Make Sure to log in to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 						Exit For
 					End If
-					Thread.Sleep(200)
+
+					Thread.Sleep(100)
 					SendKeys.SendWait("{DOWN}")
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait("{DOWN}")
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait("{DOWN}")
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait("{DOWN}")
 					If (cancel = True) Then
 						Exit For
 					End If
-					Thread.Sleep(200)
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait("{RIGHT}")
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait("{DOWN}")
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait("{ENTER}")            'graphics to webpage
-					Thread.Sleep(200)
+					Thread.Sleep(300)
 					SendKeys.SendWait("{TAB}")
 
 					'Check to see if orcaview is the foreground window
@@ -152,24 +154,24 @@ Public Class UWO_conversion
 					'if orcaview is not the foreground window, exit the loop, as continuing the macro is silly
 					If (var <> "Convert Graphics to Web Page") Then
 						SendKeys.SendWait("{ESC}")
-						MessageBox.Show("Make Sure to login to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+						MessageBox.Show("Make Sure to log in to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 						Exit For
 					End If
 
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait("{TAB}")
 					If (cancel = True) Then
 						Exit For
 					End If
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait("{ENTER}")            ' Add button
 					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait(d)
@@ -182,7 +184,7 @@ Public Class UWO_conversion
 					'Threading.Thread.Sleep(UserTimeLapse)
 					'SendKeys.SendWait("{TAB}")
 					'Threading.Thread.Sleep(UserTimeLapse)
-					'SendKeys.SendWait("{TAB}")				'These were not necessary, and were breaking things
+					'SendKeys.SendWait("{TAB}")
 					'Threading.Thread.Sleep(UserTimeLapse)
 					'SendKeys.SendWait("{TAB}")
 					'Threading.Thread.Sleep(UserTimeLapse)
@@ -194,23 +196,24 @@ Public Class UWO_conversion
 					SendKeys.SendWait("+{TAB}")
 					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("^a")                 '^ is for CRTL, so this line means CTRL+A
-					Thread.Sleep(UserTimeLapse)
+					Thread.Sleep(100)
 					If (cancel = True) Then
 						Exit For
 					End If
 					SendKeys.SendWait("{ENTER}")
 					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("{ENTER}")
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(200)
+					Thread.Sleep(100)
 					SendKeys.SendWait(Dest)
 					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("{ENTER}")
+					'Not sure what this was for, exactly. Seemed to just slow things down
 					'Dim wait As Integer = My.Computer.FileSystem.GetFiles(dir.FullName).Count * 200
 					'If wait < 10000 Then
 					'	wait = 10000
@@ -218,21 +221,23 @@ Public Class UWO_conversion
 					'Thread.Sleep(wait)
 					Thread.Sleep(1000)
 					SendKeys.SendWait("{ENTER}")
+					'Conversion done
 					Thread.Sleep(10)
 				End If
 			Next
-			L_convert.Text = "Conversion Complete"
+			If (cancel <> True) Then
+				L_convert.Text = "Conversion Complete"
+			Else
+				L_convert.Text = "Conversion Cancelled"
+			End If
+
 		Catch
-			MessageBox.Show("Make Sure to login to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+			MessageBox.Show("Make Sure to log in to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 		End Try
 	End Sub
 
 	Private Sub stopButton_Click(sender As Object, e As EventArgs) Handles stopButton.Click
-		cancel = True
-	End Sub
-
-	Private Sub DriveComboBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles DriveComboBox.SelectedIndexChanged
-
+		cancel = True       'Cancel the progression of the conversion macro (NOT the actual conversion itself, that cannot be canclled)
 	End Sub
 End Class
 
