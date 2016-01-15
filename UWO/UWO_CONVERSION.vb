@@ -97,123 +97,95 @@ Public Class UWO_conversion
 				   Not String.Compare(dir.Name, "help files", True) = 0 And
 				   Not String.Compare(dir.Name, "temp", True) = 0 Then
 					If Directory.Exists(Dest) Then
-						'Directory.Delete(Dest, True)
+						'Directory.Delete(Dest, True)		' this ruined things, as it deleted all the contents of the folder as well
 					End If
 					Directory.CreateDirectory(Dest)
 					AppActivate("ORCAView")
 					SendKeys.SendWait("%t")                 ' % = alt, so this line means ALT+T\
-					'Debug.WriteLine("%t")
 					Thread.Sleep(200)
 					SendKeys.SendWait("{DOWN}")
-					'Debug.WriteLine("DOWN")
 					Thread.Sleep(200)
 					SendKeys.SendWait("{DOWN}")
-					'Debug.WriteLine("DOWN")
 					Thread.Sleep(200)
 					SendKeys.SendWait("{DOWN}")
-					'Debug.WriteLine("DOWN")
 					Thread.Sleep(200)
 					SendKeys.SendWait("{DOWN}")
-					'Debug.WriteLine("DOWN")
 					Thread.Sleep(200)
-                    'SendKeys.SendWait("{DOWN}")
-                    Thread.Sleep(200)
+					Thread.Sleep(200)
 					SendKeys.SendWait("{RIGHT}")
-					'Debug.WriteLine("RIGHT")
 					Thread.Sleep(200)
 					SendKeys.SendWait("{DOWN}")
-					'Debug.WriteLine("DOWN")
 					Thread.Sleep(200)
 					SendKeys.SendWait("{ENTER}")            'graphics to webpage
-					'Debug.WriteLine("ENTER")
 					Thread.Sleep(200)
 					SendKeys.SendWait("{TAB}")
+
+					'Check to see if orcaview is the foreground window
 					theHwnd = GetForegroundWindow()
 					Dim length As Integer
 					length = GetWindowTextLength(theHwnd) + 1
 					Dim buf As String = Space$(length)
 					length = GetWindowText(theHwnd, buf, length)
 					Dim var As String = buf.Substring(0, length)
-					Debug.WriteLine(var)
-					'If (var <> "Convert Graphics to Web Page") Then
+
+					'if orcaview is not the foreground window, exit the loop, as continuing the macro is silly
 					If (var <> "Convert Graphics to Web Page") Then
+						SendKeys.SendWait("{ESC}")
 						MessageBox.Show("Make Sure to login to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 						Exit For
 					End If
-					'Debug.WriteLine("TAB")
+
 					Thread.Sleep(200)
 					SendKeys.SendWait("{TAB}")
-					'Debug.WriteLine("TAB")
 					Thread.Sleep(200)
 					SendKeys.SendWait("{TAB}")
-					'Debug.WriteLine("TAB")
 					Thread.Sleep(200)
 					SendKeys.SendWait("{TAB}")
-					'Debug.WriteLine("TAB")
 					Thread.Sleep(200)
 					SendKeys.SendWait("{TAB}")
-					'Debug.WriteLine("TAB")
 					Thread.Sleep(200)
 					SendKeys.SendWait("{TAB}")
-					'Debug.WriteLine("TAB")
 					Thread.Sleep(200)
 					SendKeys.SendWait("{ENTER}")            ' Add button
-					'Debug.WriteLine("ENTER")
 					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait(d)
-					'Debug.WriteLine("SOURCE")
 					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("{ENTER}")
-					'Debug.WriteLine("ENTER")
 					Thread.Sleep(UserTimeLapse)
 
+					'Leaving the following for now, as it was once needed and not sure if it will be needed again
 					'SendKeys.SendWait("{TAB}")               'too many tabs if folder location is already open
 					' ISSUES START HERE
-					''Debug.WriteLine("TAB")
 					'Threading.Thread.Sleep(UserTimeLapse)
 					'SendKeys.SendWait("{TAB}")
-					''Debug.WriteLine("TAB")
 					'Threading.Thread.Sleep(UserTimeLapse)
 					'SendKeys.SendWait("{TAB}")				'These were not necessary, and were breaking things
-					''Debug.WriteLine("TAB")
 					'Threading.Thread.Sleep(UserTimeLapse)
 					'SendKeys.SendWait("{TAB}")
-					''Debug.WriteLine("TAB")
 					'Threading.Thread.Sleep(UserTimeLapse)
 					'SendKeys.SendWait("{TAB}")
-					''Debug.WriteLine("TAB")
 					'Threading.Thread.Sleep(UserTimeLapse)
 					'SendKeys.SendWait("{TAB}")
-					''Debug.WriteLine("TAB")
 					'Threading.Thread.Sleep(UserTimeLapse)
-					'-------
+
+
 					SendKeys.SendWait("+{TAB}")
 					Thread.Sleep(UserTimeLapse)
-					'-------
 					SendKeys.SendWait("^a")                 '^ is for CRTL, so this line means CTRL+A
-					'Debug.WriteLine("CTRL A")
 					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("{ENTER}")
-					'Debug.WriteLine("ENTER")
-					'---
 					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("{ENTER}")
-					'---
 					Thread.Sleep(200)
 					SendKeys.SendWait("{TAB}")
-					'Debug.WriteLine("TAB")
 					Thread.Sleep(200)
 					SendKeys.SendWait("{TAB}")
-					'Debug.WriteLine("TAB")
 					Thread.Sleep(200)
 					SendKeys.SendWait("{TAB}")
-					'Debug.WriteLine("TAB")
 					Thread.Sleep(200)
 					SendKeys.SendWait(Dest)
-					'Debug.WriteLine("DESTINATION")
 					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("{ENTER}")
-					'Debug.WriteLine("ENTER")
 					Dim wait As Integer = My.Computer.FileSystem.GetFiles(dir.FullName).Count * 200
 					If wait < 10000 Then
 						wait = 10000
