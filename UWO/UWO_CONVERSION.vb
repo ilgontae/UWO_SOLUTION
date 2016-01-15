@@ -37,7 +37,7 @@ Public Class UWO_conversion
 	Private Declare Function GetForegroundWindow Lib "user32" () As Long
 	Private MyStr As String, theHwnd As Long
 
-	'#Disable Warning BC42303 ' XML comment cannot appear within a method or a property   was getting an error even though the error was in a comment, so this supressed that error
+#Disable Warning BC42303 ' XML comment cannot appear within a method or a property   was getting an error even though the error was in a comment, so this supressed that error
 
 	Private Sub startButton_Click(sender As Object, e As EventArgs) Handles startButton.Click
 		'Dim Source As String = "W:\PUBLIC\Delta\Graphics"
@@ -119,7 +119,7 @@ Public Class UWO_conversion
 					'if orcaview is not the foreground window, exit the loop, as continuing the macro is silly
 					If (var.Contains("ORCAview") <> True) And (var <> "ORCAview Products") Then
 						SendKeys.SendWait("{ESC}")
-						MessageBox.Show("Make Sure to login to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+						MessageBox.Show("Make Sure to log in to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 						Exit For
 					End If
 					Thread.Sleep(200)
@@ -152,7 +152,7 @@ Public Class UWO_conversion
 					'if orcaview is not the foreground window, exit the loop, as continuing the macro is silly
 					If (var <> "Convert Graphics to Web Page") Then
 						SendKeys.SendWait("{ESC}")
-						MessageBox.Show("Make Sure to login to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+						MessageBox.Show("Make Sure to log in to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 						Exit For
 					End If
 
@@ -211,6 +211,7 @@ Public Class UWO_conversion
 					SendKeys.SendWait(Dest)
 					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("{ENTER}")
+					'Not sure what this was for, exactly. Seemed to just slow things down
 					'Dim wait As Integer = My.Computer.FileSystem.GetFiles(dir.FullName).Count * 200
 					'If wait < 10000 Then
 					'	wait = 10000
@@ -223,16 +224,12 @@ Public Class UWO_conversion
 			Next
 			L_convert.Text = "Conversion Complete"
 		Catch
-			MessageBox.Show("Make Sure to login to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+			MessageBox.Show("Make Sure to log in to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 		End Try
 	End Sub
 
 	Private Sub stopButton_Click(sender As Object, e As EventArgs) Handles stopButton.Click
 		cancel = True
-	End Sub
-
-	Private Sub DriveComboBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles DriveComboBox.SelectedIndexChanged
-
 	End Sub
 End Class
 
