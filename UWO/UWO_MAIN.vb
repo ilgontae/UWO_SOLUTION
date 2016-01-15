@@ -3,9 +3,10 @@
 'Revisions made: Added two default values in IF statment + Else statement added to CONVERTToolStripMenuItem_Click
 'Called PerformClick() located in UWO_conversion 
 
-Imports System.Security
-Imports System.IO
-Imports System.Threading
+'Revision By: Luke Westelaken
+'Date: January 13, 2016
+'Revisions made: added github source control at https://github.com/ilgontae/UWO_SOLUTION
+' all revisions will be made and recorded there
 
 Public Class UWO_MAIN
 
@@ -46,7 +47,7 @@ Public Class UWO_MAIN
 				UWO_conversion.MdiParent = Me
 				UWO_conversion.Show()
 				UWO_conversion.timeTextBox.Text = 1
-				UWO_conversion.DriveComboBox.Text = "Z:\Graphics"
+				'UWO_conversion.DriveComboBox.Text = "Z:\Graphics"
 				UWO_conversion.startButton.PerformClick()
 			Else
 				UWO_conversion.Show()
@@ -91,16 +92,16 @@ Public Class UWO_MAIN
 			p.Y = 0
 			UWO_conversion.Location = p
 		End If
-    End Sub
+	End Sub
 
-    Private Sub NOTLINKEDToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles NOTLINKEDToolStripMenuItem.Click
-        If UWO_No_links.Visible = True Then
-            UWO_No_links.BringToFront()
-        Else
-            UWO_No_links.MdiParent = Me
-            UWO_No_links.Show()
-        End If
-    End Sub
+	Private Sub NOTLINKEDToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles NOTLINKEDToolStripMenuItem.Click
+		If UWO_No_links.Visible = True Then
+			UWO_No_links.BringToFront()
+		Else
+			UWO_No_links.MdiParent = Me
+			UWO_No_links.Show()
+		End If
+	End Sub
 
 	Private Sub UWO_MAIN_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 

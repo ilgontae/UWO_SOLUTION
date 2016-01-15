@@ -1,4 +1,9 @@
-﻿Imports System.IO
+﻿'Revision By: Luke Westelaken
+'Date: January 13, 2016
+'Revisions made: added github source control at https://github.com/ilgontae/UWO_SOLUTION
+' all revisions will be made and recorded there
+
+Imports System.IO
 
 Public Class UWO_Compare
     Public Dir1 As String

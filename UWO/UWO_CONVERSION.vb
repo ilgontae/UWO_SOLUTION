@@ -104,7 +104,6 @@ Public Class UWO_conversion
 					End If
 					Directory.CreateDirectory(Dest)
 					If (My.Computer.FileSystem.GetFiles(dir.FullName).Count = 0) Then
-						SendKeys.SendWait("{ESC}")
 						Continue For
 					End If
 					AppActivate("ORCAView")
@@ -160,7 +159,7 @@ Public Class UWO_conversion
 
 					Thread.Sleep(100)
 					SendKeys.SendWait("{TAB}")
-					If (cancel = True) Then
+					If (cancel = True) Then             ' checks to see if the macro should be cancelled (theres more throughout the code)
 						Exit For
 					End If
 					Thread.Sleep(100)
@@ -178,24 +177,9 @@ Public Class UWO_conversion
 					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("{ENTER}")
 					Thread.Sleep(UserTimeLapse)
-
-					'Leaving the following for now, as it was once needed and not sure if it will be needed again
-					'SendKeys.SendWait("{TAB}")               'too many tabs if folder location is already open
-					'Threading.Thread.Sleep(UserTimeLapse)
-					'SendKeys.SendWait("{TAB}")
-					'Threading.Thread.Sleep(UserTimeLapse)
-					'SendKeys.SendWait("{TAB}")
-					'Threading.Thread.Sleep(UserTimeLapse)
-					'SendKeys.SendWait("{TAB}")
-					'Threading.Thread.Sleep(UserTimeLapse)
-					'SendKeys.SendWait("{TAB}")
-					'Threading.Thread.Sleep(UserTimeLapse)
-					'SendKeys.SendWait("{TAB}")
-					'Threading.Thread.Sleep(UserTimeLapse)
-
 					SendKeys.SendWait("+{TAB}")
 					Thread.Sleep(UserTimeLapse)
-					SendKeys.SendWait("^a")                 '^ is for CRTL, so this line means CTRL+A
+					SendKeys.SendWait("^a")                 '^ is for CRTL, so this line means CTRL+A, selects all files that are to be added
 					Thread.Sleep(100)
 					If (cancel = True) Then
 						Exit For
@@ -213,31 +197,33 @@ Public Class UWO_conversion
 					SendKeys.SendWait(Dest)
 					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("{ENTER}")
+
 					'Not sure what this was for, exactly. Seemed to just slow things down
 					'Dim wait As Integer = My.Computer.FileSystem.GetFiles(dir.FullName).Count * 200
 					'If wait < 10000 Then
 					'	wait = 10000
 					'End If
 					'Thread.Sleep(wait)
-					Thread.Sleep(1000)
+					Thread.Sleep(10000)
 					SendKeys.SendWait("{ENTER}")
 					'Conversion done
-					Thread.Sleep(10)
+					Thread.Sleep(100)
 				End If
 			Next
 			If (cancel <> True) Then
 				L_convert.Text = "Conversion Complete"
 			Else
-				L_convert.Text = "Conversion Cancelled"
+				L_convert.Text = "Conversion Cancelled!"
 			End If
 
-		Catch
+		Catch       ' Catch error if ORCAview is not even running
 			MessageBox.Show("Make Sure to log in to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 		End Try
 	End Sub
 
 	Private Sub stopButton_Click(sender As Object, e As EventArgs) Handles stopButton.Click
-		cancel = True       'Cancel the progression of the conversion macro (NOT the actual conversion itself, that cannot be canclled)
+		cancel = True       'Cancel the progression of the conversion macro (NOT the actual conversion itself, that cannot be cancelled)
+		MessageBox.Show("Conversion Cancelled", "Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Warning)
 	End Sub
 End Class
 
