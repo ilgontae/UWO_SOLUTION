@@ -31,7 +31,7 @@ Public Class UWO_conversion
 
     'Default value is 1 second
     Dim UserTimeLapse As Double = 1.0
-
+	Dim cancel As Boolean = False
 	Private Declare Function GetWindowText Lib "user32" Alias "GetWindowTextA" (ByVal hwnd As Long, ByVal lpString As String, ByVal cch As Long) As Long
 	Private Declare Function GetWindowTextLength Lib "user32" Alias "GetWindowTextLengthA" (ByVal hwnd As Long) As Long
 	Private Declare Function GetForegroundWindow Lib "user32" () As Long
@@ -46,7 +46,7 @@ Public Class UWO_conversion
 		UserTimeLapse = 1000
 
 		Try
-		If (timeTextBox.Enabled = True) Then
+			If (timeTextBox.Enabled = True) Then
 				UserTimeLapse = timeTextBox.Text
 				If UserTimeLapse > 0 Then
 					UserTimeLapse = UserTimeLapse * 1000
@@ -87,7 +87,9 @@ Public Class UWO_conversion
 
 			For Each d As String In My.Computer.FileSystem.GetDirectories(Source)
 				L_convert.Text = "Converting --> " + d
-
+				If (cancel = True) Then
+					Exit For
+				End If
 				L_convert.Update()
 				Thread.Sleep(100)
 				Dim dir As DirectoryInfo = My.Computer.FileSystem.GetDirectoryInfo(d)
@@ -100,8 +102,26 @@ Public Class UWO_conversion
 						'Directory.Delete(Dest, True)		' this ruined things, as it deleted all the contents of the folder as well
 					End If
 					Directory.CreateDirectory(Dest)
+					If (My.Computer.FileSystem.GetFiles(dir.FullName).Count = 0) Then
+						SendKeys.SendWait("{ESC}")
+						Continue For
+					End If
 					AppActivate("ORCAView")
 					SendKeys.SendWait("%t")                 ' % = alt, so this line means ALT+T\
+					'Check to see if ORCAView is the front program, as sometimes it activates the wrong portion of orcaview (e.g. activated my orcaview splash screen thing, not the actual application)
+					theHwnd = GetForegroundWindow()
+					Dim length As Integer
+					length = GetWindowTextLength(theHwnd) + 1
+					Dim buf As String = Space$(length)
+					length = GetWindowText(theHwnd, buf, length)
+					Dim var As String = buf.Substring(0, length)
+					Debug.WriteLine(var)
+					'if orcaview is not the foreground window, exit the loop, as continuing the macro is silly
+					If (var.Contains("ORCAview") <> True) And (var <> "ORCAview Products") Then
+						SendKeys.SendWait("{ESC}")
+						MessageBox.Show("Make Sure to login to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+						Exit For
+					End If
 					Thread.Sleep(200)
 					SendKeys.SendWait("{DOWN}")
 					Thread.Sleep(200)
@@ -110,6 +130,9 @@ Public Class UWO_conversion
 					SendKeys.SendWait("{DOWN}")
 					Thread.Sleep(200)
 					SendKeys.SendWait("{DOWN}")
+					If (cancel = True) Then
+						Exit For
+					End If
 					Thread.Sleep(200)
 					Thread.Sleep(200)
 					SendKeys.SendWait("{RIGHT}")
@@ -122,11 +145,10 @@ Public Class UWO_conversion
 
 					'Check to see if orcaview is the foreground window
 					theHwnd = GetForegroundWindow()
-					Dim length As Integer
 					length = GetWindowTextLength(theHwnd) + 1
-					Dim buf As String = Space$(length)
+					buf = Space$(length)
 					length = GetWindowText(theHwnd, buf, length)
-					Dim var As String = buf.Substring(0, length)
+					var = buf.Substring(0, length)
 
 					'if orcaview is not the foreground window, exit the loop, as continuing the macro is silly
 					If (var <> "Convert Graphics to Web Page") Then
@@ -137,6 +159,9 @@ Public Class UWO_conversion
 
 					Thread.Sleep(200)
 					SendKeys.SendWait("{TAB}")
+					If (cancel = True) Then
+						Exit For
+					End If
 					Thread.Sleep(200)
 					SendKeys.SendWait("{TAB}")
 					Thread.Sleep(200)
@@ -155,7 +180,6 @@ Public Class UWO_conversion
 
 					'Leaving the following for now, as it was once needed and not sure if it will be needed again
 					'SendKeys.SendWait("{TAB}")               'too many tabs if folder location is already open
-					' ISSUES START HERE
 					'Threading.Thread.Sleep(UserTimeLapse)
 					'SendKeys.SendWait("{TAB}")
 					'Threading.Thread.Sleep(UserTimeLapse)
@@ -173,6 +197,9 @@ Public Class UWO_conversion
 					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("^a")                 '^ is for CRTL, so this line means CTRL+A
 					Thread.Sleep(UserTimeLapse)
+					If (cancel = True) Then
+						Exit For
+					End If
 					SendKeys.SendWait("{ENTER}")
 					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("{ENTER}")
@@ -186,30 +213,24 @@ Public Class UWO_conversion
 					SendKeys.SendWait(Dest)
 					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("{ENTER}")
-					Dim wait As Integer = My.Computer.FileSystem.GetFiles(dir.FullName).Count * 200
-					If wait < 10000 Then
-						wait = 10000
-					End If
-					Thread.Sleep(wait)
+					'Dim wait As Integer = My.Computer.FileSystem.GetFiles(dir.FullName).Count * 200
+					'If wait < 10000 Then
+					'	wait = 10000
+					'End If
+					'Thread.Sleep(wait)
+					Thread.Sleep(1000)
 					SendKeys.SendWait("{ENTER}")
 					Thread.Sleep(10)
 				End If
-            Next
+			Next
 			L_convert.Text = "Conversion Complete"
 		Catch
 			MessageBox.Show("Make Sure to login to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 		End Try
 	End Sub
 
-	Private Sub UWO_conversion_LocationChanged(ByVal sender As Object, ByVal e As EventArgs) Handles Me.LocationChanged
-		Dim p As Point
-		p.X = 0
-		p.Y = 0
-		Location = p
-	End Sub
-
 	Private Sub stopButton_Click(sender As Object, e As EventArgs) Handles stopButton.Click
-		End
+		cancel = True
 	End Sub
 
 	Private Sub DriveComboBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles DriveComboBox.SelectedIndexChanged
