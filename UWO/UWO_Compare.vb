@@ -1,4 +1,9 @@
-﻿Imports System.IO
+﻿'Revision By: Luke Westelaken
+'Date: January 13, 2016
+'Revisions made: added github source control at https://github.com/ilgontae/UWO_SOLUTION
+' all revisions will be made and recorded there
+
+Imports System.IO
 
 Public Class UWO_Compare
     Public Dir1 As String
@@ -21,7 +26,7 @@ Public Class UWO_Compare
         Dim FDate As Date        
     End Structure
 
-    Private Sub UWO_Compare_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Private Sub UWO_Compare_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         For Each Folders As String In Directory.GetDirectories(Dir1)
             Dir1Folders.Add(FolderFill(Folders))
         Next
@@ -248,37 +253,37 @@ Public Class UWO_Compare
         Return TempList
     End Function
 
-    Private Sub UWO_Compare_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Resize
+    Private Sub UWO_Compare_Resize(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Resize
         If Panels.Width / 2 > 0 Then
             Panels.SplitterDistance = Panels.Width / 2
         End If
     End Sub
 
-    Private Sub LeftList_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles LeftList.Click
+    Private Sub LeftList_Click(ByVal sender As Object, ByVal e As EventArgs) Handles LeftList.Click
 
         RightList.Items.Item(LeftList.SelectedItems(0).Index).EnsureVisible()
 
     End Sub
 
-    Private Sub RightList_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles RightList.Click
+    Private Sub RightList_Click(ByVal sender As Object, ByVal e As EventArgs) Handles RightList.Click
         LeftList.Items.Item(RightList.SelectedItems(0).Index).EnsureVisible()
     End Sub
 
-    Private Sub LeftList_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles LeftList.Resize
+    Private Sub LeftList_Resize(ByVal sender As Object, ByVal e As EventArgs) Handles LeftList.Resize
         LName.Width = (LeftList.Width - 25) / 4
         LSize.Width = (LeftList.Width - 25) / 4
         LDate.Width = (LeftList.Width - 25) / 4
         LStatus.Width = (LeftList.Width - 25) / 4
     End Sub
 
-    Private Sub RightList_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles RightList.Resize
+    Private Sub RightList_Resize(ByVal sender As Object, ByVal e As EventArgs) Handles RightList.Resize
         RName.Width = (RightList.Width - 25) / 4
         RSize.Width = (RightList.Width - 25) / 4
         RDate.Width = (RightList.Width - 25) / 4
         RStatus.Width = (RightList.Width - 25) / 4
     End Sub
 
-    Private Sub LeftList_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles LeftList.DoubleClick
+    Private Sub LeftList_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles LeftList.DoubleClick
         Dim ItemSel As Integer = LeftList.SelectedItems(0).Index
         Dim Num As Integer
         If Dir1Folders.Count >= Dir2Folders.Count Then
@@ -344,7 +349,7 @@ Public Class UWO_Compare
         End If
     End Sub
 
-    Private Sub RightList_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles RightList.DoubleClick
+    Private Sub RightList_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles RightList.DoubleClick
         Dim ItemSel As Integer = RightList.SelectedItems(0).Index
         Dim Num As Integer
         If Dir1Folders.Count >= Dir2Folders.Count Then
@@ -415,7 +420,7 @@ Public Class UWO_Compare
             If Directory.Exists(Source) Then
                 My.Computer.FileSystem.DeleteDirectory(Source, FileIO.DeleteDirectoryOption.DeleteAllContents)
                 Dim a As Object = Nothing
-                Dim b As System.EventArgs = Nothing
+                Dim b As EventArgs = Nothing
                 Timer1_Tick(a, b)
             Else
                 MsgBox(Source + " does not exist!", vbExclamation, "Source File Missing")
@@ -431,7 +436,7 @@ Public Class UWO_Compare
                 My.Computer.FileSystem.CopyDirectory(Source, Dest)
                 Directory.SetLastWriteTime(Dest, Directory.GetLastWriteTime(Source))
                 Dim a As Object = Nothing
-                Dim b As System.EventArgs = Nothing
+                Dim b As EventArgs = Nothing
                 Timer1_Tick(a, b)
             Else
                 MsgBox(Source + " does not exist!", vbExclamation, "Source File Missing")
@@ -446,7 +451,7 @@ Public Class UWO_Compare
             If File.Exists(Source) Then
                 File.Delete(Source)
                 Dim a As Object = Nothing
-                Dim b As System.EventArgs = Nothing
+                Dim b As EventArgs = Nothing
                 Timer1_Tick(a, b)
             Else
                 MsgBox(Source + " does not exist!", vbExclamation, "Source File Missing")
@@ -461,7 +466,7 @@ Public Class UWO_Compare
             If File.Exists(Source) Then
                 FileCopy(Source, Dest)
                 Dim a As Object = Nothing
-                Dim b As System.EventArgs = Nothing
+                Dim b As EventArgs = Nothing
                 Timer1_Tick(a, b)
             Else
                 MsgBox(Source + " does not exist!", vbExclamation, "Source File Missing")
@@ -471,7 +476,7 @@ Public Class UWO_Compare
         End Try
     End Sub
 
-    Private Sub Timer1_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles Timer1.Tick
+    Private Sub Timer1_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles Timer1.Tick
         LeftList.Items.Clear()
         RightList.Items.Clear()
         Dir1Folders.Clear()
@@ -481,13 +486,13 @@ Public Class UWO_Compare
         UWO_Compare_Load(sender, e)
     End Sub
 
-    Private Sub LeftBar_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles LeftBar.ValueChanged
+    Private Sub LeftBar_ValueChanged(ByVal sender As Object, ByVal e As EventArgs) Handles LeftBar.ValueChanged
         RightBar.Value = LeftBar.Value
         LeftList.TopItem = LeftList.Items(LeftBar.Value)
         RightList.TopItem = RightList.Items(LeftBar.Value)
     End Sub
 
-    Private Sub RightBar_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles RightBar.ValueChanged
+    Private Sub RightBar_ValueChanged(ByVal sender As Object, ByVal e As EventArgs) Handles RightBar.ValueChanged
         LeftBar.Value = RightBar.Value
         LeftList.TopItem = LeftList.Items(RightBar.Value)
         RightList.TopItem = RightList.Items(RightBar.Value)

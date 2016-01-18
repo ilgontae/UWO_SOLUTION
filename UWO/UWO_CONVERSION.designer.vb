@@ -22,6 +22,7 @@ Partial Class UWO_conversion
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
 	Private Sub InitializeComponent()
+		Me.components = New System.ComponentModel.Container()
 		Dim DesinationDrive As System.Windows.Forms.Label
 		Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(UWO_conversion))
 		Me.L_convert = New System.Windows.Forms.Label()
@@ -30,6 +31,7 @@ Partial Class UWO_conversion
 		Me.stopButton = New System.Windows.Forms.Button()
 		Me.startButton = New System.Windows.Forms.Button()
 		Me.DriveComboBox = New System.Windows.Forms.ComboBox()
+		Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
 		DesinationDrive = New System.Windows.Forms.Label()
 		Me.SuspendLayout()
 		'
@@ -37,7 +39,7 @@ Partial Class UWO_conversion
 		'
 		DesinationDrive.Anchor = System.Windows.Forms.AnchorStyles.Left
 		DesinationDrive.AutoSize = True
-		DesinationDrive.Location = New System.Drawing.Point(144, 1)
+		DesinationDrive.Location = New System.Drawing.Point(110, 1)
 		DesinationDrive.Name = "DesinationDrive"
 		DesinationDrive.Size = New System.Drawing.Size(127, 13)
 		DesinationDrive.TabIndex = 6
@@ -69,9 +71,9 @@ Partial Class UWO_conversion
 		Me.EnterTimeLapseLabel.AutoSize = True
 		Me.EnterTimeLapseLabel.Location = New System.Drawing.Point(-1, 0)
 		Me.EnterTimeLapseLabel.Name = "EnterTimeLapseLabel"
-		Me.EnterTimeLapseLabel.Size = New System.Drawing.Size(136, 13)
+		Me.EnterTimeLapseLabel.Size = New System.Drawing.Size(58, 13)
 		Me.EnterTimeLapseLabel.TabIndex = 2
-		Me.EnterTimeLapseLabel.Text = "Enter time lapse in seconds"
+		Me.EnterTimeLapseLabel.Text = "Enter Time"
 		'
 		'stopButton
 		'
@@ -100,11 +102,15 @@ Partial Class UWO_conversion
 		Me.DriveComboBox.Anchor = System.Windows.Forms.AnchorStyles.Left
 		Me.DriveComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
 		Me.DriveComboBox.FormattingEnabled = True
-		Me.DriveComboBox.Items.AddRange(New Object() {"Z:\Graphics", "Y:\UWO\Graphics", "H:\Graphics", "C:\Users\lwestel\Desktop"})
-		Me.DriveComboBox.Location = New System.Drawing.Point(147, 16)
+		Me.DriveComboBox.Items.AddRange(New Object() {"Z:\Graphics", "Y:\UWO\Graphics", "H:\Graphics", "Desktop"})
+		Me.DriveComboBox.Location = New System.Drawing.Point(113, 16)
 		Me.DriveComboBox.Name = "DriveComboBox"
 		Me.DriveComboBox.Size = New System.Drawing.Size(121, 21)
 		Me.DriveComboBox.TabIndex = 5
+		'
+		'ToolTip1
+		'
+		Me.ToolTip1.Tag = ""
 		'
 		'UWO_conversion
 		'
@@ -139,4 +145,5 @@ Partial Class UWO_conversion
 	Friend WithEvents stopButton As System.Windows.Forms.Button
 	Friend WithEvents startButton As System.Windows.Forms.Button
 	Friend WithEvents DriveComboBox As System.Windows.Forms.ComboBox
+	Friend WithEvents ToolTip1 As ToolTip
 End Class
