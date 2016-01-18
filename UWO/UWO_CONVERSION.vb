@@ -85,7 +85,13 @@ Public Class UWO_conversion
 				MessageBox.Show("Make sure you have access to " + Destination, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 				Exit Try
 			End If
-
+			For Each d As String In My.Computer.FileSystem.GetDirectories(Source)
+				If d.Contains("(") Or
+						d.Contains(")") Then
+					MessageBox.Show("Please remove brackets from folder names", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+					Exit Try
+				End If
+			Next
 			For Each d As String In My.Computer.FileSystem.GetDirectories(Source)
 				containsGPC = False
 				L_convert.Text = "Converting --> " + d
@@ -115,7 +121,7 @@ Public Class UWO_conversion
 						If (My.Computer.FileSystem.GetFiles(dir.FullName).Count = 0) Then
 							Continue For
 							L_convert.Text = "Folder skipped, no files"
-							Thread.Sleep(500)
+							Thread.Sleep(1000)
 						End If
 						'If destination folder already exists, concat the date on the end
 						Dim todaysdate As String = String.Format("{0:dd-MM-yyyy}", DateTime.Now)
@@ -124,13 +130,15 @@ Public Class UWO_conversion
 						containsCopy = False
 						For Each file In My.Computer.FileSystem.GetDirectories(Destination)
 							If file.Contains("Copy") Then
-								containsCopy = True
-								fileExists = True
-								numC = ((file.Length - file.IndexOf("Copy") + 1) / 5)
-								Debug.WriteLine(numC)
-								Debug.WriteLine(file)
+								If Not (file.Contains("(")) Then
+									containsCopy = True
+									fileExists = True
+									numC = ((file.Length - file.IndexOf("Copy") + 1) / 5)
+								Else
+
+								End If
 							ElseIf file.Contains(todaysdate) Then
-								fileExists = True
+									fileExists = True
 							End If
 							Debug.WriteLine(file)
 						Next
@@ -157,13 +165,14 @@ Public Class UWO_conversion
 						Thread.Sleep(500)
 					ElseIf Not (containsGPC) Then
 						Continue For
-						L_convert.Text = "Folder skipped, does not contain graphics files"      ' Check if folder even contains graphic files
+						L_convert.Text = "Folder skipped, does not contain graphics files"      ' Check if folder even contains gpc files
+						Thread.Sleep(1000)
 					End If
 					Directory.CreateDirectory(Dest)                                             ' create destination folder
 					AppActivate("ORCAView")
 					SendKeys.SendWait("%t")                 ' % = alt, so this line means ALT+T\
 
-					'Check to see if ORCAView is the front program, as sometimes it activates the wrong portion of orcaview (e.g. activated my orcaview splash screen thing, not the actual application)
+					'Check to see if ORCAview is the front program, as sometimes it activates the wrong portion of orcaview (e.g. activated my orcaview splash screen thing, not the actual application)
 					theHwnd = GetForegroundWindow()
 					Dim length As Integer
 					length = GetWindowTextLength(theHwnd) + 1
