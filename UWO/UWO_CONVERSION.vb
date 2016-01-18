@@ -27,7 +27,6 @@ Public Class UWO_conversion
 		Location = p
 		Show()
 		DriveComboBox.SelectedIndex = 0
-		ToolTip1.SetToolTip(timeTextBox, "Cannot currently be modified")
 	End Sub
 
     'Default value is 1 second
@@ -38,7 +37,6 @@ Public Class UWO_conversion
 	Private Declare Function GetForegroundWindow Lib "user32" () As Long
 	Private MyStr As String, theHwnd As Long
 
-#Disable Warning BC42303 ' XML comment cannot appear within a method or a property   was getting an error even though the error was in a comment, so this supressed that error
 
 	Private Sub startButton_Click(sender As Object, e As EventArgs) Handles startButton.Click
 		'Dim Source As String = "W:\PUBLIC\Delta\Graphics"
@@ -75,7 +73,7 @@ Public Class UWO_conversion
 			ElseIf DriveComboBox.SelectedIndex = 3 Then
 				Destination = "C:\Users\lwestel\Documents"
 			Else
-				MessageBox.Show("No drive selected", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+				MessageBox.Show("No drive selected", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)   ' should never happen
 				Return
 			End If
 
@@ -271,7 +269,7 @@ Public Class UWO_conversion
 				L_convert.Text = "Conversion Cancelled!"
 			End If
 		Catch ex As UnauthorizedAccessException
-
+			MessageBox.Show("Error accessing destination folder", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 		Catch       ' Catch error if ORCAview is not even running
 			MessageBox.Show("Make sure you are logged in to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 		End Try
@@ -281,7 +279,6 @@ Public Class UWO_conversion
 		cancel = True       'Cancel the progression of the conversion macro (NOT the actual conversion itself, that cannot be cancelled)
 		MessageBox.Show("Conversion cancelled!", "Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Warning)
 	End Sub
-
 
 End Class
 
