@@ -22,6 +22,7 @@ Partial Class UWO_conversion
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
 	Private Sub InitializeComponent()
+		Me.components = New System.ComponentModel.Container()
 		Dim DesinationDrive As System.Windows.Forms.Label
 		Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(UWO_conversion))
 		Me.L_convert = New System.Windows.Forms.Label()
@@ -30,6 +31,7 @@ Partial Class UWO_conversion
 		Me.stopButton = New System.Windows.Forms.Button()
 		Me.startButton = New System.Windows.Forms.Button()
 		Me.DriveComboBox = New System.Windows.Forms.ComboBox()
+		Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
 		DesinationDrive = New System.Windows.Forms.Label()
 		Me.SuspendLayout()
 		'
@@ -106,6 +108,10 @@ Partial Class UWO_conversion
 		Me.DriveComboBox.Size = New System.Drawing.Size(121, 21)
 		Me.DriveComboBox.TabIndex = 5
 		'
+		'ToolTip1
+		'
+		Me.ToolTip1.Tag = ""
+		'
 		'UWO_conversion
 		'
 		Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -139,4 +145,5 @@ Partial Class UWO_conversion
 	Friend WithEvents stopButton As System.Windows.Forms.Button
 	Friend WithEvents startButton As System.Windows.Forms.Button
 	Friend WithEvents DriveComboBox As System.Windows.Forms.ComboBox
+	Friend WithEvents ToolTip1 As ToolTip
 End Class

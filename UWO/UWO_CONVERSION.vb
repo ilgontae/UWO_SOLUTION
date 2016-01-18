@@ -27,6 +27,7 @@ Public Class UWO_conversion
 		Location = p
 		Show()
 		DriveComboBox.SelectedIndex = 0
+		ToolTip1.SetToolTip(timeTextBox, "Cannot currently be modified")
 	End Sub
 
     'Default value is 1 second
@@ -43,8 +44,9 @@ Public Class UWO_conversion
 		'Dim Source As String = "W:\PUBLIC\Delta\Graphics"
 		Dim Source As String = "C:\Users\lwestel\Desktop"
 		'Dim Destination As String = "Z:\Graphics"
-		Dim Destination As String = "C:\Users\lwestel\Desktop"
+		Dim Destination As String = "C:\Users\lwestel\Documents"
 		UserTimeLapse = 1000
+		Dim containsGPC As Boolean = False
 
 		Try
 			If (timeTextBox.Enabled = True) Then
@@ -71,7 +73,7 @@ Public Class UWO_conversion
 			ElseIf DriveComboBox.SelectedIndex = 2 Then
 				Destination = "H:\Graphics"
 			ElseIf DriveComboBox.SelectedIndex = 3 Then
-				Destination = "C:\Users\lwestel\Desktop"
+				Destination = "C:\Users\lwestel\Documents"
 			Else
 				MessageBox.Show("No drive selected", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 				Return
@@ -87,6 +89,7 @@ Public Class UWO_conversion
 			End If
 
 			For Each d As String In My.Computer.FileSystem.GetDirectories(Source)
+				containsGPC = False
 				L_convert.Text = "Converting --> " + d
 				If (cancel = True) Then
 					Exit For
@@ -94,23 +97,71 @@ Public Class UWO_conversion
 				L_convert.Update()
 				Thread.Sleep(100)
 				Dim dir As DirectoryInfo = My.Computer.FileSystem.GetDirectoryInfo(d)
+				For Each File In My.Computer.FileSystem.GetFiles(d)
+					If (File.Contains(".gpc")) Then
+						containsGPC = True
+						Debug.WriteLine("Contains gpc")
+					End If
+				Next
 				Dim Dest = Destination + "\" + dir.Name
 				If Not String.Compare(dir.Name, "archive", True) = 0 And
 				   Not String.Compare(dir.Name, "bmp", True) = 0 And
 				   Not String.Compare(dir.Name, "help files", True) = 0 And
 				   Not String.Compare(dir.Name, "temp", True) = 0 Then
+					Dim fileExists As Boolean = False
+					Dim fileBrackets As Boolean = False
+					Dim extraEnters As Integer = 0
+					Dim numC As Integer
 					If Directory.Exists(Dest) Then
-						'Directory.Delete(Dest, True)		' this ruined things, as it deleted all the contents of the folder as well
-						Dim todaysdate As String = String.Format("{0:dd/MM/yyyy}", DateTime.Now)
-						'so if the directory exists, concat the date to the end of the new folder
-						Dest &= " " & todaysdate
+						'skip if folder is empty
+						If (My.Computer.FileSystem.GetFiles(dir.FullName).Count = 0) Then
+							Continue For
+							L_convert.Text = "Folder skipped, no files"
+							Thread.Sleep(500)
+						End If
+						'If destination folder already exists, concat the date on the end
+						Dim todaysdate As String = String.Format("{0:dd-MM-yyyy}", DateTime.Now)
+						Dim containsCopy As Boolean
+						'Dim destCopyName As String
+						containsCopy = False
+						For Each file In My.Computer.FileSystem.GetDirectories(Destination)
+							If file.Contains("Copy") Then
+								containsCopy = True
+								fileExists = True
+								numC = ((file.Length - file.IndexOf("Copy") + 1) / 5)
+								Debug.WriteLine(numC)
+								Debug.WriteLine(file)
+							ElseIf file.Contains(todaysdate) Then
+								fileExists = True
+							End If
+							Debug.WriteLine(file)
+						Next
+						If Not (fileExists) Then
+							Debug.WriteLine("does not contains date")
+							Debug.WriteLine(todaysdate)
+							Debug.WriteLine(Dest)
+							Dest &= " " & todaysdate
+						ElseIf (containsCopy) Then
+							Dest &= " " & todaysdate
+							For i As Integer = 0 To (numC)
+								Dest &= " Copy"
+							Next
+							extraEnters += 1
+						Else
+							Debug.WriteLine("contains date")
+							Dest &= " " & todaysdate & " Copy"
+							extraEnters += 1
+						End If
 					End If
-					Directory.CreateDirectory(Dest)
 					If (My.Computer.FileSystem.GetFiles(dir.FullName).Count = 0) Then
 						Continue For
-						L_convert.Text = "Folder skipped, no files"
+						L_convert.Text = "Folder skipped, no files"                             ' Check if folder is empty
 						Thread.Sleep(500)
+					ElseIf Not (containsGPC) Then
+						Continue For
+						L_convert.Text = "Folder skipped, does not contain graphics files"      ' Check if folder even contains graphic files
 					End If
+					Directory.CreateDirectory(Dest)                                             ' create destination folder
 					AppActivate("ORCAView")
 					SendKeys.SendWait("%t")                 ' % = alt, so this line means ALT+T\
 
@@ -122,7 +173,7 @@ Public Class UWO_conversion
 					length = GetWindowText(theHwnd, buf, length)
 					Dim var As String = buf.Substring(0, length)
 					Debug.WriteLine(var)
-					'if orcaview is not the foreground window, exit the loop, as continuing the macro is silly
+					'if ORCAview is not the foreground window, exit the loop, as continuing the macro is silly
 					If (var.Contains("ORCAview") <> True) And (var <> "ORCAview Products") Then
 						SendKeys.SendWait("{ESC}")
 						MessageBox.Show("Make sure you are logged in to ORCAview", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -201,6 +252,12 @@ Public Class UWO_conversion
 					Thread.Sleep(100)
 					SendKeys.SendWait(Dest)
 					Thread.Sleep(UserTimeLapse)
+					'Extra enters requried if the destination folder does not exist
+					For i As Integer = 0 To extraEnters
+						Thread.Sleep(100)
+						SendKeys.SendWait("{ENTER}")
+					Next
+
 					SendKeys.SendWait("{ENTER}")
 					Thread.Sleep(10000)
 					SendKeys.SendWait("{ENTER}")
@@ -213,6 +270,7 @@ Public Class UWO_conversion
 			Else
 				L_convert.Text = "Conversion Cancelled!"
 			End If
+		Catch ex As UnauthorizedAccessException
 
 		Catch       ' Catch error if ORCAview is not even running
 			MessageBox.Show("Make sure you are logged in to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -223,6 +281,8 @@ Public Class UWO_conversion
 		cancel = True       'Cancel the progression of the conversion macro (NOT the actual conversion itself, that cannot be cancelled)
 		MessageBox.Show("Conversion cancelled!", "Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Warning)
 	End Sub
+
+
 End Class
 
 
