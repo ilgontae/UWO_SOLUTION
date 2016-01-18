@@ -101,6 +101,9 @@ Public Class UWO_conversion
 				   Not String.Compare(dir.Name, "temp", True) = 0 Then
 					If Directory.Exists(Dest) Then
 						'Directory.Delete(Dest, True)		' this ruined things, as it deleted all the contents of the folder as well
+						Dim todaysdate As String = String.Format("{0:dd/MM/yyyy}", DateTime.Now)
+						'so if the directory exists, concat the date to the end of the new folder
+						Dest &= " " & todaysdate
 					End If
 					Directory.CreateDirectory(Dest)
 					If (My.Computer.FileSystem.GetFiles(dir.FullName).Count = 0) Then
