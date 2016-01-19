@@ -57,9 +57,8 @@ Public Class UWO_conversion
 				End If
 			End If
 
-
 		Catch ex As Exception
-			MessageBox.Show("Amount incorrect", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+			MessageBox.Show("Amount incorrect", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)            'should never happen, but you never know
 			Return
 		End Try
 
@@ -73,7 +72,7 @@ Public Class UWO_conversion
 			ElseIf DriveComboBox.SelectedIndex = 3 Then
 				Destination = "C:\Users\lwestel\Documents"
 			Else
-				MessageBox.Show("No drive selected", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)   ' should never happen
+				MessageBox.Show("No drive selected", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)   ' should never happen, but you never know
 				Return
 			End If
 
@@ -101,13 +100,12 @@ Public Class UWO_conversion
 				L_convert.Update()
 				Thread.Sleep(100)
 				Dim dir As DirectoryInfo = My.Computer.FileSystem.GetDirectoryInfo(d)
-				For Each File In My.Computer.FileSystem.GetFiles(d)
+				For Each File In My.Computer.FileSystem.GetFiles(d)                 ' check to make sure the folders even contain .gpc files
 					If (File.Contains(".gpc")) Then
 						containsGPC = True
-						Debug.WriteLine("Contains gpc")
 					End If
 				Next
-				Dim Dest = Destination + "\" + dir.Name
+				Dim Dest = Destination + "\" + dir.Name                             'ignore unnecessary folders that do not have files that need to be converted
 				If Not String.Compare(dir.Name, "archive", True) = 0 And
 				   Not String.Compare(dir.Name, "bmp", True) = 0 And
 				   Not String.Compare(dir.Name, "help files", True) = 0 And
@@ -126,35 +124,29 @@ Public Class UWO_conversion
 						'If destination folder already exists, concat the date on the end
 						Dim todaysdate As String = String.Format("{0:dd-MM-yyyy}", DateTime.Now)
 						Dim containsCopy As Boolean
-						'Dim destCopyName As String
 						containsCopy = False
 						For Each file In My.Computer.FileSystem.GetDirectories(Destination)
+							'find if folder has the word "copy" in its name
 							If file.Contains("Copy") Then
 								If Not (file.Contains("(")) Then
 									containsCopy = True
 									fileExists = True
-									numC = ((file.Length - file.IndexOf("Copy") + 1) / 5)
+									numC = ((file.Length - file.IndexOf("Copy") + 1) / 5)   ' getting the count of the number of times "copy" is in the name. This is so that it can replicate it
 								Else
-
 								End If
 							ElseIf file.Contains(todaysdate) Then
-									fileExists = True
+								fileExists = True
 							End If
-							Debug.WriteLine(file)
 						Next
-						If Not (fileExists) Then
-							Debug.WriteLine("does not contains date")
-							Debug.WriteLine(todaysdate)
-							Debug.WriteLine(Dest)
+						If Not (fileExists) Then        ' if the folder already exists, append the date to the new folder
 							Dest &= " " & todaysdate
-						ElseIf (containsCopy) Then
+						ElseIf (containsCopy) Then      ' if the folder already exists and already has "copy" on it, add more "copy" words to the end, based on the number of original words
 							Dest &= " " & todaysdate
 							For i As Integer = 0 To (numC)
 								Dest &= " Copy"
 							Next
 							extraEnters += 1
-						Else
-							Debug.WriteLine("contains date")
+						Else                            ' if the folder already exists with the date appended but NOT the word "copy", append "copy"
 							Dest &= " " & todaysdate & " Copy"
 							extraEnters += 1
 						End If
@@ -179,7 +171,6 @@ Public Class UWO_conversion
 					Dim buf As String = Space$(length)
 					length = GetWindowText(theHwnd, buf, length)
 					Dim var As String = buf.Substring(0, length)
-					Debug.WriteLine(var)
 					'if ORCAview is not the foreground window, exit the loop, as continuing the macro is silly
 					If (var.Contains("ORCAview") <> True) And (var <> "ORCAview Products") Then
 						SendKeys.SendWait("{ESC}")
@@ -207,7 +198,7 @@ Public Class UWO_conversion
 					Thread.Sleep(300)
 					SendKeys.SendWait("{TAB}")
 
-					'Check to see if orcaview is the foreground window
+					'Check to see if orcaview is still the foreground window
 					theHwnd = GetForegroundWindow()
 					length = GetWindowTextLength(theHwnd) + 1
 					buf = Space$(length)
@@ -222,7 +213,7 @@ Public Class UWO_conversion
 
 					Thread.Sleep(100)
 					SendKeys.SendWait("{TAB}")
-					If (cancel = True) Then             ' checks to see if the macro should be cancelled (theres more throughout the code)
+					If (cancel = True) Then                 ' checks to see if the macro should be cancelled (theres more throughout the code)
 						Exit For
 					End If
 					Thread.Sleep(100)
@@ -259,7 +250,7 @@ Public Class UWO_conversion
 					Thread.Sleep(100)
 					SendKeys.SendWait(Dest)
 					Thread.Sleep(UserTimeLapse)
-					'Extra enters requried if the destination folder does not exist
+					'Extra enters required if the destination folder does not exist
 					For i As Integer = 0 To extraEnters
 						Thread.Sleep(100)
 						SendKeys.SendWait("{ENTER}")
@@ -290,5 +281,3 @@ Public Class UWO_conversion
 	End Sub
 
 End Class
-
-
