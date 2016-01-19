@@ -69,7 +69,7 @@ Public Class UWO_FINDSTR
 				LV_Files.Items.Add(SP)
 				LV_Files.Update()
 				LV_Files.EnsureVisible(LV_Files.Items.Count - 1)
-				count = count + 1
+				count += 1
 			End If
 		Catch
 		End Try

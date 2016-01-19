@@ -13,10 +13,10 @@ Public Class UWO_DirSelect
         ElseIf TB_Dir1.Text = TB_Dir2.Text Then
             MessageBox.Show("You Must Pick Two Different Directorys", "INVALID INPUT", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Else
-            If Not My.Computer.FileSystem.DirectoryExists(TB_Dir1.Text) Then
-                MessageBox.Show(TB_Dir1.Text + " -> Does Not Exist", "DIRECTORY ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            ElseIf Not My.Computer.FileSystem.DirectoryExists(TB_Dir2.Text) Then
-                MessageBox.Show(TB_Dir2.Text + " -> Does Not Exist", "DIRECTORY ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+			If Not My.Computer.FileSystem.DirectoryExists(TB_Dir1.Text) Then
+				MessageBox.Show(TB_Dir1.Text + " -> Does Not Exist", "DIRECTORY ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+			ElseIf Not My.Computer.FileSystem.DirectoryExists(TB_Dir2.Text) Then
+				MessageBox.Show(TB_Dir2.Text + " -> Does Not Exist", "DIRECTORY ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Else
                 Dim Comp As New UWO_Compare
                 Comp.Text = My.Computer.FileSystem.GetDirectoryInfo(TB_Dir1.Text).Name + " <-> " + My.Computer.FileSystem.GetDirectoryInfo(TB_Dir2.Text).Name
