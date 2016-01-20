@@ -101,7 +101,7 @@ Public Class UWO_REPLACE
 		ReplaceCheck()
 	End Sub
 
-	Private Sub ListView1_ItemSelectionChanged(ByVal sender As Object, ByVal e As System.Windows.Forms.ListViewItemSelectionChangedEventArgs) Handles ListView1.ItemSelectionChanged
+	Private Sub ListView1_ItemSelectionChanged(ByVal sender As Object, ByVal e As ListViewItemSelectionChangedEventArgs) Handles ListView1.ItemSelectionChanged
 		B_Remove.Enabled = True
 	End Sub
 

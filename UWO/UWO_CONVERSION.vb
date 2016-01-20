@@ -26,7 +26,7 @@ Public Class UWO_conversion
 		p.Y = 0
 		Location = p
 		Show()
-		DriveComboBox.SelectedIndex = 0
+		DriveComboBox.SelectedIndex = 1
 	End Sub
 
     'Default value is 1 second
@@ -39,10 +39,8 @@ Public Class UWO_conversion
 
 
 	Private Sub startButton_Click(sender As Object, e As EventArgs) Handles startButton.Click
-		'Dim Source As String = "W:\PUBLIC\Delta\Graphics"
-		Dim Source As String = "C:\Users\lwestel\Desktop"
-		'Dim Destination As String = "Z:\Graphics"
-		Dim Destination As String = "C:\Users\lwestel\Documents"
+		Dim Source As String = "W:\PUBLIC\Delta\Graphics"
+		Dim Destination As String = "Y:\Graphics"
 		UserTimeLapse = 1000
 		Dim containsGPC As Boolean = False
 
@@ -85,13 +83,6 @@ Public Class UWO_conversion
 				Exit Try
 			End If
 			For Each d As String In My.Computer.FileSystem.GetDirectories(Source)
-				If d.Contains("(") Or
-						d.Contains(")") Then
-					MessageBox.Show("Please remove brackets from folder names", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-					Exit Try
-				End If
-			Next
-			For Each d As String In My.Computer.FileSystem.GetDirectories(Source)
 				containsGPC = False
 				L_convert.Text = "Converting --> " + d
 				If (cancel = True) Then
@@ -115,41 +106,7 @@ Public Class UWO_conversion
 					Dim extraEnters As Integer = 0
 					Dim numC As Integer
 					If Directory.Exists(Dest) Then
-						'skip if folder is empty
-						If (My.Computer.FileSystem.GetFiles(dir.FullName).Count = 0) Then
-							Continue For
-							L_convert.Text = "Folder skipped, no files"
-							Thread.Sleep(1000)
-						End If
-						'If destination folder already exists, concat the date on the end
-						Dim todaysdate As String = String.Format("{0:dd-MM-yyyy}", DateTime.Now)
-						Dim containsCopy As Boolean
-						containsCopy = False
-						For Each file In My.Computer.FileSystem.GetDirectories(Destination)
-							'find if folder has the word "copy" in its name
-							If file.Contains("Copy") Then
-								If Not (file.Contains("(")) Then
-									containsCopy = True
-									fileExists = True
-									numC = ((file.Length - file.IndexOf("Copy") + 1) / 5)   ' getting the count of the number of times "copy" is in the name. This is so that it can replicate it
-								Else
-								End If
-							ElseIf file.Contains(todaysdate) Then
-								fileExists = True
-							End If
-						Next
-						If Not (fileExists) Then        ' if the folder already exists, append the date to the new folder
-							Dest &= " " & todaysdate
-						ElseIf (containsCopy) Then      ' if the folder already exists and already has "copy" on it, add more "copy" words to the end, based on the number of original words
-							Dest &= " " & todaysdate
-							For i As Integer = 0 To (numC)
-								Dest &= " Copy"
-							Next
-							extraEnters += 1
-						Else                            ' if the folder already exists with the date appended but NOT the word "copy", append "copy"
-							Dest &= " " & todaysdate & " Copy"
-							extraEnters += 1
-						End If
+						Directory.Delete(Dest, True)
 					End If
 					If (My.Computer.FileSystem.GetFiles(dir.FullName).Count = 0) Then
 						Continue For
@@ -178,22 +135,22 @@ Public Class UWO_conversion
 						Exit For
 					End If
 
-					Thread.Sleep(100)
+					Thread.Sleep(300)
 					SendKeys.SendWait("{DOWN}")
-					Thread.Sleep(100)
+					Thread.Sleep(300)
 					SendKeys.SendWait("{DOWN}")
-					Thread.Sleep(100)
+					Thread.Sleep(300)
 					SendKeys.SendWait("{DOWN}")
-					Thread.Sleep(100)
+					Thread.Sleep(300)
 					SendKeys.SendWait("{DOWN}")
 					If (cancel = True) Then
-						Exit For
+						Return
 					End If
-					Thread.Sleep(100)
+					Thread.Sleep(300)
 					SendKeys.SendWait("{RIGHT}")
-					Thread.Sleep(100)
+					Thread.Sleep(300)
 					SendKeys.SendWait("{DOWN}")
-					Thread.Sleep(100)
+					Thread.Sleep(300)
 					SendKeys.SendWait("{ENTER}")            'graphics to webpage
 					Thread.Sleep(300)
 					SendKeys.SendWait("{TAB}")
@@ -208,61 +165,76 @@ Public Class UWO_conversion
 					If (var <> "Convert Graphics to Web Page") Then
 						SendKeys.SendWait("{ESC}")
 						MessageBox.Show("Make sure you are logged in to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-						Exit For
+						Return
 					End If
 
-					Thread.Sleep(100)
+					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("{TAB}")
 					If (cancel = True) Then                 ' checks to see if the macro should be cancelled (theres more throughout the code)
-						Exit For
+						Return
 					End If
-					Thread.Sleep(100)
+					Thread.Sleep(300)
 					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(100)
+					Thread.Sleep(300)
 					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(100)
+					Thread.Sleep(300)
 					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(100)
+					Thread.Sleep(300)
 					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(100)
+					Thread.Sleep(300)
 					SendKeys.SendWait("{ENTER}")            ' Add button
-					Thread.Sleep(UserTimeLapse)
+					Thread.Sleep(300)
 					SendKeys.SendWait(d)
-					Thread.Sleep(UserTimeLapse)
+					Thread.Sleep(300)
 					SendKeys.SendWait("{ENTER}")
-					Thread.Sleep(UserTimeLapse)
+					Thread.Sleep(300)
 					SendKeys.SendWait("+{TAB}")
-					Thread.Sleep(UserTimeLapse)
+					Thread.Sleep(300)
 					SendKeys.SendWait("^a")                 '^ is for CRTL, so this line means CTRL+A, selects all files that are to be added
-					Thread.Sleep(100)
+					Thread.Sleep(UserTimeLapse)
 					If (cancel = True) Then
-						Exit For
+						Return
 					End If
 					SendKeys.SendWait("{ENTER}")
 					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("{ENTER}")
-					Thread.Sleep(100)
-					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(100)
-					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(100)
-					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(100)
-					SendKeys.SendWait(Dest)
 					Thread.Sleep(UserTimeLapse)
+					SendKeys.SendWait("{TAB}")
+					Thread.Sleep(300)
+					SendKeys.SendWait("{TAB}")
+					Thread.Sleep(300)
+					SendKeys.SendWait("{TAB}")
+					Thread.Sleep(300)
+					SendKeys.SendWait(Dest)
+					Thread.Sleep(300)
 					'Extra enters required if the destination folder does not exist
-					For i As Integer = 0 To extraEnters
-						Thread.Sleep(100)
-						SendKeys.SendWait("{ENTER}")
-					Next
-
+					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("{ENTER}")
-					Thread.Sleep(10000)
+					Thread.Sleep(1000)
+					'Check to see when conversion is done (popup will appear, wait for that to be active window)
+					theHwnd = GetForegroundWindow()
+					length = GetWindowTextLength(theHwnd) + 1
+					buf = Space$(length)
+					length = GetWindowText(theHwnd, buf, length)
+					var = buf.Substring(0, length)
+					Dim int As Integer = 0
+					If var <> "Convert Graphics to Web Page" Then
+						While (var <> "Convert Graphics to Web Page")
+							Thread.Sleep(1000)
+							int += 1
+							Debug.WriteLine(var & int)
+							theHwnd = GetForegroundWindow()
+							length = GetWindowTextLength(theHwnd) + 1
+							buf = Space$(length)
+							length = GetWindowText(theHwnd, buf, length)
+							var = buf.Substring(0, length)
+						End While
+					End If
 					SendKeys.SendWait("{ENTER}")
 					'Conversion done
-					Thread.Sleep(100)
+					Thread.Sleep(UserTimeLapse)
 				End If
-			Next
+            Next
 			If (cancel <> True) Then
 				L_convert.Text = "Conversion Complete"
 			Else
