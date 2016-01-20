@@ -84,7 +84,7 @@ Public Class UWO_conversion
 				MessageBox.Show("Make sure you have access to " + Destination, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 				Exit Try
 			End If
-			For Each d As String In My.Computer.FileSystem.GetDirectories(Source)
+			For Each d As String In My.Computer.FileSystem.GetDirectories(Source)                           ' checking if folder has brackets, as my system cannot handle the brackets
 				If d.Contains("(") Or
 						d.Contains(")") Then
 					MessageBox.Show("Please remove brackets from folder names", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -187,7 +187,7 @@ Public Class UWO_conversion
 					Thread.Sleep(100)
 					SendKeys.SendWait("{DOWN}")
 					If (cancel = True) Then
-						Exit For
+						Return
 					End If
 					Thread.Sleep(100)
 					SendKeys.SendWait("{RIGHT}")
@@ -208,13 +208,13 @@ Public Class UWO_conversion
 					If (var <> "Convert Graphics to Web Page") Then
 						SendKeys.SendWait("{ESC}")
 						MessageBox.Show("Make sure you are logged in to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-						Exit For
+						Return
 					End If
 
 					Thread.Sleep(100)
 					SendKeys.SendWait("{TAB}")
 					If (cancel = True) Then                 ' checks to see if the macro should be cancelled (theres more throughout the code)
-						Exit For
+						Return
 					End If
 					Thread.Sleep(100)
 					SendKeys.SendWait("{TAB}")
@@ -236,7 +236,7 @@ Public Class UWO_conversion
 					SendKeys.SendWait("^a")                 '^ is for CRTL, so this line means CTRL+A, selects all files that are to be added
 					Thread.Sleep(100)
 					If (cancel = True) Then
-						Exit For
+						Return
 					End If
 					SendKeys.SendWait("{ENTER}")
 					Thread.Sleep(UserTimeLapse)

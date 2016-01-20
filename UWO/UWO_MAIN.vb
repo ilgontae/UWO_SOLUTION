@@ -41,13 +41,13 @@ Public Class UWO_MAIN
 		If UWO_conversion.Visible = True Then
 			UWO_conversion.BringToFront()
 		Else
-			Dim answer As Windows.Forms.DialogResult
+			Dim answer As DialogResult
 			answer = MessageBox.Show("Would you like to convert" + vbCrLf + "your graphic to web pages?" + vbCrLf + "Click No for more options", "conversion", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)
-			If answer = Windows.Forms.DialogResult.Yes Then
+			If answer = DialogResult.Yes Then
 				UWO_conversion.MdiParent = Me
 				UWO_conversion.Show()
 				UWO_conversion.timeTextBox.Text = 1
-				'UWO_conversion.DriveComboBox.Text = "Z:\Graphics"
+				'UWO_conversion.DriveComboBox.Text = "Z:\Graphics"		' not needed now, as default is set in UWO_conversion.vb
 				UWO_conversion.startButton.PerformClick()
 			Else
 				UWO_conversion.Show()
