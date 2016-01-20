@@ -26,7 +26,7 @@ Public Class UWO_conversion
 		p.Y = 0
 		Location = p
 		Show()
-		DriveComboBox.SelectedIndex = 0
+		DriveComboBox.SelectedIndex = 1
 	End Sub
 
     'Default value is 1 second
@@ -39,10 +39,10 @@ Public Class UWO_conversion
 
 
 	Private Sub startButton_Click(sender As Object, e As EventArgs) Handles startButton.Click
-		'Dim Source As String = "W:\PUBLIC\Delta\Graphics"
-		Dim Source As String = "C:\Users\lwestel\Desktop"
-		'Dim Destination As String = "Z:\Graphics"
-		Dim Destination As String = "C:\Users\lwestel\Documents"
+		Dim Source As String = "W:\PUBLIC\Delta\Graphics"
+		'Dim Source As String = "C:\Users\lwestel\Desktop"
+		Dim Destination As String = "Y:\Graphics"
+		'Dim Destination As String = "C:\Users\lwestel\Documents"
 		UserTimeLapse = 1000
 		Dim containsGPC As Boolean = False
 
@@ -84,13 +84,13 @@ Public Class UWO_conversion
 				MessageBox.Show("Make sure you have access to " + Destination, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 				Exit Try
 			End If
-			For Each d As String In My.Computer.FileSystem.GetDirectories(Source)                           ' checking if folder has brackets, as my system cannot handle the brackets
-				If d.Contains("(") Or
-						d.Contains(")") Then
-					MessageBox.Show("Please remove brackets from folder names", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-					Exit Try
-				End If
-			Next
+			'For Each d As String In My.Computer.FileSystem.GetDirectories(Source)                           ' checking if folder has brackets, as my system cannot handle the brackets
+			'	If d.Contains("(") Or
+			'			d.Contains(")") Then
+			'		MessageBox.Show("Please remove brackets from folder names", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+			'		Exit Try
+			'	End If
+			'Next
 			For Each d As String In My.Computer.FileSystem.GetDirectories(Source)
 				containsGPC = False
 				L_convert.Text = "Converting --> " + d
@@ -115,42 +115,45 @@ Public Class UWO_conversion
 					Dim extraEnters As Integer = 0
 					Dim numC As Integer
 					If Directory.Exists(Dest) Then
-						'skip if folder is empty
-						If (My.Computer.FileSystem.GetFiles(dir.FullName).Count = 0) Then
-							Continue For
-							L_convert.Text = "Folder skipped, no files"
-							Thread.Sleep(1000)
-						End If
-						'If destination folder already exists, concat the date on the end
-						Dim todaysdate As String = String.Format("{0:dd-MM-yyyy}", DateTime.Now)
-						Dim containsCopy As Boolean
-						containsCopy = False
-						For Each file In My.Computer.FileSystem.GetDirectories(Destination)
-							'find if folder has the word "copy" in its name
-							If file.Contains("Copy") Then
-								If Not (file.Contains("(")) Then
-									containsCopy = True
-									fileExists = True
-									numC = ((file.Length - file.IndexOf("Copy") + 1) / 5)   ' getting the count of the number of times "copy" is in the name. This is so that it can replicate it
-								Else
-								End If
-							ElseIf file.Contains(todaysdate) Then
-								fileExists = True
-							End If
-						Next
-						If Not (fileExists) Then        ' if the folder already exists, append the date to the new folder
-							Dest &= " " & todaysdate
-						ElseIf (containsCopy) Then      ' if the folder already exists and already has "copy" on it, add more "copy" words to the end, based on the number of original words
-							Dest &= " " & todaysdate
-							For i As Integer = 0 To (numC)
-								Dest &= " Copy"
-							Next
-							extraEnters += 1
-						Else                            ' if the folder already exists with the date appended but NOT the word "copy", append "copy"
-							Dest &= " " & todaysdate & " Copy"
-							extraEnters += 1
-						End If
+						Directory.Delete(Dest, True)
 					End If
+					'If Directory.Exists(Dest) Then
+					'	'skip if folder is empty
+					'	If (My.Computer.FileSystem.GetFiles(dir.FullName).Count = 0) Then
+					'		Continue For
+					'		L_convert.Text = "Folder skipped, no files"
+					'		Thread.Sleep(1000)
+					'	End If
+					'	'If destination folder already exists, concat the date on the end
+					'	Dim todaysdate As String = String.Format("{0:dd-MM-yyyy}", DateTime.Now)
+					'	Dim containsCopy As Boolean
+					'	containsCopy = False
+					'	For Each file In My.Computer.FileSystem.GetDirectories(Destination)
+					'		'find if folder has the word "copy" in its name
+					'		If file.Contains("Copy") Then
+					'			If Not (file.Contains("(")) Then
+					'				containsCopy = True
+					'				fileExists = True
+					'				numC = ((file.Length - file.IndexOf("Copy") + 1) / 5)   ' getting the count of the number of times "copy" is in the name. This is so that it can replicate it
+					'			Else
+					'			End If
+					'		ElseIf file.Contains(todaysdate) Then
+					'			fileExists = True
+					'		End If
+					'	Next
+					'	If Not (fileExists) Then        ' if the folder already exists, append the date to the new folder
+					'		Dest &= " " & todaysdate
+					'	ElseIf (containsCopy) Then      ' if the folder already exists and already has "copy" on it, add more "copy" words to the end, based on the number of original words
+					'		Dest &= " " & todaysdate
+					'		For i As Integer = 0 To (numC)
+					'			Dest &= " Copy"
+					'		Next
+					'		extraEnters += 1
+					'	Else                            ' if the folder already exists with the date appended but NOT the word "copy", append "copy"
+					'		Dest &= " " & todaysdate & " Copy"
+					'		extraEnters += 1
+					'	End If
+					'End If
 					If (My.Computer.FileSystem.GetFiles(dir.FullName).Count = 0) Then
 						Continue For
 						L_convert.Text = "Folder skipped, no files"                             ' Check if folder is empty
