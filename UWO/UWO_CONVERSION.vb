@@ -40,6 +40,7 @@ Public Class UWO_conversion
 
 	Private Sub startButton_Click(sender As Object, e As EventArgs) Handles startButton.Click
 		Dim Source As String = "W:\PUBLIC\Delta\Graphics"
+		'Dim Source As String = "C:\Users\lwestel\Desktop"
 		Dim Destination As String = "Y:\Graphics"
 		UserTimeLapse = 1000
 		Dim containsGPC As Boolean = False
@@ -60,8 +61,8 @@ Public Class UWO_conversion
 			Return
 		End Try
 
-		Try
-			If DriveComboBox.SelectedIndex = 0 Then
+
+		If DriveComboBox.SelectedIndex = 0 Then
 				Destination = "Z:\Graphics"
 			ElseIf DriveComboBox.SelectedIndex = 1 Then
 				Destination = "Y:\UWO\Graphics"
@@ -76,13 +77,15 @@ Public Class UWO_conversion
 
 			If Not Directory.Exists(Source) Then
 				MessageBox.Show("Make sure you have access to the source drive.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-				Exit Try
-			End If
+			Return
+		End If
 			If Not Directory.Exists(Destination) Then
 				MessageBox.Show("Make sure you have access to " + Destination, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-				Exit Try
+				'Exit Try
 			End If
-			For Each d As String In My.Computer.FileSystem.GetDirectories(Source)
+		For Each d As String In My.Computer.FileSystem.GetDirectories(Source)
+			Try
+				Debug.WriteLine(d)
 				containsGPC = False
 				L_convert.Text = "Converting --> " + d
 				If (cancel = True) Then
@@ -98,13 +101,15 @@ Public Class UWO_conversion
 				Next
 				Dim Dest = Destination + "\" + dir.Name                             'ignore unnecessary folders that do not have files that need to be converted
 				If Not String.Compare(dir.Name, "archive", True) = 0 And
-				   Not String.Compare(dir.Name, "bmp", True) = 0 And
-				   Not String.Compare(dir.Name, "help files", True) = 0 And
-				   Not String.Compare(dir.Name, "temp", True) = 0 Then
+			   Not String.Compare(dir.Name, "bmp", True) = 0 And
+			   Not String.Compare(dir.Name, "help files", True) = 0 And
+			   Not String.Compare(dir.Name, "CPS", True) = 0 And
+			   Not String.Compare(dir.Name, "backup", True) = 0 And
+			   Not String.Compare(dir.Name, "ICFAR", True) = 0 And
+			   Not String.Compare(dir.Name, "temp", True) = 0 Then
 					Dim fileExists As Boolean = False
 					Dim fileBrackets As Boolean = False
 					Dim extraEnters As Integer = 0
-					Dim numC As Integer
 					If Directory.Exists(Dest) Then
 						Directory.Delete(Dest, True)
 					End If
@@ -129,11 +134,11 @@ Public Class UWO_conversion
 					length = GetWindowText(theHwnd, buf, length)
 					Dim var As String = buf.Substring(0, length)
 					'if ORCAview is not the foreground window, exit the loop, as continuing the macro is silly
-					If (var.Contains("ORCAview") <> True) And (var <> "ORCAview Products") Then
-						SendKeys.SendWait("{ESC}")
-						MessageBox.Show("Make sure you are logged in to ORCAview", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-						Exit For
-					End If
+					'If (var.Contains("ORCAview") <> True) And (var <> "ORCAview Products") Then
+					'	'SendKeys.SendWait("{ESC}")
+					'	MessageBox.Show("Make sure you are logged in to ORCAview", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+					'	Exit For
+					'End If
 
 					Thread.Sleep(300)
 					SendKeys.SendWait("{DOWN}")
@@ -161,12 +166,12 @@ Public Class UWO_conversion
 					buf = Space$(length)
 					length = GetWindowText(theHwnd, buf, length)
 					var = buf.Substring(0, length)
-					'if orcaview is not the foreground window, exit the loop, as continuing the macro is silly
-					If (var <> "Convert Graphics to Web Page") Then
-						SendKeys.SendWait("{ESC}")
-						MessageBox.Show("Make sure you are logged in to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-						Return
-					End If
+					''if orcaview is not the foreground window, exit the loop, as continuing the macro is silly
+					'If (var <> "Convert Graphics to Web Page") Then
+					'	SendKeys.SendWait("{ESC}")
+					'	MessageBox.Show("Make sure you are logged in to ORCAview", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+					'	Return
+					'End If
 
 					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("{TAB}")
@@ -183,7 +188,8 @@ Public Class UWO_conversion
 					SendKeys.SendWait("{TAB}")
 					Thread.Sleep(300)
 					SendKeys.SendWait("{ENTER}")            ' Add button
-					Thread.Sleep(300)
+					Thread.Sleep(2000)
+					'Debug.WriteLine(d)
 					SendKeys.SendWait(d)
 					Thread.Sleep(300)
 					SendKeys.SendWait("{ENTER}")
@@ -191,23 +197,29 @@ Public Class UWO_conversion
 					SendKeys.SendWait("+{TAB}")
 					Thread.Sleep(300)
 					SendKeys.SendWait("^a")                 '^ is for CRTL, so this line means CTRL+A, selects all files that are to be added
+					SendKeys.SendWait("{TAB}")
+					Thread.Sleep(300)
+					SendKeys.SendWait("{TAB}")
+					Thread.Sleep(300)
+					SendKeys.SendWait("{TAB}")
+					Thread.Sleep(300)
 					Thread.Sleep(UserTimeLapse)
 					If (cancel = True) Then
 						Return
 					End If
+					'SendKeys.SendWait("{ENTER}")
+					'Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("{ENTER}")
-					Thread.Sleep(UserTimeLapse)
-					SendKeys.SendWait("{ENTER}")
-					Thread.Sleep(UserTimeLapse)
+					Thread.Sleep(2000)
 					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(300)
+					Thread.Sleep(400)
 					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(300)
+					Thread.Sleep(400)
 					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(300)
+					Thread.Sleep(2000)
 					SendKeys.SendWait(Dest)
-					Thread.Sleep(300)
-					'Extra enters required if the destination folder does not exist
+					'Debug.WriteLine(Dest)
+					Thread.Sleep(400)
 					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("{ENTER}")
 					Thread.Sleep(1000)
@@ -228,24 +240,29 @@ Public Class UWO_conversion
 							buf = Space$(length)
 							length = GetWindowText(theHwnd, buf, length)
 							var = buf.Substring(0, length)
+							If var = "Incorrect Version" Then   'check to see if incorrect verison window pops up (rare, but does happen and would cause program to wait here forever)
+								SendKeys.SendWait("{ENTER}")
+							End If
 						End While
 					End If
 					SendKeys.SendWait("{ENTER}")
 					'Conversion done
 					Thread.Sleep(UserTimeLapse)
 				End If
-            Next
-			If (cancel <> True) Then
+			Catch ex As UnauthorizedAccessException
+				MessageBox.Show("Error accessing destination folder" & ex.Message, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+				Continue For
+				'Catch       ' Catch error if ORCAview is not even running
+				'	MessageBox.Show("Make sure you are logged in to ORCAview" & , "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+				'	Return
+			End Try
+		Next
+		If (cancel <> True) Then
 				L_convert.Text = "Conversion Complete"
 			Else
 				L_convert.Text = "Conversion Cancelled!"
 			End If
-		Catch ex As UnauthorizedAccessException
-			MessageBox.Show("Error accessing destination folder", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-		Catch       ' Catch error if ORCAview is not even running
-			MessageBox.Show("Make sure you are logged in to ORCAView", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-		End Try
-	End Sub
+    End Sub
 
 	Private Sub stopButton_Click(sender As Object, e As EventArgs) Handles stopButton.Click
 		cancel = True       'Cancel the progression of the conversion macro (NOT the actual conversion itself, that cannot be cancelled)
