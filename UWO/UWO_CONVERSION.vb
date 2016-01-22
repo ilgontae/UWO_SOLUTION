@@ -133,12 +133,6 @@ Public Class UWO_conversion
 					Dim buf As String = Space$(length)
 					length = GetWindowText(theHwnd, buf, length)
 					Dim var As String = buf.Substring(0, length)
-					'if ORCAview is not the foreground window, exit the loop, as continuing the macro is silly
-					'If (var.Contains("ORCAview") <> True) And (var <> "ORCAview Products") Then
-					'	'SendKeys.SendWait("{ESC}")
-					'	MessageBox.Show("Make sure you are logged in to ORCAview", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-					'	Exit For
-					'End If
 
 					Thread.Sleep(300)
 					SendKeys.SendWait("{DOWN}")
@@ -159,20 +153,6 @@ Public Class UWO_conversion
 					SendKeys.SendWait("{ENTER}")            'graphics to webpage
 					Thread.Sleep(300)
 					SendKeys.SendWait("{TAB}")
-
-					'Check to see if orcaview is still the foreground window
-					theHwnd = GetForegroundWindow()
-					length = GetWindowTextLength(theHwnd) + 1
-					buf = Space$(length)
-					length = GetWindowText(theHwnd, buf, length)
-					var = buf.Substring(0, length)
-					''if orcaview is not the foreground window, exit the loop, as continuing the macro is silly
-					'If (var <> "Convert Graphics to Web Page") Then
-					'	SendKeys.SendWait("{ESC}")
-					'	MessageBox.Show("Make sure you are logged in to ORCAview", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-					'	Return
-					'End If
-
 					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("{TAB}")
 					If (cancel = True) Then                 ' checks to see if the macro should be cancelled (theres more throughout the code)
@@ -207,8 +187,6 @@ Public Class UWO_conversion
 					If (cancel = True) Then
 						Return
 					End If
-					'SendKeys.SendWait("{ENTER}")
-					'Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("{ENTER}")
 					Thread.Sleep(2000)
 					SendKeys.SendWait("{TAB}")
@@ -252,9 +230,7 @@ Public Class UWO_conversion
 			Catch ex As UnauthorizedAccessException
 				MessageBox.Show("Error accessing destination folder" & ex.Message, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 				Continue For
-				'Catch       ' Catch error if ORCAview is not even running
-				'	MessageBox.Show("Make sure you are logged in to ORCAview" & , "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-				'	Return
+
 			End Try
 		Next
 		If (cancel <> True) Then
