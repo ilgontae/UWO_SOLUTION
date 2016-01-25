@@ -47,7 +47,6 @@ Public Class UWO_MAIN
 				UWO_conversion.MdiParent = Me
 				UWO_conversion.Show()
 				UWO_conversion.timeTextBox.Text = 1
-				'UWO_conversion.DriveComboBox.Text = "Z:\Graphics"		' not needed now, as default is set in UWO_conversion.vb
 				UWO_conversion.startButton.PerformClick()
 			Else
 				UWO_conversion.Show()

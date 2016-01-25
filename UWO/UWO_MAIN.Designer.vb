@@ -118,7 +118,7 @@ Partial Class UWO_MAIN
 		Me.WebBrowser1.Name = "WebBrowser1"
 		Me.WebBrowser1.Size = New System.Drawing.Size(825, 498)
 		Me.WebBrowser1.TabIndex = 2
-		Me.WebBrowser1.Url = New System.Uri("http://WWW.GOOGLE.COM", System.UriKind.Absolute)
+		Me.WebBrowser1.Url = New System.Uri("", System.UriKind.Relative)
 		Me.WebBrowser1.Visible = False
 		'
 		'UWO_MAIN

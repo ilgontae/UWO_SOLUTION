@@ -36,6 +36,8 @@ Public Class UWO_conversion
 	Private Declare Function GetWindowTextLength Lib "user32" Alias "GetWindowTextLengthA" (ByVal hwnd As Long) As Long
 	Private Declare Function GetForegroundWindow Lib "user32" () As Long
 	Private MyStr As String, theHwnd As Long
+	Dim length As Integer
+	Dim buf, var As String
 
 
 	Private Sub startButton_Click(sender As Object, e As EventArgs) Handles startButton.Click
@@ -61,7 +63,6 @@ Public Class UWO_conversion
 			Return
 		End Try
 
-
 		If DriveComboBox.SelectedIndex = 0 Then
 				Destination = "Z:\Graphics"
 			ElseIf DriveComboBox.SelectedIndex = 1 Then
@@ -84,6 +85,7 @@ Public Class UWO_conversion
 				'Exit Try
 			End If
 		For Each d As String In My.Computer.FileSystem.GetDirectories(Source)
+Line1:
 			Try
 				Debug.WriteLine(d)
 				containsGPC = False
@@ -124,16 +126,7 @@ Public Class UWO_conversion
 					End If
 					Directory.CreateDirectory(Dest)                                             ' create destination folder
 					AppActivate("ORCAView")
-					SendKeys.SendWait("%t")                 ' % = alt, so this line means ALT+T\
-
-					'Check to see if ORCAview is the front program, as sometimes it activates the wrong portion of orcaview (e.g. activated my orcaview splash screen thing, not the actual application)
-					theHwnd = GetForegroundWindow()
-					Dim length As Integer
-					length = GetWindowTextLength(theHwnd) + 1
-					Dim buf As String = Space$(length)
-					length = GetWindowText(theHwnd, buf, length)
-					Dim var As String = buf.Substring(0, length)
-
+					SendKeys.SendWait("%t")                 ' % = alt, so this line means ALT+T
 					Thread.Sleep(300)
 					SendKeys.SendWait("{DOWN}")
 					Thread.Sleep(300)
@@ -169,7 +162,6 @@ Public Class UWO_conversion
 					Thread.Sleep(300)
 					SendKeys.SendWait("{ENTER}")            ' Add button
 					Thread.Sleep(2000)
-					'Debug.WriteLine(d)
 					SendKeys.SendWait(d)
 					Thread.Sleep(300)
 					SendKeys.SendWait("{ENTER}")
@@ -196,7 +188,6 @@ Public Class UWO_conversion
 					SendKeys.SendWait("{TAB}")
 					Thread.Sleep(2000)
 					SendKeys.SendWait(Dest)
-					'Debug.WriteLine(Dest)
 					Thread.Sleep(400)
 					Thread.Sleep(UserTimeLapse)
 					SendKeys.SendWait("{ENTER}")
@@ -207,12 +198,9 @@ Public Class UWO_conversion
 					buf = Space$(length)
 					length = GetWindowText(theHwnd, buf, length)
 					var = buf.Substring(0, length)
-					Dim int As Integer = 0
 					If var <> "Convert Graphics to Web Page" Then
 						While (var <> "Convert Graphics to Web Page")
 							Thread.Sleep(1000)
-							int += 1
-							Debug.WriteLine(var & int)
 							theHwnd = GetForegroundWindow()
 							length = GetWindowTextLength(theHwnd) + 1
 							buf = Space$(length)
@@ -220,6 +208,16 @@ Public Class UWO_conversion
 							var = buf.Substring(0, length)
 							If var = "Incorrect Version" Then   'check to see if incorrect verison window pops up (rare, but does happen and would cause program to wait here forever)
 								SendKeys.SendWait("{ENTER}")
+							ElseIf var = "Open" Then            'if something goes wrong, try again
+								Thread.Sleep(300)
+								SendKeys.SendWait("{ESCAPE}")
+								Thread.Sleep(300)
+								SendKeys.SendWait("{ESCAPE}")
+								Thread.Sleep(300)
+								SendKeys.SendWait("{ESCAPE}")
+								Thread.Sleep(300)
+								SendKeys.SendWait("{ESCAPE}")
+								GoTo Line1
 							End If
 						End While
 					End If
