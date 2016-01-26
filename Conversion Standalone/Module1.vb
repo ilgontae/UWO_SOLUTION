@@ -19,10 +19,10 @@ Public Module Module1
 		Dim hWndConsole As IntPtr
 		hWndConsole = GetConsoleWindow()
 		ShowWindow(hWndConsole, SW_HIDE)
-		'Dim Source As String = "W:\PUBLIC\Delta\Graphics"
-		Dim Source As String = "C:\Users\lwestel\Desktop"               'for testing purposes
-		'Dim Destination As String = "Y:\Graphics"
-		Dim Destination As String = "C:\Users\lwestel\Documents"
+		Dim Source As String = "W:\PUBLIC\Delta\Graphics"
+		'Dim Source As String = "C:\Users\lwestel\Desktop"               'for testing purposes
+		Dim Destination As String = "Y:\Graphics"
+		'Dim Destination As String = "C:\Users\lwestel\Documents"
 		Dim containsGPC As Boolean = False
 
 		For Each d As String In My.Computer.FileSystem.GetDirectories(Source)

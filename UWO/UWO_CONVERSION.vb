@@ -41,8 +41,8 @@ Public Class UWO_conversion
 
 
 	Private Sub startButton_Click(sender As Object, e As EventArgs) Handles startButton.Click
-		'Dim Source As String = "W:\PUBLIC\Delta\Graphics"
-		Dim Source As String = "C:\Users\lwestel\Desktop"               'for testing purposes
+		Dim Source As String = "W:\PUBLIC\Delta\Graphics"
+		'Dim Source As String = "C:\Users\lwestel\Desktop"               'for testing purposes
 		Dim Destination As String = "Y:\Graphics"
 		UserTimeLapse = 1000
 		Dim containsGPC As Boolean = False
