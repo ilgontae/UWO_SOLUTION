@@ -1,98 +1,35 @@
-﻿'Revision By: Alayna Duval
-'Date: April 8 2014
-'Revisions made: 
-'Added variable UserTimeLapse, Try & Catch for reading in timeTextBox, Changed source and directory to H drive(as of now
-'no access to Z drive), Added cancel button to stop & close program immediately 
-'Date: April 9 2014
-'Revisions made:
-'Added combox-loaded values in design view, Added selected index code
-
-'Revision By: Luke Westelaken
-'Date: January 14, 2016
-'Revisions made:
-'Created github repo at https://github.com/ilgontae/UWO_SOLUTION
-'Continuing revision history on there
-
-Imports System.IO
+﻿Imports System.IO
 Imports System.Threading
+Imports System.Windows.Forms
 
-Public Class UWO_conversion
-
-	Private Sub Form1_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
-		Width = UWO_MAIN.Width - 20
-		L_convert.Width = Width
-		Dim p As Point
-		p.X = 0
-		p.Y = 0
-		Location = p
-		Show()
-		DriveComboBox.SelectedIndex = 1
-	End Sub
-
-    'Default value is 1 second
-    Dim UserTimeLapse As Double = 1.0
-	Dim cancel As Boolean = False
+Public Module Module1
 	Private Declare Function GetWindowText Lib "user32" Alias "GetWindowTextA" (ByVal hwnd As Long, ByVal lpString As String, ByVal cch As Long) As Long
 	Private Declare Function GetWindowTextLength Lib "user32" Alias "GetWindowTextLengthA" (ByVal hwnd As Long) As Long
 	Private Declare Function GetForegroundWindow Lib "user32" () As Long
+
+	Private Declare Auto Function ShowWindow Lib "user32.dll" (ByVal hWnd As IntPtr, ByVal nCmdShow As Integer) As Boolean
+	Private Declare Auto Function GetConsoleWindow Lib "kernel32.dll" () As IntPtr
+	Private Const SW_HIDE As Integer = 0
+
 	Private MyStr As String, theHwnd As Long
 	Dim length As Integer
 	Dim buf, var As String
-
-
-	Private Sub startButton_Click(sender As Object, e As EventArgs) Handles startButton.Click
+	Dim Destination As String = "Y:\UWO\Graphics"
+	Sub Main()
+		Dim hWndConsole As IntPtr
+		hWndConsole = GetConsoleWindow()
+		ShowWindow(hWndConsole, SW_HIDE)
 		'Dim Source As String = "W:\PUBLIC\Delta\Graphics"
 		Dim Source As String = "C:\Users\lwestel\Desktop"               'for testing purposes
-		Dim Destination As String = "Y:\Graphics"
-		UserTimeLapse = 1000
+		'Dim Destination As String = "Y:\Graphics"
+		Dim Destination As String = "C:\Users\lwestel\Documents"
 		Dim containsGPC As Boolean = False
 
-		Try
-			If (timeTextBox.Enabled = True) Then
-				UserTimeLapse = timeTextBox.Text
-				If UserTimeLapse > 0 Then
-					UserTimeLapse = UserTimeLapse * 1000
-				Else
-					MessageBox.Show("Amount must be greater than zero", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-					Return
-				End If
-			End If
-
-		Catch ex As Exception
-			MessageBox.Show("Amount incorrect", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)            'should never happen, but you never know
-			Return
-		End Try
-
-		If DriveComboBox.SelectedIndex = 0 Then
-			Destination = "C:\Users\lwestel\Documents"
-		ElseIf DriveComboBox.SelectedIndex = 1 Then
-				Destination = "Y:\UWO\Graphics"
-			ElseIf DriveComboBox.SelectedIndex = 2 Then
-				Destination = "H:\Graphics"
-			ElseIf DriveComboBox.SelectedIndex = 3 Then
-				Destination = "C:\Users\lwestel\Documents"
-			Else
-				MessageBox.Show("No drive selected", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)   ' should never happen, but you never know
-				Return
-			End If
-
-			If Not Directory.Exists(Source) Then
-				MessageBox.Show("Make sure you have access to the source drive.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-			Return
-		End If
-			If Not Directory.Exists(Destination) Then
-			MessageBox.Show("Make sure you have access to " + Destination, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-		End If
 		For Each d As String In My.Computer.FileSystem.GetDirectories(Source)
 Line1:
 			Try
 				Debug.WriteLine(d)
 				containsGPC = False
-				L_convert.Text = "Converting --> " + d
-				If (cancel = True) Then
-					Exit For
-				End If
-				L_convert.Update()
 				Thread.Sleep(100)
 				Dim dir As DirectoryInfo = My.Computer.FileSystem.GetDirectoryInfo(d)
 				For Each File In My.Computer.FileSystem.GetFiles(d)                      ' check to make sure the folders even contain .gpc files
@@ -116,11 +53,9 @@ Line1:
 					End If
 					If (My.Computer.FileSystem.GetFiles(dir.FullName).Count = 0) Then
 						Continue For
-						L_convert.Text = "Folder skipped, no files"                             ' Check if folder is empty
 						Thread.Sleep(500)
 					ElseIf Not (containsGPC) Then
 						Continue For
-						L_convert.Text = "Folder skipped, does not contain graphics files"      ' Check if folder even contains gpc files
 						Thread.Sleep(1000)
 					End If
 					Directory.CreateDirectory(Dest)                                             ' create destination folder
@@ -134,9 +69,6 @@ Line1:
 					SendKeys.SendWait("{DOWN}")
 					Thread.Sleep(300)
 					SendKeys.SendWait("{DOWN}")
-					If (cancel = True) Then                 ' checks to see if the macro should be cancelled (theres more throughout the code)
-						Return
-					End If
 					Thread.Sleep(300)
 					SendKeys.SendWait("{RIGHT}")
 					Thread.Sleep(300)
@@ -145,11 +77,8 @@ Line1:
 					SendKeys.SendWait("{ENTER}")            'graphics to webpage
 					Thread.Sleep(300)
 					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(UserTimeLapse)
+					Thread.Sleep(1000)
 					SendKeys.SendWait("{TAB}")
-					If (cancel = True) Then
-						Return
-					End If
 					Thread.Sleep(300)
 					SendKeys.SendWait("{TAB}")
 					Thread.Sleep(300)
@@ -174,10 +103,7 @@ Line1:
 					Thread.Sleep(300)
 					SendKeys.SendWait("{TAB}")
 					Thread.Sleep(300)
-					Thread.Sleep(UserTimeLapse)
-					If (cancel = True) Then
-						Return
-					End If
+					Thread.Sleep(1000)
 					SendKeys.SendWait("{ENTER}")
 					Thread.Sleep(2000)
 					SendKeys.SendWait("{TAB}")
@@ -188,7 +114,7 @@ Line1:
 					Thread.Sleep(2000)
 					SendKeys.SendWait(Dest)
 					Thread.Sleep(400)
-					Thread.Sleep(UserTimeLapse)
+					Thread.Sleep(1000)
 					SendKeys.SendWait("{ENTER}")
 					Thread.Sleep(1000)
 					'Check to see when conversion is done (popup will appear, wait for that to be active window)
@@ -222,24 +148,12 @@ Line1:
 					End If
 					SendKeys.SendWait("{ENTER}")
 					'Conversion done
-					Thread.Sleep(UserTimeLapse)
+					Thread.Sleep(1000)
 				End If
 			Catch ex As UnauthorizedAccessException
-				MessageBox.Show("Error accessing destination folder" & ex.Message, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 				Continue For
-
 			End Try
 		Next
-		If (cancel <> True) Then
-				L_convert.Text = "Conversion Complete"
-			Else
-				L_convert.Text = "Conversion Cancelled!"
-			End If
-    End Sub
-
-	Private Sub stopButton_Click(sender As Object, e As EventArgs) Handles stopButton.Click
-		cancel = True       'Cancel the progression of the conversion macro (NOT the actual conversion itself, that cannot be cancelled)
-		MessageBox.Show("Conversion cancelled!", "Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Warning)
 	End Sub
 
-End Class
+End Module
