@@ -102,7 +102,7 @@ Partial Class UWO_conversion
 		Me.DriveComboBox.Anchor = System.Windows.Forms.AnchorStyles.Left
 		Me.DriveComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
 		Me.DriveComboBox.FormattingEnabled = True
-		Me.DriveComboBox.Items.AddRange(New Object() {"Z:\Graphics", "Y:\UWO\Graphics", "H:\Graphics", "Desktop"})
+		Me.DriveComboBox.Items.AddRange(New Object() {"Z:\Graphics", "Y:\UWO\Graphics", "H:\Graphics"})
 		Me.DriveComboBox.Location = New System.Drawing.Point(113, 16)
 		Me.DriveComboBox.Name = "DriveComboBox"
 		Me.DriveComboBox.Size = New System.Drawing.Size(121, 21)
