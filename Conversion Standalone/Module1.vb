@@ -16,10 +16,8 @@ Public Module Module1
 		Dim hWndConsole As IntPtr
 		hWndConsole = GetConsoleWindow()
 		ShowWindow(hWndConsole, SW_HIDE)
-		'Dim Source As String = "W:\PUBLIC\Delta\Graphics"
-		Dim Source As String = "C:\Users\lwestel\Desktop"
-		'Dim Destination As String = "Y:\Graphics"
-		Dim Destination As String = "C:\Users\lwestel\Documents"
+		Dim Source As String = "W:\PUBLIC\Delta\Graphics"
+		Dim Destination As String = "Y:\Graphics"
 		Dim containsGPC As Boolean = False
 		For Each d As String In My.Computer.FileSystem.GetDirectories(Source)
 Line1:      Try
@@ -55,7 +53,7 @@ Line1:      Try
 					End If
 					Directory.CreateDirectory(Dest)         ' create destination folder
 					AppActivate("ORCAView")
-					keypress("%t", 300)                     ' % = alt, so this line means ALT+T
+					keypress("%t", 300)                     ' Alt+T
 					keypress("{DOWN}", 300)
 					keypress("{DOWN}", 300)
 					keypress("{DOWN}", 300)
@@ -72,8 +70,8 @@ Line1:      Try
 					keypress("{ENTER}", 300)
 					keypress(d, 2000)
 					keypress("{ENTER}", 300)
-					keypress("+{TAB}", 300)
-					keypress("^a", 300)
+					keypress("+{TAB}", 300)                 ' Shift+Tab
+					keypress("^a", 300)                     ' Ctrl+A
 					keypress("{TAB}", 300)
 					keypress("{TAB}", 300)
 					keypress("{TAB}", 300)
@@ -116,10 +114,8 @@ Line1:      Try
 			End Try
 		Next
 	End Sub
-
 	Private Sub keypress(ByVal key As String, ByVal time As Integer)
 		Thread.Sleep(time)
 		SendKeys.SendWait(key)
 	End Sub
-
 End Module
