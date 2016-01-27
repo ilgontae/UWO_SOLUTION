@@ -53,7 +53,7 @@ Line1:      Try
 					End If
 					Directory.CreateDirectory(Dest)         ' create destination folder
 					AppActivate("ORCAView")
-					keypress("%t", 300)                     ' % = alt, so this line means ALT+T
+					keypress("%t", 300)                     ' Alt+T
 					keypress("{DOWN}", 300)
 					keypress("{DOWN}", 300)
 					keypress("{DOWN}", 300)
@@ -70,8 +70,8 @@ Line1:      Try
 					keypress("{ENTER}", 300)
 					keypress(d, 2000)
 					keypress("{ENTER}", 300)
-					keypress("+{TAB}", 300)
-					keypress("^a", 300)
+					keypress("+{TAB}", 300)                 ' Shift+Tab
+					keypress("^a", 300)                     'Ctrl+A
 					keypress("{TAB}", 300)
 					keypress("{TAB}", 300)
 					keypress("{TAB}", 300)
