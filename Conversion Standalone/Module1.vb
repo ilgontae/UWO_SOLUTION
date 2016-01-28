@@ -53,7 +53,7 @@ Line1:      Try
 					End If
 					Directory.CreateDirectory(Dest)         ' create destination folder
 					AppActivate("ORCAView")
-					keypress("%t", 300)                     ' % = alt, so this line means ALT+T
+					keypress("%t", 300)                     ' Alt+T
 					keypress("{DOWN}", 300)
 					keypress("{DOWN}", 300)
 					keypress("{DOWN}", 300)
@@ -68,10 +68,10 @@ Line1:      Try
 					keypress("{TAB}", 300)
 					keypress("{TAB}", 300)
 					keypress("{ENTER}", 300)
-					keypress(d, 2000)
+					keypress(d, 2000)                       ' source drive
 					keypress("{ENTER}", 300)
-					keypress("+{TAB}", 300)
-					keypress("^a", 300)
+					keypress("+{TAB}", 300)                 ' Shift+Tab
+					keypress("^a", 300)                     ' Ctrl+A
 					keypress("{TAB}", 300)
 					keypress("{TAB}", 300)
 					keypress("{TAB}", 300)
@@ -79,14 +79,14 @@ Line1:      Try
 					keypress("{TAB}", 2000)
 					keypress("{TAB}", 300)
 					keypress("{TAB}", 300)
-					keypress(Dest, 2000)
+					keypress(Dest, 2000)                    ' destination drive
 					keypress("{ENTER}", 1500)
-					Thread.Sleep(1000)
-					theHwnd = GetForegroundWindow()                 ' Check to see when conversion is done (popup will appear, wait for that to be active window)
-					length = GetWindowTextLength(theHwnd) + 1
-					buf = Space$(length)
-					length = GetWindowText(theHwnd, buf, length)
-					var = buf.Substring(0, length)
+					Thread.Sleep(1000)                      ' Check to see when conversion is done (popup will appear, wait for that to be active window)
+					theHwnd = GetForegroundWindow()         ' get foreground window's handle
+					length = GetWindowTextLength(theHwnd) + 1   ' get the length of the title of that handle
+					buf = Space$(length)                        ' make a buffer variable filled with spaces equal to the length of the foreground window's title
+					length = GetWindowText(theHwnd, buf, length)    ' copies the text of the specified window's title bar into the buffer, returns final length of the title
+					var = buf.Substring(0, length)                  ' substring the buffer to make sure title is proper length and text (not sure how it could be wrong, but everything online had this...)
 					If var <> "Convert Graphics to Web Page" Then
 						While (var <> "Convert Graphics to Web Page")
 							Thread.Sleep(1000)
@@ -114,10 +114,8 @@ Line1:      Try
 			End Try
 		Next
 	End Sub
-
 	Private Sub keypress(ByVal key As String, ByVal time As Integer)
 		Thread.Sleep(time)
 		SendKeys.SendWait(key)
 	End Sub
-
 End Module
