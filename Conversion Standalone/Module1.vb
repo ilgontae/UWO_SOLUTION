@@ -86,7 +86,7 @@ Line1:      Try
 					length = GetWindowTextLength(theHwnd) + 1   ' get the length of the title of that handle
 					buf = Space$(length)                        ' make a buffer variable filled with spaces equal to the length of the foreground window's title
 					length = GetWindowText(theHwnd, buf, length)    ' copies the text of the specified window's title bar into the buffer, returns final length of the title
-					var = buf.Substring(0, length)                  ' substring the buffer to make sure title is proper length and text (not sure how it could be wrong, but everything online that this...)
+					var = buf.Substring(0, length)                  ' substring the buffer to make sure title is proper length and text (not sure how it could be wrong, but everything online had this...)
 					If var <> "Convert Graphics to Web Page" Then
 						While (var <> "Convert Graphics to Web Page")
 							Thread.Sleep(1000)
@@ -114,10 +114,8 @@ Line1:      Try
 			End Try
 		Next
 	End Sub
-
 	Private Sub keypress(ByVal key As String, ByVal time As Integer)
 		Thread.Sleep(time)
 		SendKeys.SendWait(key)
 	End Sub
-
 End Module
