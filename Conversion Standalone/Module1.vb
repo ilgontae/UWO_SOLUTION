@@ -61,22 +61,22 @@ Line1:      Try
 					keypress("{ENTER}", 300)
 					keypress("{TAB}", 300)
 					keypress("{TAB}", 1000)
-					keypress("{TAB}", 300)
-					keypress("{TAB}", 300)
-					keypress("{TAB}", 300)
-					keypress("{TAB}", 300)
-					keypress("{ENTER}", 300)
+					keypress("{TAB}", 200)
+					keypress("{TAB}", 200)
+					keypress("{TAB}", 200)
+					keypress("{TAB}", 200)
+					keypress("{ENTER}", 200)
 					keypress(d, 2000)                       ' source drive
-					keypress("{ENTER}", 300)
-					keypress("+{TAB}", 300)                 ' Shift+Tab
-					keypress("^a", 300)                     ' Ctrl+A
-					keypress("{TAB}", 300)
-					keypress("{TAB}", 300)
-					keypress("{TAB}", 300)
+					keypress("{ENTER}", 200)
+					keypress("+{TAB}", 200)                 ' Shift+Tab
+					keypress("^a", 200)                     ' Ctrl+A
+					keypress("{TAB}", 200)
+					keypress("{TAB}", 200)
+					keypress("{TAB}", 200)
 					keypress("{ENTER}", 1000)
 					keypress("{TAB}", 2000)
-					keypress("{TAB}", 300)
-					keypress("{TAB}", 300)
+					keypress("{TAB}", 200)
+					keypress("{TAB}", 200)
 					keypress(Dest, 2000)                                ' destination drive
 					keypress("{ENTER}", 1500, 1000)                     ' Check to see when conversion is done (popup will appear, wait for that to be active window)
 					theHwnd = GetForegroundWindow()                     ' get foreground window's handle
@@ -86,7 +86,7 @@ Line1:      Try
 					var = buf.Substring(0, length)                      ' substring the buffer to make sure title is proper length and text (not sure how it could be wrong, but everything online had this...)
 					If var <> "Convert Graphics to Web Page" Then
 						While (var <> "Convert Graphics to Web Page")
-							Thread.Sleep(1000)
+							Thread.Sleep(500)
 							theHwnd = GetForegroundWindow()
 							length = GetWindowTextLength(theHwnd) + 1
 							buf = Space$(length)
