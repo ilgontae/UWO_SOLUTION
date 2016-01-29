@@ -17,13 +17,11 @@ Public Module Module1
 		hWndConsole = GetConsoleWindow()
 		ShowWindow(hWndConsole, SW_HIDE)
 		Dim Source As String = "W:\PUBLIC\Delta\Graphics"
-		Dim Destination As String = "Y:\Graphics"
+		Dim Destination As String = "Y:\UWO\Graphics"
 		Dim containsGPC As Boolean = False
 		For Each d As String In My.Computer.FileSystem.GetDirectories(Source)
 Line1:      Try
-				Debug.WriteLine(d)
 				containsGPC = False
-				Thread.Sleep(100)
 				Dim dir As DirectoryInfo = My.Computer.FileSystem.GetDirectoryInfo(d)
 				For Each File In My.Computer.FileSystem.GetFiles(d)                      ' check to make sure the folders even contain .gpc files
 					If (File.Contains(".gpc")) Then
@@ -63,51 +61,49 @@ Line1:      Try
 					keypress("{ENTER}", 300)
 					keypress("{TAB}", 300)
 					keypress("{TAB}", 1000)
-					keypress("{TAB}", 300)
-					keypress("{TAB}", 300)
-					keypress("{TAB}", 300)
-					keypress("{TAB}", 300)
-					keypress("{ENTER}", 300)
+					keypress("{TAB}", 200)
+					keypress("{TAB}", 200)
+					keypress("{TAB}", 200)
+					keypress("{TAB}", 200)
+					keypress("{ENTER}", 200)
 					keypress(d, 2000)                       ' source drive
-					keypress("{ENTER}", 300)
-					keypress("+{TAB}", 300)                 ' Shift+Tab
-					keypress("^a", 300)                     ' Ctrl+A
-					keypress("{TAB}", 300)
-					keypress("{TAB}", 300)
-					keypress("{TAB}", 300)
+					keypress("{ENTER}", 200)
+					keypress("+{TAB}", 200)                 ' Shift+Tab
+					keypress("^a", 200)                     ' Ctrl+A
+					keypress("{TAB}", 200)
+					keypress("{TAB}", 200)
+					keypress("{TAB}", 200)
 					keypress("{ENTER}", 1000)
 					keypress("{TAB}", 2000)
-					keypress("{TAB}", 300)
-					keypress("{TAB}", 300)
-					keypress(Dest, 2000)                    ' destination drive
-					keypress("{ENTER}", 1500)
-					Thread.Sleep(1000)                      ' Check to see when conversion is done (popup will appear, wait for that to be active window)
-					theHwnd = GetForegroundWindow()         ' get foreground window's handle
-					length = GetWindowTextLength(theHwnd) + 1   ' get the length of the title of that handle
-					buf = Space$(length)                        ' make a buffer variable filled with spaces equal to the length of the foreground window's title
-					length = GetWindowText(theHwnd, buf, length)    ' copies the text of the specified window's title bar into the buffer, returns final length of the title
-					var = buf.Substring(0, length)                  ' substring the buffer to make sure title is proper length and text (not sure how it could be wrong, but everything online had this...)
+					keypress("{TAB}", 200)
+					keypress("{TAB}", 200)
+					keypress(Dest, 2000)                                ' destination drive
+					keypress("{ENTER}", 1500, 1000)                     ' Check to see when conversion is done (popup will appear, wait for that to be active window)
+					theHwnd = GetForegroundWindow()                     ' get foreground window's handle
+					length = GetWindowTextLength(theHwnd) + 1           ' get the length of the title of that handle
+					buf = Space$(length)                                ' make a buffer variable filled with spaces equal to the length of the foreground window's title
+					length = GetWindowText(theHwnd, buf, length)        ' copies the text of the specified window's title bar into the buffer, returns final length of the title
+					var = buf.Substring(0, length)                      ' substring the buffer to make sure title is proper length and text (not sure how it could be wrong, but everything online had this...)
 					If var <> "Convert Graphics to Web Page" Then
 						While (var <> "Convert Graphics to Web Page")
-							Thread.Sleep(1000)
+							Thread.Sleep(500)
 							theHwnd = GetForegroundWindow()
 							length = GetWindowTextLength(theHwnd) + 1
 							buf = Space$(length)
 							length = GetWindowText(theHwnd, buf, length)
 							var = buf.Substring(0, length)
-							If var = "Incorrect Version" Then       ' check to see if incorrect verison window pops up (rare, but does happen and would cause program to wait here forever)
+							If var = "Incorrect Version" Then           ' check to see if incorrect verison window pops up (rare, but does happen and would cause program to wait here forever)
 								keypress("{ENTER}", 300)
-							ElseIf var = "Open" Then                ' if something goes wrong, try again. HAVE NOT BEEN ABLE TO TEST. Things have not gone wrong recently. 
+							ElseIf var = "Open" Then                    ' if something goes wrong, try again. HAVE NOT BEEN ABLE TO TEST. Things have not gone wrong recently. 
 								keypress("{ESCAPE}", 300)
 								keypress("{ESCAPE}", 300)
 								keypress("{ESCAPE}", 300)
 								keypress("{ESCAPE}", 300)
-								GoTo Line1                          ' not tested, but should return to top of the for loop with the same folder
+								GoTo Line1                              ' not tested, but should return to top of the for loop with the same folder
 							End If
 						End While
 					End If
-					keypress("{ENTER}", 200)
-					Thread.Sleep(500)
+					keypress("{ENTER}", 200, 500)
 				End If
 			Catch ex As UnauthorizedAccessException
 				Continue For
@@ -117,5 +113,10 @@ Line1:      Try
 	Private Sub keypress(ByVal key As String, ByVal time As Integer)
 		Thread.Sleep(time)
 		SendKeys.SendWait(key)
+	End Sub
+	Private Sub keypress(ByVal key As String, ByVal time As Integer, ByVal time2 As Integer)
+		Thread.Sleep(time)
+		SendKeys.SendWait(key)
+		Thread.Sleep(time2)
 	End Sub
 End Module
