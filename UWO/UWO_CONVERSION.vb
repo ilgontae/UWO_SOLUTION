@@ -41,9 +41,8 @@ Public Class UWO_conversion
 
 
 	Private Sub startButton_Click(sender As Object, e As EventArgs) Handles startButton.Click
-		Dim Source As String = "W:\PUBLIC\Delta\Graphics"
-		'Dim Source As String = "C:\Users\lwestel\Desktop"               'for testing purposes
-		Dim Destination As String = "Y:\Graphics"
+		Dim Source As String = "W:\PPDwes\PUBLIC\Delta\Graphics"
+		Dim Destination As String = "C:\Program Files (x86)\Delta Controls\enteliWEB\website\public\svggraphics\graphics\UWO\Graphics"
 		UserTimeLapse = 1000
 		Dim containsGPC As Boolean = False
 
@@ -66,21 +65,21 @@ Public Class UWO_conversion
 		If DriveComboBox.SelectedIndex = 0 Then
 			Destination = "C:\Users\lwestel\Documents"
 		ElseIf DriveComboBox.SelectedIndex = 1 Then
-				Destination = "Y:\UWO\Graphics"
-			ElseIf DriveComboBox.SelectedIndex = 2 Then
-				Destination = "H:\Graphics"
-			ElseIf DriveComboBox.SelectedIndex = 3 Then
-				Destination = "C:\Users\lwestel\Documents"
-			Else
-				MessageBox.Show("No drive selected", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)   ' should never happen, but you never know
-				Return
-			End If
-
-			If Not Directory.Exists(Source) Then
-				MessageBox.Show("Make sure you have access to the source drive.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+			Destination = "C:\Program Files {(}x86{)}\Delta Controls\enteliWEB\website\public\svggraphics\graphics\UWO\Graphics"
+		ElseIf DriveComboBox.SelectedIndex = 2 Then
+			Destination = "H:\Graphics"
+		ElseIf DriveComboBox.SelectedIndex = 3 Then
+			Destination = "C:\Users\lwestel\Documents"
+		Else
+			MessageBox.Show("No drive selected", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)   ' should never happen, but you never know
 			Return
 		End If
-			If Not Directory.Exists(Destination) Then
+
+		If Not Directory.Exists(Source) Then
+			MessageBox.Show("Make sure you have access to the source drive.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+			Return
+		End If
+		If Not Directory.Exists(Destination) Then
 			MessageBox.Show("Make sure you have access to " + Destination, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 		End If
 		For Each d As String In My.Computer.FileSystem.GetDirectories(Source)
@@ -125,121 +124,99 @@ Line1:
 					End If
 					Directory.CreateDirectory(Dest)                                             ' create destination folder
 					AppActivate("ORCAView")
-					SendKeys.SendWait("%t")                 ' % = alt, so this line means ALT+T
-					Thread.Sleep(300)
-					SendKeys.SendWait("{DOWN}")
-					Thread.Sleep(300)
-					SendKeys.SendWait("{DOWN}")
-					Thread.Sleep(300)
-					SendKeys.SendWait("{DOWN}")
-					Thread.Sleep(300)
-					SendKeys.SendWait("{DOWN}")
-					If (cancel = True) Then                 ' checks to see if the macro should be cancelled (theres more throughout the code)
-						Return
-					End If
-					Thread.Sleep(300)
-					SendKeys.SendWait("{RIGHT}")
-					Thread.Sleep(300)
-					SendKeys.SendWait("{DOWN}")
-					Thread.Sleep(300)
-					SendKeys.SendWait("{ENTER}")            'graphics to webpage
-					Thread.Sleep(300)
-					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(UserTimeLapse)
-					SendKeys.SendWait("{TAB}")
-					If (cancel = True) Then
-						Return
-					End If
-					Thread.Sleep(300)
-					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(300)
-					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(300)
-					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(300)
-					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(300)
-					SendKeys.SendWait("{ENTER}")            ' Add button
-					Thread.Sleep(2000)
-					SendKeys.SendWait(d)
-					Thread.Sleep(300)
-					SendKeys.SendWait("{ENTER}")
-					Thread.Sleep(300)
-					SendKeys.SendWait("+{TAB}")
-					Thread.Sleep(300)
-					SendKeys.SendWait("^a")                 '^ is for CRTL, so this line means CTRL+A, selects all files that are to be added
-					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(300)
-					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(300)
-					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(300)
-					Thread.Sleep(UserTimeLapse)
-					If (cancel = True) Then
-						Return
-					End If
-					SendKeys.SendWait("{ENTER}")
-					Thread.Sleep(2000)
-					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(400)
-					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(400)
-					SendKeys.SendWait("{TAB}")
-					Thread.Sleep(2000)
-					SendKeys.SendWait(Dest)
-					Thread.Sleep(400)
-					Thread.Sleep(UserTimeLapse)
-					SendKeys.SendWait("{ENTER}")
-					Thread.Sleep(1000)
-					'Check to see when conversion is done (popup will appear, wait for that to be active window)
-					theHwnd = GetForegroundWindow()
-					length = GetWindowTextLength(theHwnd) + 1
-					buf = Space$(length)
-					length = GetWindowText(theHwnd, buf, length)
-					var = buf.Substring(0, length)
+					custKeypress("%t", 800)                     ' Alt+T
+					custKeypress("{DOWN}", 800)
+					custKeypress("{DOWN}", 800)
+					custKeypress("{DOWN}", 800)
+					custKeypress("{DOWN}", 800)
+					custKeypress("{RIGHT}", 800)
+					custKeypress("{DOWN}", 800)
+					custKeypress("{ENTER}", 800)
+					custKeypress("{TAB}", 800)
+					custKeypress("{TAB}", 2000)
+					custKeypress("{TAB}", 800)
+					custKeypress("{TAB}", 800)
+					custKeypress("{TAB}", 800)
+					custKeypress("{TAB}", 800)
+					custKeypress("{ENTER}", 800)
+					custKeypress(d, 2000)                       ' source drive
+					custKeypress("{ENTER}", 800)
+					custKeypress("+{TAB}", 800)                 ' Shift+Tab
+					custKeypress("^a", 800)                     ' Ctrl+A
+					custKeypress("{TAB}", 800)
+					custKeypress("{TAB}", 800)
+					custKeypress("{TAB}", 800)
+					custKeypress("{ENTER}", 1500)
+					custKeypress("{TAB}", 2000)
+					custKeypress("{TAB}", 800)
+					custKeypress("{TAB}", 800)
+					destTypedOut(Dest)                               ' destination drive
+					custKeypress("{ENTER}", 1500, 1000)                     ' Check to see when conversion is done (popup will appear, wait for that to be active window)
+					theHwnd = GetForegroundWindow()                     ' get foreground window's handle
+					length = GetWindowTextLength(theHwnd) + 1           ' get the length of the title of that handle
+					buf = Space$(length)                                ' make a buffer variable filled with spaces equal to the length of the foreground window's title
+					length = GetWindowText(theHwnd, buf, length)        ' copies the text of the specified window's title bar into the buffer, returns final length of the title
+					var = buf.Substring(0, length)                      ' substring the buffer to make sure title is proper length and text (not sure how it could be wrong, but everything online had this...)
+
 					If var <> "Convert Graphics to Web Page" Then
 						While (var <> "Convert Graphics to Web Page")
-							Thread.Sleep(1000)
+							Thread.Sleep(500)
 							theHwnd = GetForegroundWindow()
 							length = GetWindowTextLength(theHwnd) + 1
 							buf = Space$(length)
 							length = GetWindowText(theHwnd, buf, length)
 							var = buf.Substring(0, length)
-							If var = "Incorrect Version" Then       'check to see if incorrect verison window pops up (rare, but does happen and would cause program to wait here forever)
-								SendKeys.SendWait("{ENTER}")
-							ElseIf var = "Open" Then                'if something goes wrong, try again. HAVE NOT BEEN ABLE TO TEST. Things have not gone wrong recently. 
-								Thread.Sleep(300)
-								SendKeys.SendWait("{ESCAPE}")       'not sure how many escapes I need
-								Thread.Sleep(300)
-								SendKeys.SendWait("{ESCAPE}")
-								Thread.Sleep(300)
-								SendKeys.SendWait("{ESCAPE}")
-								Thread.Sleep(300)
-								SendKeys.SendWait("{ESCAPE}")
-								GoTo Line1                          'not tested, but should return to top of the for loop with the same folder
+							If var = "Incorrect Version" Then           ' check to see if incorrect verison window pops up (rare, but does happen and would cause program to wait here forever)
+								custKeypress("{ENTER}", 300)
+							ElseIf var = "Open" Then                    ' if something goes wrong, try again. HAVE NOT BEEN ABLE TO TEST. Things have not gone wrong recently. 
+								custKeypress("{ESCAPE}", 800)
+								custKeypress("{ESCAPE}", 800)
+								custKeypress("{ESCAPE}", 800)
+								custKeypress("{ESCAPE}", 800)
+								GoTo Line1                              ' not tested, but should return to top of the for loop with the same folder
 							End If
 						End While
 					End If
-					SendKeys.SendWait("{ENTER}")
-					'Conversion done
-					Thread.Sleep(UserTimeLapse)
+
+					custKeypress("{ENTER}", 800, 500)
 				End If
-			Catch ex As UnauthorizedAccessException
-				MessageBox.Show("Error accessing destination folder" & ex.Message, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+			Catch ex As Exception
+				MessageBox.Show("Error: " & ex.Message, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 				Continue For
 
 			End Try
 		Next
 		If (cancel <> True) Then
-				L_convert.Text = "Conversion Complete"
-			Else
-				L_convert.Text = "Conversion Cancelled!"
-			End If
-    End Sub
+			L_convert.Text = "Conversion Complete"
+		Else
+			L_convert.Text = "Conversion Cancelled!"
+		End If
+	End Sub
 
 	Private Sub stopButton_Click(sender As Object, e As EventArgs) Handles stopButton.Click
 		cancel = True       'Cancel the progression of the conversion macro (NOT the actual conversion itself, that cannot be cancelled)
 		MessageBox.Show("Conversion cancelled!", "Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+	End Sub
+
+	Private Sub custKeypress(ByVal key As String, ByVal time As Integer)
+		Thread.Sleep(time)
+		SendKeys.SendWait(key)
+	End Sub
+
+	Private Sub custKeypress(ByVal key As String, ByVal time As Integer, ByVal time2 As Integer)
+		Thread.Sleep(time)
+		SendKeys.SendWait(key)
+		Thread.Sleep(time2)
+	End Sub
+
+	Private Sub destTypedOut(ByVal dest As String)
+		Dim tempDest As String = dest
+		If dest.Contains("(") Then
+			tempDest = dest.Replace("(", "{(}")
+		ElseIf dest.Contains(")") Then
+			tempDest = dest.Replace(")", "{)}")
+		End If
+		custKeypress(tempDest, 1500, 1500)
 	End Sub
 
 End Class
