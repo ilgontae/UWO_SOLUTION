@@ -213,7 +213,8 @@ Line1:
 		Dim tempDest As String = dest
 		If dest.Contains("(") Then
 			tempDest = dest.Replace("(", "{(}")
-		ElseIf dest.Contains(")") Then
+		End If
+		If dest.Contains(")") Then
 			tempDest = dest.Replace(")", "{)}")
 		End If
 		custKeypress(tempDest, 1500, 1500)
