@@ -16,8 +16,8 @@ Public Module Module1
 		Dim hWndConsole As IntPtr
 		hWndConsole = GetConsoleWindow()
 		ShowWindow(hWndConsole, 0)              ' Hides console window that pops up
-		Dim Source As String = "W:\PUBLIC\Delta\Graphics"
-		Dim Destination As String = "C:\Program Files (x86)\Delta Controls\enteliWEB\website\public\svggraphics\graphics\UWO\Graphics"
+		Dim Source As String = "W:\PPDwes\PUBLIC\Delta\Graphics"
+		Dim Destination As String = "C:\Program Files {(}x86{)}\Delta Controls\enteliWEB\website\public\svggraphics\graphics\UWO\Graphics"
 		Dim containsGPC As Boolean = False
 
 		For Each d As String In My.Computer.FileSystem.GetDirectories(Source)
@@ -112,9 +112,8 @@ Line1:      Try
 
 					keypress("{ENTER}", 200, 500)
 				End If
-
-			Catch ex As UnauthorizedAccessException
-				Continue For
+			Catch ex As Exception
+				MessageBox.Show("Error: " & ex.Message, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 			End Try
 		Next
 	End Sub
