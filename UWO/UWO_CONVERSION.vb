@@ -42,7 +42,7 @@ Public Class UWO_conversion
 
 	Private Sub startButton_Click(sender As Object, e As EventArgs) Handles startButton.Click
 		Dim Source As String = "W:\PPDwes\PUBLIC\Delta\Graphics"
-		Dim Destination As String = "C:\Program Files (x86)Delta Controls\enteliWEB\website\public\svggraphics\graphics\UWO\Graphics"
+		Dim Destination As String = "C:\Program Files (x86)\Delta Controls\enteliWEB\website\public\svggraphics\graphics\UWO\Graphics"
 		UserTimeLapse = 1000
 		Dim containsGPC As Boolean = False
 
