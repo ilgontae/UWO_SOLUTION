@@ -42,7 +42,7 @@ Public Class UWO_conversion
 
 	Private Sub startButton_Click(sender As Object, e As EventArgs) Handles startButton.Click
 		Dim Source As String = "W:\PPDwes\PUBLIC\Delta\Graphics"
-		Dim Destination As String = "C:\Program Files {(}x86{)}\Delta Controls\enteliWEB\website\public\svggraphics\graphics\UWO\Graphics"
+		Dim Destination As String = "C:\Program Files (x86)Delta Controls\enteliWEB\website\public\svggraphics\graphics\UWO\Graphics"
 		UserTimeLapse = 1000
 		Dim containsGPC As Boolean = False
 
@@ -124,34 +124,34 @@ Line1:
 					End If
 					Directory.CreateDirectory(Dest)                                             ' create destination folder
 					AppActivate("ORCAView")
-					keypress("%t", 800)                     ' Alt+T
-					keypress("{DOWN}", 800)
-					keypress("{DOWN}", 800)
-					keypress("{DOWN}", 800)
-					keypress("{DOWN}", 800)
-					keypress("{RIGHT}", 800)
-					keypress("{DOWN}", 800)
-					keypress("{ENTER}", 800)
-					keypress("{TAB}", 800)
-					keypress("{TAB}", 2000)
-					keypress("{TAB}", 800)
-					keypress("{TAB}", 800)
-					keypress("{TAB}", 800)
-					keypress("{TAB}", 800)
-					keypress("{ENTER}", 800)
-					keypress(d, 2000)                       ' source drive
-					keypress("{ENTER}", 800)
-					keypress("+{TAB}", 800)                 ' Shift+Tab
-					keypress("^a", 800)                     ' Ctrl+A
-					keypress("{TAB}", 800)
-					keypress("{TAB}", 800)
-					keypress("{TAB}", 800)
-					keypress("{ENTER}", 1500)
-					keypress("{TAB}", 2000)
-					keypress("{TAB}", 800)
-					keypress("{TAB}", 800)
-					keypress(Dest, 2000)                                ' destination drive
-					KeyPress("{ENTER}", 1500, 1000)                     ' Check to see when conversion is done (popup will appear, wait for that to be active window)
+					custKeypress("%t", 800)                     ' Alt+T
+					custKeypress("{DOWN}", 800)
+					custKeypress("{DOWN}", 800)
+					custKeypress("{DOWN}", 800)
+					custKeypress("{DOWN}", 800)
+					custKeypress("{RIGHT}", 800)
+					custKeypress("{DOWN}", 800)
+					custKeypress("{ENTER}", 800)
+					custKeypress("{TAB}", 800)
+					custKeypress("{TAB}", 2000)
+					custKeypress("{TAB}", 800)
+					custKeypress("{TAB}", 800)
+					custKeypress("{TAB}", 800)
+					custKeypress("{TAB}", 800)
+					custKeypress("{ENTER}", 800)
+					custKeypress(d, 2000)                       ' source drive
+					custKeypress("{ENTER}", 800)
+					custKeypress("+{TAB}", 800)                 ' Shift+Tab
+					custKeypress("^a", 800)                     ' Ctrl+A
+					custKeypress("{TAB}", 800)
+					custKeypress("{TAB}", 800)
+					custKeypress("{TAB}", 800)
+					custKeypress("{ENTER}", 1500)
+					custKeypress("{TAB}", 2000)
+					custKeypress("{TAB}", 800)
+					custKeypress("{TAB}", 800)
+					destTypedOut(Dest)                               ' destination drive
+					custKeypress("{ENTER}", 1500, 1000)                     ' Check to see when conversion is done (popup will appear, wait for that to be active window)
 					theHwnd = GetForegroundWindow()                     ' get foreground window's handle
 					length = GetWindowTextLength(theHwnd) + 1           ' get the length of the title of that handle
 					buf = Space$(length)                                ' make a buffer variable filled with spaces equal to the length of the foreground window's title
@@ -167,21 +167,21 @@ Line1:
 							length = GetWindowText(theHwnd, buf, length)
 							var = buf.Substring(0, length)
 							If var = "Incorrect Version" Then           ' check to see if incorrect verison window pops up (rare, but does happen and would cause program to wait here forever)
-								KeyPress("{ENTER}", 300)
+								custKeypress("{ENTER}", 300)
 							ElseIf var = "Open" Then                    ' if something goes wrong, try again. HAVE NOT BEEN ABLE TO TEST. Things have not gone wrong recently. 
-								keypress("{ESCAPE}", 800)
-								keypress("{ESCAPE}", 800)
-								keypress("{ESCAPE}", 800)
-								keypress("{ESCAPE}", 800)
+								custKeypress("{ESCAPE}", 800)
+								custKeypress("{ESCAPE}", 800)
+								custKeypress("{ESCAPE}", 800)
+								custKeypress("{ESCAPE}", 800)
 								GoTo Line1                              ' not tested, but should return to top of the for loop with the same folder
 							End If
 						End While
 					End If
 
-					keypress("{ENTER}", 800, 500)
+					custKeypress("{ENTER}", 800, 500)
 				End If
-			Catch ex As UnauthorizedAccessException
-				MessageBox.Show("Error accessing destination folder" & ex.Message, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+			Catch ex As Exception
+				MessageBox.Show("Error: " & ex.Message, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 				Continue For
 
 			End Try
@@ -198,15 +198,25 @@ Line1:
 		MessageBox.Show("Conversion cancelled!", "Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Warning)
 	End Sub
 
-	Private Sub keypress(ByVal key As String, ByVal time As Integer)
+	Private Sub custKeypress(ByVal key As String, ByVal time As Integer)
 		Thread.Sleep(time)
 		SendKeys.SendWait(key)
 	End Sub
 
-	Private Sub keypress(ByVal key As String, ByVal time As Integer, ByVal time2 As Integer)
+	Private Sub custKeypress(ByVal key As String, ByVal time As Integer, ByVal time2 As Integer)
 		Thread.Sleep(time)
 		SendKeys.SendWait(key)
 		Thread.Sleep(time2)
+	End Sub
+
+	Private Sub destTypedOut(ByVal dest As String)
+		Dim tempDest As String = dest
+		If dest.Contains("(") Then
+			tempDest = dest.Replace("(", "{(}")
+		ElseIf dest.Contains(")") Then
+			tempDest = dest.Replace(")", "{)}")
+		End If
+		custKeypress(tempDest, 1500, 1500)
 	End Sub
 
 End Class
