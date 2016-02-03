@@ -209,6 +209,8 @@ Line1:
 		Thread.Sleep(time2)
 	End Sub
 
+	' Find if there are brackets in the output folder
+	' Sendkeys cannot type out the brackets by default, it requires an escape character of sorts. 
 	Private Sub destTypedOut(ByVal dest As String)
 		Dim tempDest As String = dest
 		If dest.Contains("(") Then
