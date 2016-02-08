@@ -59,6 +59,15 @@ Line1:
 					End If
 					Directory.CreateDirectory(Dest)                                             ' create destination folder
 					AppActivate("ORCAView")
+					theHwnd = GetForegroundWindow()
+					length = GetWindowTextLength(theHwnd) + 1
+					buf = Space$(length)
+					length = GetWindowText(theHwnd, buf, length)
+					var = buf.Substring(0, length)
+					If var <> "ORCAview" Then
+						MsgBox("ORCAview not running")
+						Return
+					End If
 					custKeypress("%t", 800)                     ' Alt+T
 					custKeypress("{DOWN}", 800)
 					custKeypress("{DOWN}", 800)
