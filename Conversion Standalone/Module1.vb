@@ -1,6 +1,8 @@
 Imports System.IO
 Imports System.Threading
 Imports System.Windows.Forms
+Imports System.Net.Mail
+Imports System.Net
 Public Module Module1
 	Private Declare Function GetWindowText Lib "user32" Alias "GetWindowTextA" (ByVal hwnd As Long, ByVal lpString As String, ByVal cch As Long) As Long
 	Private Declare Function GetWindowTextLength Lib "user32" Alias "GetWindowTextLengthA" (ByVal hwnd As Long) As Long
@@ -66,6 +68,15 @@ Line1:
 					var = buf.Substring(0, length)
 					If var <> "ORCAview" Then
 						MsgBox("ORCAview not running")
+						Dim mail As New MailMessage()
+						mail.From = New MailAddress("noreply@uwo.ca")
+						mail.To.Add("ascarneth@gmail.com")
+						mail.Subject = "Macro Failed - Report"
+						mail.Body = "The macro has failed, ORCAview was not running at the time the script was supposed to run."
+
+						Dim smtp As New SmtpClient("smtp.gmail.com")
+						smtp.Credentials = New NetworkCredential("ascarneth@gmail.com", "1p5k876abc2468")
+						smtp.Send(mail)
 						Return
 					End If
 					custKeypress("%t", 800)                     ' Alt+T
