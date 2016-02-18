@@ -1,8 +1,6 @@
 Imports System.IO
 Imports System.Threading
 Imports System.Windows.Forms
-Imports System.Net.Mail
-Imports System.Net
 Public Module Module1
 	Private Declare Function GetWindowText Lib "user32" Alias "GetWindowTextA" (ByVal hwnd As Long, ByVal lpString As String, ByVal cch As Long) As Long
 	Private Declare Function GetWindowTextLength Lib "user32" Alias "GetWindowTextLengthA" (ByVal hwnd As Long) As Long
@@ -59,7 +57,7 @@ Line1:
 						Continue For
 						Thread.Sleep(1000)
 					End If
-					Directory.CreateDirectory(Dest)                                             ' create destination folder
+					Directory.CreateDirectory(Dest)             ' create destination folder
 					AppActivate("ORCAView")
 					theHwnd = GetForegroundWindow()
 					length = GetWindowTextLength(theHwnd) + 1
@@ -68,15 +66,6 @@ Line1:
 					var = buf.Substring(0, length)
 					If var <> "ORCAview" Then
 						MsgBox("ORCAview not running")
-						Dim mail As New MailMessage()
-						mail.From = New MailAddress("noreply@uwo.ca")
-						mail.To.Add("ascarneth@gmail.com")
-						mail.Subject = "Macro Failed - Report"
-						mail.Body = "The macro has failed, ORCAview was not running at the time the script was supposed to run."
-
-						Dim smtp As New SmtpClient("smtp.gmail.com")
-						smtp.Credentials = New NetworkCredential("ascarneth@gmail.com", "1p5k876abc2468")
-						smtp.Send(mail)
 						Return
 					End If
 					custKeypress("%t", 800)                     ' Alt+T
@@ -105,8 +94,8 @@ Line1:
 					custKeypress("{TAB}", 2000)
 					custKeypress("{TAB}", 800)
 					custKeypress("{TAB}", 800)
-					destTypedOut(Dest)                               ' destination drive
-					custKeypress("{ENTER}", 1500, 1000)                     ' Check to see when conversion is done (popup will appear, wait for that to be active window)
+					destTypedOut(Dest)                                  ' destination drive
+					custKeypress("{ENTER}", 1500, 1000)                 ' Check to see when conversion is done (popup will appear, wait for that to be active window)
 					theHwnd = GetForegroundWindow()                     ' get foreground window's handle
 					length = GetWindowTextLength(theHwnd) + 1           ' get the length of the title of that handle
 					buf = Space$(length)                                ' make a buffer variable filled with spaces equal to the length of the foreground window's title
@@ -128,7 +117,7 @@ Line1:
 								custKeypress("{ESCAPE}", 800)
 								custKeypress("{ESCAPE}", 800)
 								custKeypress("{ESCAPE}", 800)
-								GoTo Line1                              ' not tested, but should return to top of the for loop with the same folder
+								GoTo Line1                              ' not tested, but should return to top of the "for" loop with the same folder
 							End If
 						End While
 					End If
