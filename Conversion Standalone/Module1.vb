@@ -57,14 +57,23 @@ Line1:
 						Continue For
 						Thread.Sleep(1000)
 					End If
-					Directory.CreateDirectory(Dest)                                             ' create destination folder
-					AppActivate("ORCAView")
+					Directory.CreateDirectory(Dest)             ' create destination folder
+					Try
+						AppActivate("ORCAView - UWO")
+					Catch ex As ArgumentException
+						Try
+							AppActivate("Orcaview")
+						Catch ex2 As ArgumentException
+							MsgBox("ORCAview not running")
+						End Try
+					End Try
+
 					theHwnd = GetForegroundWindow()
 					length = GetWindowTextLength(theHwnd) + 1
 					buf = Space$(length)
 					length = GetWindowText(theHwnd, buf, length)
 					var = buf.Substring(0, length)
-					If var <> "ORCAview" Then
+					If var <> "ORCAview - UWO" Then
 						MsgBox("ORCAview not running")
 						Return
 					End If
@@ -94,8 +103,8 @@ Line1:
 					custKeypress("{TAB}", 2000)
 					custKeypress("{TAB}", 800)
 					custKeypress("{TAB}", 800)
-					destTypedOut(Dest)                               ' destination drive
-					custKeypress("{ENTER}", 1500, 1000)                     ' Check to see when conversion is done (popup will appear, wait for that to be active window)
+					destTypedOut(Dest)                                  ' destination drive
+					custKeypress("{ENTER}", 1500, 1000)                 ' Check to see when conversion is done (popup will appear, wait for that to be active window)
 					theHwnd = GetForegroundWindow()                     ' get foreground window's handle
 					length = GetWindowTextLength(theHwnd) + 1           ' get the length of the title of that handle
 					buf = Space$(length)                                ' make a buffer variable filled with spaces equal to the length of the foreground window's title
@@ -117,7 +126,7 @@ Line1:
 								custKeypress("{ESCAPE}", 800)
 								custKeypress("{ESCAPE}", 800)
 								custKeypress("{ESCAPE}", 800)
-								GoTo Line1                              ' not tested, but should return to top of the for loop with the same folder
+								GoTo Line1                              ' not tested, but should return to top of the "for" loop with the same folder
 							End If
 						End While
 					End If
