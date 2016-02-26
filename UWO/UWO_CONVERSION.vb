@@ -105,7 +105,6 @@ Line1:
 			   Not String.Compare(dir.Name, "help files", True) = 0 And
 			   Not String.Compare(dir.Name, "CPS", True) = 0 And
 			   Not String.Compare(dir.Name, "backup", True) = 0 And
-			   Not String.Compare(dir.Name, "ICFAR", True) = 0 And
 			   Not String.Compare(dir.Name, "temp", True) = 0 Then
 					Dim fileExists As Boolean = False
 					Dim fileBrackets As Boolean = False

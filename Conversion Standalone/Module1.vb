@@ -58,13 +58,22 @@ Line1:
 						Thread.Sleep(1000)
 					End If
 					Directory.CreateDirectory(Dest)             ' create destination folder
-					AppActivate("ORCAView")
+					Try
+						AppActivate("ORCAView - UWO")
+					Catch ex As ArgumentException
+						Try
+							AppActivate("Orcaview")
+						Catch ex2 As ArgumentException
+							MsgBox("ORCAview not running")
+						End Try
+					End Try
+
 					theHwnd = GetForegroundWindow()
 					length = GetWindowTextLength(theHwnd) + 1
 					buf = Space$(length)
 					length = GetWindowText(theHwnd, buf, length)
 					var = buf.Substring(0, length)
-					If var <> "ORCAview" Then
+					If var <> "ORCAview - UWO" Then
 						MsgBox("ORCAview not running")
 						Return
 					End If
