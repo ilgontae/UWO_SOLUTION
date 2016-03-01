@@ -142,7 +142,7 @@ Line1:
 						containsGPC = True
 					End If
 				Next
-				Dim Dest = Destination + "\" + dir.Name                                  'ignore unnecessary folders that do not have files that need to be converted
+				Dim Dest = "C:\Program Files {(}x86{)}" + Destination + "\" + dir.Name                                  'ignore unnecessary folders that do not have files that need to be converted
 				If Not String.Compare(dir.Name, "archive", True) = 0 And
 			   Not String.Compare(dir.Name, "bmp", True) = 0 And
 			   Not String.Compare(dir.Name, "help files", True) = 0 And
