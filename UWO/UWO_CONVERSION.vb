@@ -123,7 +123,7 @@ Public Class UWO_conversion
 			Return
 		End If
 
-		If Not Directory.Exists(Source) Then
+		If Not Directory.Exists(Source) And Not server Then
 			MessageBox.Show("Make sure you have access to the source drive.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 			Return
 		End If
