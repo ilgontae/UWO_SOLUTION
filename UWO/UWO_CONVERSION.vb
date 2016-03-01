@@ -39,6 +39,7 @@ Public Class UWO_conversion
 	Private MyStr As String, theHwnd As Long
 	Dim length As Integer
 	Dim buf, var As String
+	Dim server As Boolean = False
 	'AddHandler bw.DoWork, AddressOf bw_DoWork
 
 
@@ -52,14 +53,31 @@ Public Class UWO_conversion
 	End Sub
 
 	Private Sub custKeypress(ByVal key As String, ByVal time As Integer)
+		'C:\Program Files {(}x86{)}
 		Thread.Sleep(time)
-		SendKeys.SendWait(key)
+		If Not server Then
+			SendKeys.SendWait(key)
+		Else
+			SendKeys.SendWait("C:\Program Files ")
+			SendKeys.SendWait("{(}")
+			SendKeys.SendWait("x86")
+			SendKeys.SendWait("{)}")
+			If key.IndexOf("(") <> -1 Or
+					key.IndexOf(")") <> -1 Then
+				Dim arr1() As String = key.Split("(")
+				SendKeys.SendWait(arr1(0))
+				SendKeys.SendWait("{(}")
+				Dim arr2() As String = arr1(1).Split(")")
+				SendKeys.SendWait(arr2(0))
+				SendKeys.SendWait("{)}")
+			End If
+		End If
 	End Sub
 
 	Private Sub custKeypress(ByVal key As String, ByVal time As Integer, ByVal time2 As Integer)
-		Thread.Sleep(time)
-		SendKeys.SendWait(key)
+		custKeypress(key, time)
 		Thread.Sleep(time2)
+
 	End Sub
 	Private Sub BackgroundWorker1_DoWork(ByVal sender As System.Object,
 		ByVal e As System.ComponentModel.DoWorkEventArgs) _
@@ -93,7 +111,9 @@ Public Class UWO_conversion
 		If DriveComboBox.SelectedIndex = 0 Then
 			Destination = "C:\Users\lwestel\Documents"
 		ElseIf DriveComboBox.SelectedIndex = 1 Then
-			Destination = "C:\Program Files {(}x86{)}\Delta Controls\enteliWEB\website\public\svggraphics\graphics\UWO\Graphics"
+			Destination = "\Delta Controls\enteliWEB\website\public\svggraphics\graphics\UWO\Graphics"
+			'C:\Program Files {(}x86{)}
+			server = True
 		ElseIf DriveComboBox.SelectedIndex = 2 Then
 			Destination = "H:\Graphics"
 		ElseIf DriveComboBox.SelectedIndex = 3 Then

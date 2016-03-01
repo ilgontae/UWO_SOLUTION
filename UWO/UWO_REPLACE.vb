@@ -5,6 +5,7 @@
 
 Imports System.Text.RegularExpressions
 Imports System.IO
+Imports System.ComponentModel
 
 Public Class UWO_REPLACE
 	Private FileList As New List(Of String)
@@ -113,20 +114,7 @@ Public Class UWO_REPLACE
 	End Sub
 
 	Private Sub B_Find_Click(ByVal sender As Object, ByVal e As EventArgs) Handles B_Find.Click
-		B_Save.Enabled = False
-		L_Matches.Visible = False
-		L_Left.Visible = False
-		B_Remove.Enabled = False
-		FileList.Clear()
-		ListView1.Items.Clear()
-		getfile(TB_Directory.Text)
-		L_Matches.Text = "Total Matches Found: " + FileList.Count.ToString
-		L_Matches.Visible = True
-		B_Save.Enabled = True
-		Try
-			ListView1.EnsureVisible(0)
-		Catch
-		End Try
+		BackgroundWorker1.RunWorkerAsync()
 	End Sub
 
 	Private Sub B_Save_Click(ByVal sender As Object, ByVal e As EventArgs) Handles B_Save.Click
@@ -265,4 +253,23 @@ Public Class UWO_REPLACE
 		End If
 
 	End Sub
+
+	Public Sub BackgroundWorker1_DoWork(ByVal sender As System.Object,
+		ByVal e As System.ComponentModel.DoWorkEventArgs)
+		B_Save.Enabled = False
+		L_Matches.Visible = False
+		L_Left.Visible = False
+		B_Remove.Enabled = False
+		FileList.Clear()
+		ListView1.Items.Clear()
+		getfile(TB_Directory.Text)
+		L_Matches.Text = "Total Matches Found: " + FileList.Count.ToString
+		L_Matches.Visible = True
+		B_Save.Enabled = True
+		Try
+			ListView1.EnsureVisible(0)
+		Catch
+		End Try
+	End Sub
+
 End Class

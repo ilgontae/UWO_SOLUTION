@@ -42,6 +42,7 @@ Partial Class UWO_REPLACE
 		Me.Label4 = New System.Windows.Forms.Label()
 		Me.B_Replace = New System.Windows.Forms.Button()
 		Me.SFD_SaveList = New System.Windows.Forms.SaveFileDialog()
+		Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
 		CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
 		Me.SplitContainer1.Panel1.SuspendLayout()
 		Me.SplitContainer1.Panel2.SuspendLayout()
@@ -277,5 +278,5 @@ Partial Class UWO_REPLACE
     Friend WithEvents L_Left As System.Windows.Forms.Label
     Public WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
     Friend WithEvents Wildcard As System.Windows.Forms.Button
-
+	Friend WithEvents BackgroundWorker1 As System.ComponentModel.BackgroundWorker
 End Class
