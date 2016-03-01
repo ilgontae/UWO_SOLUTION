@@ -13,11 +13,12 @@
 'Created github repo at https://github.com/ilgontae/UWO_SOLUTION
 'Continuing revision history on there
 
+Imports System.ComponentModel
 Imports System.IO
 Imports System.Threading
 
 Public Class UWO_conversion
-
+	Private bw As BackgroundWorker = New BackgroundWorker
 	Private Sub Form1_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 		Width = UWO_MAIN.Width - 20
 		L_convert.Width = Width
@@ -38,9 +39,36 @@ Public Class UWO_conversion
 	Private MyStr As String, theHwnd As Long
 	Dim length As Integer
 	Dim buf, var As String
+	'AddHandler bw.DoWork, AddressOf bw_DoWork
 
 
 	Private Sub startButton_Click(sender As Object, e As EventArgs) Handles startButton.Click
+		BackgroundWorker1.RunWorkerAsync()
+	End Sub
+
+	Private Sub stopButton_Click(sender As Object, e As EventArgs) Handles stopButton.Click
+		cancel = True       'Cancel the progression of the conversion macro (NOT the actual conversion itself, that cannot be cancelled)
+		MessageBox.Show("Conversion cancelled!", "Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+	End Sub
+
+	Private Sub custKeypress(ByVal key As String, ByVal time As Integer)
+		Thread.Sleep(time)
+		SendKeys.SendWait(key)
+	End Sub
+
+	Private Sub custKeypress(ByVal key As String, ByVal time As Integer, ByVal time2 As Integer)
+		Thread.Sleep(time)
+		SendKeys.SendWait(key)
+		Thread.Sleep(time2)
+	End Sub
+	Private Sub BackgroundWorker1_DoWork(ByVal sender As System.Object,
+		ByVal e As System.ComponentModel.DoWorkEventArgs) _
+		Handles BackgroundWorker1.DoWork
+		'For I = 0 To 200 'Telling the program to count from 0 - 200
+		'          TextBox1.Text = I 'Telling the program to show the integer I in TextBox1
+		'          BackgroundWorker1.ReportProgress(I) report the progress done by the ReportProgress
+		'          System.Threading.Thread.Sleep(1000) Stop after advancing one Integer For 1 second.
+		'      Next
 		Dim Source As String = "W:\PPDwes\PUBLIC\Delta\Graphics"
 		Dim Destination As String = "C:\Program Files (x86)\Delta Controls\enteliWEB\website\public\svggraphics\graphics\UWO\Graphics"
 		UserTimeLapse = 1000
@@ -191,23 +219,6 @@ Line1:
 			L_convert.Text = "Conversion Cancelled!"
 		End If
 	End Sub
-
-	Private Sub stopButton_Click(sender As Object, e As EventArgs) Handles stopButton.Click
-		cancel = True       'Cancel the progression of the conversion macro (NOT the actual conversion itself, that cannot be cancelled)
-		MessageBox.Show("Conversion cancelled!", "Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-	End Sub
-
-	Private Sub custKeypress(ByVal key As String, ByVal time As Integer)
-		Thread.Sleep(time)
-		SendKeys.SendWait(key)
-	End Sub
-
-	Private Sub custKeypress(ByVal key As String, ByVal time As Integer, ByVal time2 As Integer)
-		Thread.Sleep(time)
-		SendKeys.SendWait(key)
-		Thread.Sleep(time2)
-	End Sub
-
 	' Find if there are brackets in the output folder
 	' Sendkeys cannot type out the brackets by default, it requires an escape character of sorts. 
 	Private Sub destTypedOut(ByVal dest As String)
