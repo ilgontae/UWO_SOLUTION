@@ -82,11 +82,6 @@ Public Class UWO_conversion
 	Private Sub BackgroundWorker1_DoWork(ByVal sender As System.Object,
 		ByVal e As System.ComponentModel.DoWorkEventArgs) _
 		Handles BackgroundWorker1.DoWork
-		'For I = 0 To 200 'Telling the program to count from 0 - 200
-		'          TextBox1.Text = I 'Telling the program to show the integer I in TextBox1
-		'          BackgroundWorker1.ReportProgress(I) report the progress done by the ReportProgress
-		'          System.Threading.Thread.Sleep(1000) Stop after advancing one Integer For 1 second.
-		'      Next
 		Dim Source As String = "W:\PPDwes\PUBLIC\Delta\Graphics"
 		Dim Destination As String = "C:\Program Files (x86)\Delta Controls\enteliWEB\website\public\svggraphics\graphics\UWO\Graphics"
 		UserTimeLapse = 1000
@@ -123,11 +118,11 @@ Public Class UWO_conversion
 			Return
 		End If
 
-		If Not Directory.Exists(Source) And Not server Then
+		If Not Directory.Exists(Source) Then
 			MessageBox.Show("Make sure you have access to the source drive.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 			Return
 		End If
-		If Not Directory.Exists(Destination) Then
+		If Not Directory.Exists(Destination) And Not server Then
 			MessageBox.Show("Make sure you have access to " + Destination, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 		End If
 		For Each d As String In My.Computer.FileSystem.GetDirectories(Source)
@@ -197,7 +192,7 @@ Line1:
 					custKeypress("{TAB}", 2000)
 					custKeypress("{TAB}", 800)
 					custKeypress("{TAB}", 800)
-					destTypedOut(Dest)                               ' destination drive
+					'destTypedOut(Dest)                               ' destination drive
 					custKeypress("{ENTER}", 1500, 1000)                     ' Check to see when conversion is done (popup will appear, wait for that to be active window)
 					theHwnd = GetForegroundWindow()                     ' get foreground window's handle
 					length = GetWindowTextLength(theHwnd) + 1           ' get the length of the title of that handle
