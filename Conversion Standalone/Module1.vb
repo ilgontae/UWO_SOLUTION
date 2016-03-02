@@ -14,7 +14,7 @@ Public Module Module1
 
 	Sub Main()
 		Dim Source As String = "W:\PPDwes\PUBLIC\Delta\Graphics"
-		Dim Destination As String = "C:\Program Files (x86)\Delta Controls\enteliWEB\website\public\svggraphics\graphics\UWO\Graphics"
+		Dim Destination As String = "C:\Users\lwestel\Documents\Graphics"
 		Dim containsGPC As Boolean = False
 
 		If Not Directory.Exists(Source) Then
@@ -42,7 +42,6 @@ Line1:
 			   Not String.Compare(dir.Name, "help files", True) = 0 And
 			   Not String.Compare(dir.Name, "CPS", True) = 0 And
 			   Not String.Compare(dir.Name, "backup", True) = 0 And
-			   Not String.Compare(dir.Name, "ICFAR", True) = 0 And
 			   Not String.Compare(dir.Name, "temp", True) = 0 Then
 					Dim fileExists As Boolean = False
 					Dim fileBrackets As Boolean = False
@@ -68,15 +67,6 @@ Line1:
 						End Try
 					End Try
 
-					theHwnd = GetForegroundWindow()
-					length = GetWindowTextLength(theHwnd) + 1
-					buf = Space$(length)
-					length = GetWindowText(theHwnd, buf, length)
-					var = buf.Substring(0, length)
-					If var <> "ORCAview - UWO" Then
-						MsgBox("ORCAview not running")
-						Return
-					End If
 					custKeypress("%t", 800)                     ' Alt+T
 					custKeypress("{DOWN}", 800)
 					custKeypress("{DOWN}", 800)
@@ -139,6 +129,7 @@ Line1:
 
 			End Try
 		Next
+		My.Computer.FileSystem.CopyDirectory("C:\Users\lwestel\Documents\Graphics", "C:\Program Files (x86)\Delta Controls\enteliWEB\website\public\svggraphics\graphics\UWO\Graphics", True)
 	End Sub
 
 	Private Sub custKeypress(ByVal key As String, ByVal time As Integer)
