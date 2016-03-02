@@ -58,10 +58,10 @@ Public Class UWO_conversion
 		If Not server Then
 			SendKeys.SendWait(key)
 		Else
-			SendKeys.SendWait("C:\Program Files ")
-			SendKeys.SendWait("{(}")
-			SendKeys.SendWait("x86")
-			SendKeys.SendWait("{)}")
+			'SendKeys.SendWait("C:\Program Files ")
+			'SendKeys.SendWait("{(}")
+			'SendKeys.SendWait("x86")
+			'SendKeys.SendWait("{)}")
 			If key.IndexOf("(") <> -1 Or
 					key.IndexOf(")") <> -1 Then
 				Dim arr1() As String = key.Split("(")
@@ -82,11 +82,14 @@ Public Class UWO_conversion
 	Private Sub BackgroundWorker1_DoWork(ByVal sender As System.Object,
 		ByVal e As System.ComponentModel.DoWorkEventArgs) _
 		Handles BackgroundWorker1.DoWork
+		Control.CheckForIllegalCrossThreadCalls = False
 		Dim Source As String = "W:\PPDwes\PUBLIC\Delta\Graphics"
-		Dim Destination As String = "C:\Program Files (x86)\Delta Controls\enteliWEB\website\public\svggraphics\graphics\UWO\Graphics"
+		'Dim Source As String = "W:\PUBLIC\Delta\Graphics"
+		'Dim Destination As String = "C:\Program Files (x86)\Delta Controls\enteliWEB\website\public\svggraphics\graphics\UWO\Graphics"
+		Dim Destination As String = "C:\Users\lwestel\Documents"
 		UserTimeLapse = 1000
 		Dim containsGPC As Boolean = False
-
+		'My.Computer.FileSystem.CopyDirectory("C:\TestDirectory1", "C:\TestDirectory2", True)
 		Try
 			If (timeTextBox.Enabled = True) Then
 				UserTimeLapse = timeTextBox.Text
@@ -104,11 +107,11 @@ Public Class UWO_conversion
 		End Try
 
 		If DriveComboBox.SelectedIndex = 0 Then
-			Destination = "C:\Users\lwestel\Documents"
+			Destination = "C:\Users\lwestel\Documents\Graphics"
 		ElseIf DriveComboBox.SelectedIndex = 1 Then
-			Destination = "\Delta Controls\enteliWEB\website\public\svggraphics\graphics\UWO\Graphics"
+			Destination = "C:\Users\lwestel\Documents\Graphics"         ' used to have different path here, but wasn't working
 			'C:\Program Files {(}x86{)}
-			server = True
+			'server = True
 		ElseIf DriveComboBox.SelectedIndex = 2 Then
 			Destination = "H:\Graphics"
 		ElseIf DriveComboBox.SelectedIndex = 3 Then
@@ -118,13 +121,13 @@ Public Class UWO_conversion
 			Return
 		End If
 
-		If Not Directory.Exists(Source) Then
-			MessageBox.Show("Make sure you have access to the source drive.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-			Return
-		End If
-		If Not Directory.Exists(Destination) And Not server Then
-			MessageBox.Show("Make sure you have access to " + Destination, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-		End If
+		'If Not Directory.Exists(Source) Then
+		'	MessageBox.Show("Make sure you have access to the source drive.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+		'	Return
+		'End If
+		'If Not Directory.Exists(Destination) And Not server Then
+		'	MessageBox.Show("Make sure you have access to " + Destination, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+		'End If
 		For Each d As String In My.Computer.FileSystem.GetDirectories(Source)
 Line1:
 			Try
@@ -136,13 +139,16 @@ Line1:
 				End If
 				L_convert.Update()
 				Thread.Sleep(100)
+
 				Dim dir As DirectoryInfo = My.Computer.FileSystem.GetDirectoryInfo(d)
 				For Each File In My.Computer.FileSystem.GetFiles(d)                      ' check to make sure the folders even contain .gpc files
 					If (File.Contains(".gpc")) Then
 						containsGPC = True
 					End If
 				Next
-				Dim Dest = "C:\Program Files {(}x86{)}" + Destination + "\" + dir.Name                                  'ignore unnecessary folders that do not have files that need to be converted
+				'MessageBox.Show("Error  ", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+				'Dim Dest = Destination + "\" + dir.Name
+				Dim Dest = Destination + "\" + dir.Name                                  'ignore unnecessary folders that do not have files that need to be converted
 				If Not String.Compare(dir.Name, "archive", True) = 0 And
 			   Not String.Compare(dir.Name, "bmp", True) = 0 And
 			   Not String.Compare(dir.Name, "help files", True) = 0 And
@@ -162,9 +168,10 @@ Line1:
 					ElseIf Not (containsGPC) Then
 						Continue For
 						L_convert.Text = "Folder skipped, does not contain graphics files"      ' Check if folder even contains gpc files
-						Thread.Sleep(1000)
+						Thread.Sleep(500)
 					End If
 					Directory.CreateDirectory(Dest)                                             ' create destination folder
+					'MessageBox.Show("Error  ", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 					AppActivate("ORCAView")
 					custKeypress("%t", 800)                     ' Alt+T
 					custKeypress("{DOWN}", 800)
@@ -192,6 +199,7 @@ Line1:
 					custKeypress("{TAB}", 2000)
 					custKeypress("{TAB}", 800)
 					custKeypress("{TAB}", 800)
+					custKeypress(Dest, 1000)
 					'destTypedOut(Dest)                               ' destination drive
 					custKeypress("{ENTER}", 1500, 1000)                     ' Check to see when conversion is done (popup will appear, wait for that to be active window)
 					theHwnd = GetForegroundWindow()                     ' get foreground window's handle
@@ -230,6 +238,7 @@ Line1:
 		Next
 		If (cancel <> True) Then
 			L_convert.Text = "Conversion Complete"
+			My.Computer.FileSystem.CopyDirectory("C:\Users\lwestel\Documents\Graphics", "C:\Program Files (x86)\Delta Controls\enteliWEB\website\public\svggraphics\graphics\UWO\Graphics", True)
 		Else
 			L_convert.Text = "Conversion Cancelled!"
 		End If
