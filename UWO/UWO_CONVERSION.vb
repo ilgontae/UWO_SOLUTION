@@ -146,8 +146,6 @@ Line1:
 						containsGPC = True
 					End If
 				Next
-				'MessageBox.Show("Error  ", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-				'Dim Dest = Destination + "\" + dir.Name
 				Dim Dest = Destination + "\" + dir.Name                                  'ignore unnecessary folders that do not have files that need to be converted
 				If Not String.Compare(dir.Name, "archive", True) = 0 And
 			   Not String.Compare(dir.Name, "bmp", True) = 0 And
@@ -171,7 +169,6 @@ Line1:
 						Thread.Sleep(500)
 					End If
 					Directory.CreateDirectory(Dest)                                             ' create destination folder
-					'MessageBox.Show("Error  ", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 					AppActivate("ORCAView")
 					custKeypress("%t", 800)                     ' Alt+T
 					custKeypress("{DOWN}", 800)
@@ -200,7 +197,6 @@ Line1:
 					custKeypress("{TAB}", 800)
 					custKeypress("{TAB}", 800)
 					custKeypress(Dest, 1000)
-					'destTypedOut(Dest)                               ' destination drive
 					custKeypress("{ENTER}", 1500, 1000)                     ' Check to see when conversion is done (popup will appear, wait for that to be active window)
 					theHwnd = GetForegroundWindow()                     ' get foreground window's handle
 					length = GetWindowTextLength(theHwnd) + 1           ' get the length of the title of that handle
@@ -243,17 +239,4 @@ Line1:
 			L_convert.Text = "Conversion Cancelled!"
 		End If
 	End Sub
-	' Find if there are brackets in the output folder
-	' Sendkeys cannot type out the brackets by default, it requires an escape character of sorts. 
-	Private Sub destTypedOut(ByVal dest As String)
-		Dim tempDest As String = dest
-		If dest.Contains("(") Then
-			tempDest = dest.Replace("(", "{(}")
-		End If
-		If dest.Contains(")") Then
-			tempDest = dest.Replace(")", "{)}")
-		End If
-		custKeypress(tempDest, 1500, 1500)
-	End Sub
-
 End Class
