@@ -7,6 +7,7 @@ Imports System.Text.RegularExpressions
 Imports System.IO
 Imports System.ComponentModel
 Imports System.Threading
+Imports System
 
 Public Class UWO_REPLACE
 	Private bw As BackgroundWorker = New BackgroundWorker
@@ -17,9 +18,11 @@ Public Class UWO_REPLACE
 	Dim countFiles As Integer
 	Dim counter As Integer = 0
 	Dim max As Integer = 10
+	Dim conflictList As New List(Of String)
 
 	Private Sub FindStr(ByVal fname As String)
 		Try
+			Dim panelNum As String = ParseDigits(TB_Find.Text)
 			Dim testTxt As New StreamReader(fname)
 			Dim allRead As String = testTxt.ReadToEnd()
 			testTxt.Close()
@@ -27,24 +30,46 @@ Public Class UWO_REPLACE
 			If WildcardEnable = False And Not boolUpgrade Then
 				regMatch = Regex.Escape(TB_Find.Text)
 			ElseIf boolUpgrade Then
-				regMatch = "[(.]" & TB_Find.Text & ".(AI|BI|AO|BO)"
+				regMatch = "[(.]" & panelNum & ".(AI|BI|AO|BO)"
 			Else
 				regMatch = TB_Find.Text
 			End If
 
 
 			If Regex.IsMatch(allRead, regMatch, RegexOptions.IgnoreCase) Then
-				FileList.Add(fname)
+				'FileList.Add(fname)
 				Dim SP As String = fname.Remove(0, TB_Directory.Text.Length + 1)
 				SP = SP.ToUpper
-				ListView1.Items.Add(SP)
+				If (boolUpgrade) Then
+					regMatch = "[(.]." & panelNum & ".(AI|BI|AO|BO)"
+					If Regex.IsMatch(allRead, regMatch, RegexOptions.IgnoreCase) Then
+						conflictList.Add(fname)
+						ListView1.Items.Add(New ListViewItem(New String() {fname, "Conflict"}))
+					Else
+						FileList.Add(fname)
+						ListView1.Items.Add(New ListViewItem(New String() {fname, ""}))
+					End If
+				Else
+					FileList.Add(fname)
+					ListView1.Items.Add(New ListViewItem(New String() {fname, ""}))
+				End If
 				ListView1.Update()
 				ListView1.EnsureVisible(ListView1.Items.Count - 1)
 			End If
+
 		Catch
 		End Try
 	End Sub
-
+	Function ParseDigits(ByVal strRawValue As String) As String
+		Dim strDigits As String = ""
+		If strRawValue = Nothing Then Return strDigits
+		For Each c As Char In strRawValue.ToCharArray()
+			If Char.IsDigit(c) Then
+				strDigits &= c
+			End If
+		Next c
+		Return strDigits
+	End Function
 	Private Sub getfile(ByVal dir As String)
 		Dim a As String = My.Computer.FileSystem.GetDirectoryInfo(dir).Name.ToString
 		'BackgroundWorker1.ReportProgress(counter / countFiles)
@@ -79,7 +104,7 @@ Public Class UWO_REPLACE
 	Private Sub BackgroundWorker1_RunWorkerCompleted(ByVal sender As Object,
 	ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) _
 	Handles BackgroundWorker1.RunWorkerCompleted
-		'ProgressBar1.Value = ProgressBar1.Maximum
+		ProgressBar1.Value = ProgressBar1.Maximum
 		endSearch()
 	End Sub
 	Private Sub FindCheck()
@@ -351,8 +376,10 @@ Public Class UWO_REPLACE
 	Private Sub chk_Upgrade_CheckedChanged(sender As Object, e As EventArgs) Handles chk_Upgrade.CheckedChanged
 		If boolUpgrade Then
 			boolUpgrade = False
+			Wildcard.Enabled = True
 		Else
 			boolUpgrade = True
+			Wildcard.Enabled = False
 		End If
 	End Sub
 End Class
