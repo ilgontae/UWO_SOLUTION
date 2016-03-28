@@ -331,10 +331,16 @@ Public Class UWO_REPLACE
 				End If
 				Dim newPath As String
 				For Each files As String In FileList
-					newPath = filePath & "\" & Path.GetFileName(files)
+					Dim tempArr = Split(files, "\")
+					'newPath = filePath & "\" & Path.GetFileName(files)
+					newPath = filePath & "\" & tempArr(tempArr.Count - 2)
+					If Not Directory.Exists(newPath) Then
+						My.Computer.FileSystem.CreateDirectory(newPath)
+					End If
+					newPath &= "\" & Path.GetFileName(files)
 					My.Computer.FileSystem.CopyFile(files, newPath, True)
 					FindAllObj(newPath)             ' find all the objects that need to be updated --------------
-					writeString &= vbCrLf & "** " & newPath.Split("\").Last & " **" & vbCrLf
+					writeString &= vbCrLf & "** " & tempArr(tempArr.Count - 2) & "\" & newPath.Split("\").Last & " **" & vbCrLf
 					AppActivate("ORCAView")
 					Threading.Thread.Sleep(500)
 					SendKeys.SendWait("%F")
@@ -418,7 +424,12 @@ Public Class UWO_REPLACE
 				fs.Write(info, 0, info.Length)
 				fs.Close()
 				For Each files As String In conflictList
-					newPath = filePath & "\Conflicts\" & Path.GetFileName(files)
+					Dim tempArr = Split(files, "\")
+					newPath = filePath & "\Conflicts\" & tempArr(tempArr.Count - 2)
+					If Not Directory.Exists(newPath) Then
+						My.Computer.FileSystem.CreateDirectory(newPath)
+					End If
+					newPath &= "\" & Path.GetFileName(files)
 					My.Computer.FileSystem.CopyFile(files, newPath, True)
 				Next
 				MessageBox.Show("COMPLETE" & vbCrLf & "Remember to manually update the" & vbCrLf & "files that have conflicts", "LINKS UPDATED", MessageBoxButtons.OK, MessageBoxIcon.Information)
