@@ -171,9 +171,9 @@ Partial Class UWO_REPLACE
 		Me.chk_Upgrade.AutoSize = True
 		Me.chk_Upgrade.Location = New System.Drawing.Point(246, 48)
 		Me.chk_Upgrade.Name = "chk_Upgrade"
-		Me.chk_Upgrade.Size = New System.Drawing.Size(156, 17)
+		Me.chk_Upgrade.Size = New System.Drawing.Size(155, 17)
 		Me.chk_Upgrade.TabIndex = 17
-		Me.chk_Upgrade.Text = "DCU to EnteliBUS Upgrade"
+		Me.chk_Upgrade.Text = "DCU to enteliBUS Upgrade"
 		Me.chk_Upgrade.UseVisualStyleBackColor = True
 		'
 		'ProgressBar1
@@ -277,6 +277,7 @@ Partial Class UWO_REPLACE
 		Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
 		Me.ClientSize = New System.Drawing.Size(524, 513)
 		Me.Controls.Add(Me.SplitContainer1)
+		Me.MaximizeBox = False
 		Me.MaximumSize = New System.Drawing.Size(540, 100001)
 		Me.MinimumSize = New System.Drawing.Size(540, 500)
 		Me.Name = "UWO_REPLACE"

@@ -277,7 +277,7 @@ Public Class UWO_REPLACE
 		If trailingInt <= 8 Then
 			returnInt = (1000 + leadingInt + (translateTwoDigit(trailingInt)))
 		ElseIf trailingInt <= 16 Then
-			returnInt = (leadingInt + (translateTwoDigit(trailingInt)))
+			returnInt = (leadingInt + 200 + (translateTwoDigit(trailingInt)))
 		Else
 			Select Case trailingInt
 				Case 17
