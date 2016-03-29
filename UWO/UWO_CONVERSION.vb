@@ -13,11 +13,12 @@
 'Created github repo at https://github.com/ilgontae/UWO_SOLUTION
 'Continuing revision history on there
 
+Imports System.ComponentModel
 Imports System.IO
 Imports System.Threading
 
 Public Class UWO_conversion
-
+	Private bw As BackgroundWorker = New BackgroundWorker
 	Private Sub Form1_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 		Width = UWO_MAIN.Width - 20
 		L_convert.Width = Width
@@ -38,14 +39,57 @@ Public Class UWO_conversion
 	Private MyStr As String, theHwnd As Long
 	Dim length As Integer
 	Dim buf, var As String
+	Dim server As Boolean = False
+	'AddHandler bw.DoWork, AddressOf bw_DoWork
 
 
 	Private Sub startButton_Click(sender As Object, e As EventArgs) Handles startButton.Click
+		BackgroundWorker1.RunWorkerAsync()
+	End Sub
+
+	Private Sub stopButton_Click(sender As Object, e As EventArgs) Handles stopButton.Click
+		cancel = True       'Cancel the progression of the conversion macro (NOT the actual conversion itself, that cannot be cancelled)
+		MessageBox.Show("Conversion cancelled!", "Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+	End Sub
+
+	Private Sub custKeypress(ByVal key As String, ByVal time As Integer)
+		'C:\Program Files {(}x86{)}
+		Thread.Sleep(time)
+		If Not server Then
+			SendKeys.SendWait(key)
+		Else
+			'SendKeys.SendWait("C:\Program Files ")
+			'SendKeys.SendWait("{(}")
+			'SendKeys.SendWait("x86")
+			'SendKeys.SendWait("{)}")
+			If key.IndexOf("(") <> -1 Or
+					key.IndexOf(")") <> -1 Then
+				Dim arr1() As String = key.Split("(")
+				SendKeys.SendWait(arr1(0))
+				SendKeys.SendWait("{(}")
+				Dim arr2() As String = arr1(1).Split(")")
+				SendKeys.SendWait(arr2(0))
+				SendKeys.SendWait("{)}")
+			End If
+		End If
+	End Sub
+
+	Private Sub custKeypress(ByVal key As String, ByVal time As Integer, ByVal time2 As Integer)
+		custKeypress(key, time)
+		Thread.Sleep(time2)
+
+	End Sub
+	Private Sub BackgroundWorker1_DoWork(ByVal sender As System.Object,
+		ByVal e As System.ComponentModel.DoWorkEventArgs) _
+		Handles BackgroundWorker1.DoWork
+		Control.CheckForIllegalCrossThreadCalls = False
 		Dim Source As String = "W:\PPDwes\PUBLIC\Delta\Graphics"
-		Dim Destination As String = "C:\Program Files (x86)\Delta Controls\enteliWEB\website\public\svggraphics\graphics\UWO\Graphics"
+		'Dim Source As String = "W:\PUBLIC\Delta\Graphics"
+		'Dim Destination As String = "C:\Program Files (x86)\Delta Controls\enteliWEB\website\public\svggraphics\graphics\UWO\Graphics"
+		Dim Destination As String = "C:\Users\lwestel\Documents"
 		UserTimeLapse = 1000
 		Dim containsGPC As Boolean = False
-
+		'My.Computer.FileSystem.CopyDirectory("C:\TestDirectory1", "C:\TestDirectory2", True)
 		Try
 			If (timeTextBox.Enabled = True) Then
 				UserTimeLapse = timeTextBox.Text
@@ -63,9 +107,11 @@ Public Class UWO_conversion
 		End Try
 
 		If DriveComboBox.SelectedIndex = 0 Then
-			Destination = "C:\Users\lwestel\Documents"
+			Destination = "C:\Users\lwestel\Documents\Graphics"
 		ElseIf DriveComboBox.SelectedIndex = 1 Then
-			Destination = "C:\Program Files {(}x86{)}\Delta Controls\enteliWEB\website\public\svggraphics\graphics\UWO\Graphics"
+			Destination = "C:\Users\lwestel\Documents\Graphics"         ' used to have different path here, but wasn't working
+			'C:\Program Files {(}x86{)}
+			'server = True
 		ElseIf DriveComboBox.SelectedIndex = 2 Then
 			Destination = "H:\Graphics"
 		ElseIf DriveComboBox.SelectedIndex = 3 Then
@@ -75,13 +121,13 @@ Public Class UWO_conversion
 			Return
 		End If
 
-		If Not Directory.Exists(Source) Then
-			MessageBox.Show("Make sure you have access to the source drive.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-			Return
-		End If
-		If Not Directory.Exists(Destination) Then
-			MessageBox.Show("Make sure you have access to " + Destination, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-		End If
+		'If Not Directory.Exists(Source) Then
+		'	MessageBox.Show("Make sure you have access to the source drive.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+		'	Return
+		'End If
+		'If Not Directory.Exists(Destination) And Not server Then
+		'	MessageBox.Show("Make sure you have access to " + Destination, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+		'End If
 		For Each d As String In My.Computer.FileSystem.GetDirectories(Source)
 Line1:
 			Try
@@ -93,6 +139,7 @@ Line1:
 				End If
 				L_convert.Update()
 				Thread.Sleep(100)
+
 				Dim dir As DirectoryInfo = My.Computer.FileSystem.GetDirectoryInfo(d)
 				For Each File In My.Computer.FileSystem.GetFiles(d)                      ' check to make sure the folders even contain .gpc files
 					If (File.Contains(".gpc")) Then
@@ -119,7 +166,7 @@ Line1:
 					ElseIf Not (containsGPC) Then
 						Continue For
 						L_convert.Text = "Folder skipped, does not contain graphics files"      ' Check if folder even contains gpc files
-						Thread.Sleep(1000)
+						Thread.Sleep(500)
 					End If
 					Directory.CreateDirectory(Dest)                                             ' create destination folder
 					AppActivate("ORCAView")
@@ -149,7 +196,7 @@ Line1:
 					custKeypress("{TAB}", 2000)
 					custKeypress("{TAB}", 800)
 					custKeypress("{TAB}", 800)
-					destTypedOut(Dest)                               ' destination drive
+					custKeypress(Dest, 1000)
 					custKeypress("{ENTER}", 1500, 1000)                     ' Check to see when conversion is done (popup will appear, wait for that to be active window)
 					theHwnd = GetForegroundWindow()                     ' get foreground window's handle
 					length = GetWindowTextLength(theHwnd) + 1           ' get the length of the title of that handle
@@ -187,38 +234,9 @@ Line1:
 		Next
 		If (cancel <> True) Then
 			L_convert.Text = "Conversion Complete"
+			My.Computer.FileSystem.CopyDirectory("C:\Users\lwestel\Documents\Graphics", "C:\Program Files (x86)\Delta Controls\enteliWEB\website\public\svggraphics\graphics\UWO\Graphics", True)
 		Else
 			L_convert.Text = "Conversion Cancelled!"
 		End If
 	End Sub
-
-	Private Sub stopButton_Click(sender As Object, e As EventArgs) Handles stopButton.Click
-		cancel = True       'Cancel the progression of the conversion macro (NOT the actual conversion itself, that cannot be cancelled)
-		MessageBox.Show("Conversion cancelled!", "Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-	End Sub
-
-	Private Sub custKeypress(ByVal key As String, ByVal time As Integer)
-		Thread.Sleep(time)
-		SendKeys.SendWait(key)
-	End Sub
-
-	Private Sub custKeypress(ByVal key As String, ByVal time As Integer, ByVal time2 As Integer)
-		Thread.Sleep(time)
-		SendKeys.SendWait(key)
-		Thread.Sleep(time2)
-	End Sub
-
-	' Find if there are brackets in the output folder
-	' Sendkeys cannot type out the brackets by default, it requires an escape character of sorts. 
-	Private Sub destTypedOut(ByVal dest As String)
-		Dim tempDest As String = dest
-		If dest.Contains("(") Then
-			tempDest = dest.Replace("(", "{(}")
-		End If
-		If dest.Contains(")") Then
-			tempDest = dest.Replace(")", "{)}")
-		End If
-		custKeypress(tempDest, 1500, 1500)
-	End Sub
-
 End Class

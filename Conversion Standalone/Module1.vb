@@ -1,35 +1,55 @@
+'Revision By: Luke Westelaken
+'Date: January 14, 2016
+'Revisions made:
+'Created github repo at https://github.com/ilgontae/UWO_SOLUTION
+'Continuing revision history on there
 Imports System.IO
 Imports System.Threading
 Imports System.Windows.Forms
+
+
 Public Module Module1
 	Private Declare Function GetWindowText Lib "user32" Alias "GetWindowTextA" (ByVal hwnd As Long, ByVal lpString As String, ByVal cch As Long) As Long
 	Private Declare Function GetWindowTextLength Lib "user32" Alias "GetWindowTextLengthA" (ByVal hwnd As Long) As Long
 	Private Declare Function GetForegroundWindow Lib "user32" () As Long
-	Private Declare Auto Function ShowWindow Lib "user32.dll" (ByVal hWnd As IntPtr, ByVal nCmdShow As Integer) As Boolean
-	Private Declare Auto Function GetConsoleWindow Lib "kernel32.dll" () As IntPtr
 	Private MyStr As String, theHwnd As Long
 	Dim length As Integer
 	Dim buf, var As String
-	Dim Destination As String = "Y:\UWO\Graphics"
+	Dim server As Boolean = False
 
+	Private Sub custKeypress(ByVal key As String, ByVal time As Integer)
+		Thread.Sleep(time)
+		If Not server Then
+			SendKeys.SendWait(key)
+		Else
+			If key.IndexOf("(") <> -1 Or
+					key.IndexOf(")") <> -1 Then
+				Dim arr1() As String = key.Split("(")
+				SendKeys.SendWait(arr1(0))
+				SendKeys.SendWait("{(}")
+				Dim arr2() As String = arr1(1).Split(")")
+				SendKeys.SendWait(arr2(0))
+				SendKeys.SendWait("{)}")
+			End If
+		End If
+	End Sub
+
+	Private Sub custKeypress(ByVal key As String, ByVal time As Integer, ByVal time2 As Integer)
+		custKeypress(key, time)
+		Thread.Sleep(time2)
+
+	End Sub
 	Sub Main()
 		Dim Source As String = "W:\PPDwes\PUBLIC\Delta\Graphics"
-		Dim Destination As String = "C:\Program Files (x86)\Delta Controls\enteliWEB\website\public\svggraphics\graphics\UWO\Graphics"
+		Dim Destination As String = "C:\Users\lwestel\Documents\Graphics"
 		Dim containsGPC As Boolean = False
-
-		If Not Directory.Exists(Source) Then
-			MessageBox.Show("Make sure you have access to the source drive.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-			Return
-		End If
-		If Not Directory.Exists(Destination) Then
-			MessageBox.Show("Make sure you have access to " + Destination, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-		End If
 		For Each d As String In My.Computer.FileSystem.GetDirectories(Source)
 Line1:
 			Try
 				Debug.WriteLine(d)
 				containsGPC = False
 				Thread.Sleep(100)
+
 				Dim dir As DirectoryInfo = My.Computer.FileSystem.GetDirectoryInfo(d)
 				For Each File In My.Computer.FileSystem.GetFiles(d)                      ' check to make sure the folders even contain .gpc files
 					If (File.Contains(".gpc")) Then
@@ -42,43 +62,25 @@ Line1:
 			   Not String.Compare(dir.Name, "help files", True) = 0 And
 			   Not String.Compare(dir.Name, "CPS", True) = 0 And
 			   Not String.Compare(dir.Name, "backup", True) = 0 And
-			   Not String.Compare(dir.Name, "ICFAR", True) = 0 And
 			   Not String.Compare(dir.Name, "temp", True) = 0 Then
 					Dim fileExists As Boolean = False
 					Dim fileBrackets As Boolean = False
 					Dim extraEnters As Integer = 0
 					If Directory.Exists(Dest) Then
 						Directory.Delete(Dest, True)
+						Console.WriteLine("Test")
 					End If
-					If (My.Computer.FileSystem.GetFiles(dir.FullName).Count = 0) Then
-						Continue For
-						Thread.Sleep(500)
-					ElseIf Not (containsGPC) Then
-						Continue For
-						Thread.Sleep(1000)
-					End If
-					Directory.CreateDirectory(Dest)             ' create destination folder
-					Try
-						AppActivate("ORCAView - UWO")
-					Catch ex As ArgumentException
-						Try
-							AppActivate("Orcaview")
-						Catch ex2 As ArgumentException
-							MsgBox("ORCAview not running")
-						End Try
-					End Try
-
-					theHwnd = GetForegroundWindow()
-					length = GetWindowTextLength(theHwnd) + 1
-					buf = Space$(length)
-					length = GetWindowText(theHwnd, buf, length)
-					var = buf.Substring(0, length)
-					If var <> "ORCAview - UWO" Then
-						MsgBox("ORCAview not running")
-						Return
-					End If
-					custKeypress("%t", 800)                     ' Alt+T
+					Directory.CreateDirectory(Dest)                                             ' create destination folder
+					AppActivate("ORCAView")
+					custKeypress("%", 800)                     ' Alt+T
+					custKeypress("{ESCAPE}", 500, 500)
+					custKeypress("%t", 500)
+					Console.WriteLine("Test ALT T")
+					'Thread.Sleep(1000)
+					'custKeypress("t", 300)
+					Console.WriteLine("Test T")
 					custKeypress("{DOWN}", 800)
+					Console.WriteLine("Test DOWN")
 					custKeypress("{DOWN}", 800)
 					custKeypress("{DOWN}", 800)
 					custKeypress("{DOWN}", 800)
@@ -103,8 +105,8 @@ Line1:
 					custKeypress("{TAB}", 2000)
 					custKeypress("{TAB}", 800)
 					custKeypress("{TAB}", 800)
-					destTypedOut(Dest)                                  ' destination drive
-					custKeypress("{ENTER}", 1500, 1000)                 ' Check to see when conversion is done (popup will appear, wait for that to be active window)
+					custKeypress(Dest, 1000)
+					custKeypress("{ENTER}", 1500, 1000)                     ' Check to see when conversion is done (popup will appear, wait for that to be active window)
 					theHwnd = GetForegroundWindow()                     ' get foreground window's handle
 					length = GetWindowTextLength(theHwnd) + 1           ' get the length of the title of that handle
 					buf = Space$(length)                                ' make a buffer variable filled with spaces equal to the length of the foreground window's title
@@ -126,7 +128,7 @@ Line1:
 								custKeypress("{ESCAPE}", 800)
 								custKeypress("{ESCAPE}", 800)
 								custKeypress("{ESCAPE}", 800)
-								GoTo Line1                              ' not tested, but should return to top of the "for" loop with the same folder
+								GoTo Line1                              ' not tested, but should return to top of the for loop with the same folder
 							End If
 						End While
 					End If
@@ -134,35 +136,10 @@ Line1:
 					custKeypress("{ENTER}", 800, 500)
 				End If
 			Catch ex As Exception
-				MessageBox.Show("Error: " & ex.Message, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
 				Continue For
 
 			End Try
 		Next
+		My.Computer.FileSystem.CopyDirectory("C:\Users\lwestel\Documents\Graphics", "C:\Program Files (x86)\Delta Controls\enteliWEB\website\public\svggraphics\graphics\UWO\Graphics", True)
 	End Sub
-
-	Private Sub custKeypress(ByVal key As String, ByVal time As Integer)
-		Thread.Sleep(time)
-		SendKeys.SendWait(key)
-	End Sub
-
-	Private Sub custKeypress(ByVal key As String, ByVal time As Integer, ByVal time2 As Integer)
-		Thread.Sleep(time)
-		SendKeys.SendWait(key)
-		Thread.Sleep(time2)
-	End Sub
-
-	' Find if there are brackets in the output folder
-	' Sendkeys cannot type out the brackets by default, it requires an escape character of sorts. 
-	Private Sub destTypedOut(ByVal dest As String)
-		Dim tempDest As String = dest
-		If dest.Contains("(") Then
-			tempDest = dest.Replace("(", "{(}")
-		End If
-		If dest.Contains(")") Then
-			tempDest = dest.Replace(")", "{)}")
-		End If
-		custKeypress(tempDest, 1500, 1500)
-	End Sub
-
 End Module

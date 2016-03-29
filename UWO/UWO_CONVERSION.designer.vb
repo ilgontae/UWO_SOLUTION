@@ -32,6 +32,7 @@ Partial Class UWO_conversion
 		Me.startButton = New System.Windows.Forms.Button()
 		Me.DriveComboBox = New System.Windows.Forms.ComboBox()
 		Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+		Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
 		DesinationDrive = New System.Windows.Forms.Label()
 		Me.SuspendLayout()
 		'
@@ -146,4 +147,5 @@ Partial Class UWO_conversion
 	Friend WithEvents startButton As System.Windows.Forms.Button
 	Friend WithEvents DriveComboBox As System.Windows.Forms.ComboBox
 	Friend WithEvents ToolTip1 As ToolTip
+	Friend WithEvents BackgroundWorker1 As System.ComponentModel.BackgroundWorker
 End Class

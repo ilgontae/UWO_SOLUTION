@@ -32,7 +32,10 @@ Partial Class UWO_REPLACE
 		Me.B_Find = New System.Windows.Forms.Button()
 		Me.ListView1 = New System.Windows.Forms.ListView()
 		Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+		Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
 		Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
+		Me.chk_Upgrade = New System.Windows.Forms.CheckBox()
+		Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
 		Me.Wildcard = New System.Windows.Forms.Button()
 		Me.L_Left = New System.Windows.Forms.Label()
 		Me.B_Remove = New System.Windows.Forms.Button()
@@ -42,6 +45,7 @@ Partial Class UWO_REPLACE
 		Me.Label4 = New System.Windows.Forms.Label()
 		Me.B_Replace = New System.Windows.Forms.Button()
 		Me.SFD_SaveList = New System.Windows.Forms.SaveFileDialog()
+		Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
 		CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
 		Me.SplitContainer1.Panel1.SuspendLayout()
 		Me.SplitContainer1.Panel2.SuspendLayout()
@@ -109,18 +113,23 @@ Partial Class UWO_REPLACE
 		'
 		'ListView1
 		'
-		Me.ListView1.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1})
+		Me.ListView1.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2})
 		Me.ListView1.FullRowSelect = True
 		Me.ListView1.Location = New System.Drawing.Point(0, 17)
 		Me.ListView1.Name = "ListView1"
-		Me.ListView1.Size = New System.Drawing.Size(529, 313)
+		Me.ListView1.Size = New System.Drawing.Size(529, 337)
 		Me.ListView1.TabIndex = 7
 		Me.ListView1.UseCompatibleStateImageBehavior = False
 		Me.ListView1.View = System.Windows.Forms.View.Details
 		'
 		'ColumnHeader1
 		'
-		Me.ColumnHeader1.Width = 493
+		Me.ColumnHeader1.Width = 426
+		'
+		'ColumnHeader2
+		'
+		Me.ColumnHeader2.Text = ""
+		Me.ColumnHeader2.Width = 96
 		'
 		'SplitContainer1
 		'
@@ -132,6 +141,8 @@ Partial Class UWO_REPLACE
 		'
 		'SplitContainer1.Panel1
 		'
+		Me.SplitContainer1.Panel1.Controls.Add(Me.chk_Upgrade)
+		Me.SplitContainer1.Panel1.Controls.Add(Me.ProgressBar1)
 		Me.SplitContainer1.Panel1.Controls.Add(Me.Wildcard)
 		Me.SplitContainer1.Panel1.Controls.Add(Me.L_Left)
 		Me.SplitContainer1.Panel1.Controls.Add(Me.B_Remove)
@@ -151,15 +162,32 @@ Partial Class UWO_REPLACE
 		'SplitContainer1.Panel2
 		'
 		Me.SplitContainer1.Panel2.Controls.Add(Me.ListView1)
-		Me.SplitContainer1.Size = New System.Drawing.Size(524, 477)
-		Me.SplitContainer1.SplitterDistance = 142
+		Me.SplitContainer1.Size = New System.Drawing.Size(524, 513)
+		Me.SplitContainer1.SplitterDistance = 152
 		Me.SplitContainer1.TabIndex = 8
+		'
+		'chk_Upgrade
+		'
+		Me.chk_Upgrade.AutoSize = True
+		Me.chk_Upgrade.Location = New System.Drawing.Point(246, 48)
+		Me.chk_Upgrade.Name = "chk_Upgrade"
+		Me.chk_Upgrade.Size = New System.Drawing.Size(155, 17)
+		Me.chk_Upgrade.TabIndex = 17
+		Me.chk_Upgrade.Text = "DCU to enteliBUS Upgrade"
+		Me.chk_Upgrade.UseVisualStyleBackColor = True
+		'
+		'ProgressBar1
+		'
+		Me.ProgressBar1.Location = New System.Drawing.Point(15, 129)
+		Me.ProgressBar1.Name = "ProgressBar1"
+		Me.ProgressBar1.Size = New System.Drawing.Size(503, 20)
+		Me.ProgressBar1.TabIndex = 8
 		'
 		'Wildcard
 		'
 		Me.Wildcard.Cursor = System.Windows.Forms.Cursors.Hand
 		Me.Wildcard.Enabled = False
-		Me.Wildcard.Location = New System.Drawing.Point(358, 63)
+		Me.Wildcard.Location = New System.Drawing.Point(397, 63)
 		Me.Wildcard.Name = "Wildcard"
 		Me.Wildcard.Size = New System.Drawing.Size(121, 20)
 		Me.Wildcard.TabIndex = 16
@@ -238,12 +266,18 @@ Partial Class UWO_REPLACE
 		'SFD_SaveList
 		'
 		'
+		'BackgroundWorker1
+		'
+		Me.BackgroundWorker1.WorkerReportsProgress = True
+		Me.BackgroundWorker1.WorkerSupportsCancellation = True
+		'
 		'UWO_REPLACE
 		'
 		Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
 		Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-		Me.ClientSize = New System.Drawing.Size(524, 477)
+		Me.ClientSize = New System.Drawing.Size(524, 513)
 		Me.Controls.Add(Me.SplitContainer1)
+		Me.MaximizeBox = False
 		Me.MaximumSize = New System.Drawing.Size(540, 100001)
 		Me.MinimumSize = New System.Drawing.Size(540, 500)
 		Me.Name = "UWO_REPLACE"
@@ -277,5 +311,8 @@ Partial Class UWO_REPLACE
     Friend WithEvents L_Left As System.Windows.Forms.Label
     Public WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
     Friend WithEvents Wildcard As System.Windows.Forms.Button
-
+	Friend WithEvents BackgroundWorker1 As System.ComponentModel.BackgroundWorker
+	Friend WithEvents ProgressBar1 As ProgressBar
+	Friend WithEvents chk_Upgrade As CheckBox
+	Friend WithEvents ColumnHeader2 As ColumnHeader
 End Class
