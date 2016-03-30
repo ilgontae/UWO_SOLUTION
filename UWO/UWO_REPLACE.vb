@@ -335,6 +335,9 @@ Public Class UWO_REPLACE
 				If Not Directory.Exists(filePath & "\Conflicts") Then
 					My.Computer.FileSystem.CreateDirectory(filePath & "\Conflicts")
 				End If
+				If Not Directory.Exists(filePath & "\Backups") Then
+					My.Computer.FileSystem.CreateDirectory(filePath & "\Backups")
+				End If
 				Dim newPath As String
 				For Each files As String In FileList
 					Dim tempArr = Split(files, "\")
@@ -344,6 +347,7 @@ Public Class UWO_REPLACE
 						My.Computer.FileSystem.CreateDirectory(newPath)
 					End If
 					newPath &= "\" & Path.GetFileName(files)
+					My.Computer.FileSystem.CopyFile(files, filePath & "\Backups\" & newPath.Split("\").Last, True)
 					My.Computer.FileSystem.CopyFile(files, newPath, True)
 					FindAllObj(newPath)             ' find all the objects that need to be updated --------------
 					writeString &= vbCrLf & "** " & tempArr(tempArr.Count - 2) & "\" & newPath.Split("\").Last & " **" & vbCrLf
@@ -438,6 +442,7 @@ Public Class UWO_REPLACE
 					End If
 					newPath &= "\" & Path.GetFileName(files)
 					My.Computer.FileSystem.CopyFile(files, newPath, True)
+					My.Computer.FileSystem.CopyFile(files, filePath & "\Backups\" & newPath.Split("\").Last, True)
 				Next
 				MessageBox.Show("COMPLETE" & vbCrLf & "Remember to manually update the" & vbCrLf & "files that have conflicts", "LINKS UPDATED", MessageBoxButtons.OK, MessageBoxIcon.Information)
 			Else
