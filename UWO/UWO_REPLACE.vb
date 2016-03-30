@@ -39,7 +39,7 @@ Public Class UWO_REPLACE
 		Dim allRead As String = testTxt.ReadToEnd()
 		testTxt.Close()
 		Dim regMatch As String
-		regMatch = "[(.]" & panelNum & ".(AI|BI|AO|BO)\d{1,3}"
+		regMatch = "[(.]" & panelNum & "\.(?i)(AI|BI|AO|BO)\d{1,3}"
 		Dim rgx As New Regex(regMatch)
 		Dim tempStr As String
 		'Dim tempArr(2) As String
@@ -63,7 +63,6 @@ Public Class UWO_REPLACE
 				objList.Add(o)
 			End If
 		Next
-		'***************************************************************
 	End Sub
 
 	Private Sub FindStr(ByVal fname As String)
@@ -76,26 +75,33 @@ Public Class UWO_REPLACE
 			If WildcardEnable = False And Not boolUpgrade Then
 				regMatch = Regex.Escape(TB_Find.Text)
 			ElseIf boolUpgrade Then
-				regMatch = "[(.]" & panelNum & ".(AI|BI|AO|BO)"
+				regMatch = "[(.]" & panelNum & "\.((AI|BI|AO|BO)\d{1,3})"
 			Else
 				regMatch = TB_Find.Text
 			End If
 
 
 			If Regex.IsMatch(allRead, regMatch, RegexOptions.IgnoreCase) Then
-				'FileList.Add(fname)
 				Dim SP As String = fname.Remove(0, TB_Directory.Text.Length + 1)
 				SP = SP.ToUpper
 				If (boolUpgrade) Then
-					regMatch = "[(.]." & panelNum & ".(AI|BI|AO|BO)"
-					If Regex.IsMatch(allRead, regMatch, RegexOptions.IgnoreCase) Then
-						conflictList.Add(fname)
-						ListView1.Items.Add(New ListViewItem(New String() {fname, "Conflict"}))
-					Else
+					Dim conflictFlag As Boolean = False
+					Dim rgx As New Regex(regMatch)
+					For Each match As Match In rgx.Matches(allRead)
+						regMatch = "[(.]\d+" & panelNum & "\." & match.Groups(1).Value & "\."
+						Dim rgx2 As New Regex(regMatch)
+						If Regex.IsMatch(allRead, regMatch, RegexOptions.IgnoreCase) Then
+							conflictFlag = True
+							Exit For
+						End If
+					Next
+					If Not conflictFlag Then
 						FileList.Add(fname)
 						ListView1.Items.Add(New ListViewItem(New String() {fname, ""}))
+					Else
+						conflictList.Add(fname)
+						ListView1.Items.Add(New ListViewItem(New String() {fname, "Conflict"}))
 					End If
-
 				Else
 					FileList.Add(fname)
 					ListView1.Items.Add(New ListViewItem(New String() {fname, ""}))
@@ -361,20 +367,21 @@ Public Class UWO_REPLACE
 
 					'Opens the find and replace 
 					AppActivate("ORCAview")
-					Threading.Thread.Sleep(50)
+					Threading.Thread.Sleep(200)
 					SendKeys.SendWait("%S")
-					Threading.Thread.Sleep(50)
+					Threading.Thread.Sleep(100)
 					SendKeys.SendWait("{DOWN}")
-					Threading.Thread.Sleep(50)
+					Threading.Thread.Sleep(100)
 					SendKeys.SendWait("{DOWN}")
-					Threading.Thread.Sleep(50)
+					Threading.Thread.Sleep(100)
 
 					SendKeys.SendWait("{DOWN}")
-					Threading.Thread.Sleep(50)
+					Threading.Thread.Sleep(100)
 					SendKeys.SendWait("{ENTER}")
-					Threading.Thread.Sleep(50)
+					Threading.Thread.Sleep(1000)
 					Dim count As Integer = 1
 					For Each o In objList
+						Debug.WriteLine(o.toString)
 						writeString &= vbCrLf & o.toString
 						SendKeys.SendWait(ParseDigits(TB_Find.Text) & "." & o.type & o.numOrig & ".") '*********************
 						Threading.Thread.Sleep(50)
