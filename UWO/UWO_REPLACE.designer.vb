@@ -115,6 +115,7 @@ Partial Class UWO_REPLACE
 		'
 		Me.ListView1.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2})
 		Me.ListView1.FullRowSelect = True
+		Me.ListView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
 		Me.ListView1.Location = New System.Drawing.Point(0, 17)
 		Me.ListView1.Name = "ListView1"
 		Me.ListView1.Size = New System.Drawing.Size(529, 337)
@@ -277,6 +278,7 @@ Partial Class UWO_REPLACE
 		Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
 		Me.ClientSize = New System.Drawing.Size(524, 513)
 		Me.Controls.Add(Me.SplitContainer1)
+		Me.Location = New System.Drawing.Point(300, 300)
 		Me.MaximizeBox = False
 		Me.MaximumSize = New System.Drawing.Size(540, 100001)
 		Me.MinimumSize = New System.Drawing.Size(540, 500)
