@@ -16,7 +16,7 @@ Public Class UWO_REPLACE
 	Private Ext As String                                   ' stores the file extension to look for
 	Private WildcardEnable As Boolean = False               ' boolean for if the Wildcard button has been pressed (should be checkbox, but that wasn't up to me)
 	Private boolUpgrade As Boolean = False                  ' boolean for if the 'DCU to enteliBUS' checkbox has been selected
-	Dim countFiles As Integer                               ' count of all files to be checked (not currently in use)
+	Dim countFiles As Integer = 0                           ' count of all files to be checked (not currently in use)
 	Dim counter As Integer = 0                              ' count of files already checked (not in use)
 	Dim max As Integer = 10                                 ' max for the progress bar (not in use)
 	Dim conflictList As New List(Of String)                 ' list of all the files that have a conflict in them
@@ -156,8 +156,8 @@ Public Class UWO_REPLACE
 				If Ext = "" Or (String.Compare(Ext, files.Split(".").Last, True) = 0) Then      ' find only files with correct extension
 					'counter += 1
 					FindStr(files)                                                              ' call the sub to find if the correct string occurs in the file
-					'BackgroundWorker1.ReportProgress(counter / countFiles)
 				End If
+				BackgroundWorker1.ReportProgress((counter / countFiles) * 100)
 			Next
 			For Each root As String In My.Computer.FileSystem.GetDirectories(dir)
 				getfile(root)                                                                   ' recursively call the sub to get all files in all directories
@@ -170,6 +170,7 @@ Public Class UWO_REPLACE
 	Private Sub BackgroundWorker1_ProgressChanged(ByVal sender As Object,
 		ByVal e As System.ComponentModel.ProgressChangedEventArgs) _
 		Handles BackgroundWorker1.ProgressChanged
+		Debug.WriteLine(e.ProgressPercentage)
 		ProgressBar1.Value = e.ProgressPercentage
 	End Sub
 
@@ -203,25 +204,20 @@ Public Class UWO_REPLACE
 	' Returns: Nothing
 	' Purpose: get count of all directories to be scanned
 	Sub DirSearch(ByVal sDir As String)
-		Dim d = My.Computer.FileSystem.GetDirectoryInfo(sDir).Name.ToString
-		Dim f As String
-
-		Try
-			If String.Compare(d, "Temp", True) = 1 And
-				 String.Compare(d, "bmp", True) = 1 And
-				 String.Compare(d, "archive", True) = 1 And
-				 String.Compare(d, "backup", True) = 1 And
-				 String.Compare(d, "help files", True) = 1 Then
-				For Each d In Directory.GetDirectories(sDir)
-					For Each f In Directory.GetFiles(d)
-						countFiles += 1
-					Next
-					DirSearch(d)
-				Next
+		For Each f In Directory.GetFiles(sDir)
+			If Ext = "" Or (String.Compare(Ext, f.Split(".").Last, True) = 0) Then
+				countFiles += 1
 			End If
-		Catch excpt As System.Exception
-			Debug.WriteLine(excpt.Message)
-		End Try
+		Next
+		For Each d In Directory.GetDirectories(sDir)
+			If Not String.Compare(d, "Temp", True) = 0 And              ' exclude unnecessary folders
+			Not String.Compare(d, "bmp", True) = 0 And
+			Not String.Compare(d, "archive", True) = 0 And
+			Not String.Compare(d, "backup", True) = 0 And
+			Not String.Compare(d, "help files", True) = 0 Then
+				DirSearch(d)
+			End If
+		Next
 	End Sub
 
 	' Name: ReplaceCheck
@@ -633,7 +629,7 @@ Public Class UWO_REPLACE
 		B_Save.Enabled = True
 		B_Find.Enabled = True
 		'chk_Upgrade.Enabled = True
-		Wildcard.Enabled = True
+		'Wildcard.Enabled = True
 		Try
 			ListView1.EnsureVisible(0)
 		Catch
@@ -641,7 +637,7 @@ Public Class UWO_REPLACE
 		'SetLabelText_ThreadSafe(Me.L_Matches, ("Total Matches Found: " + FileList.Count.ToString))
 	End Sub
 
-	' Was supposed to update the label to display the total number of files scanned, but doesn't seem to want to
+	' Was supposed to update the label to display the total number of files scanned, but doesn't seem to want to work
 	Public Sub endSearch()
 		L_Matches.Text = "Total Matches Found: " + FileList.Count.ToString
 		L_Matches.Visible = True
