@@ -152,9 +152,9 @@ Public Class UWO_REPLACE
 
 
 			For Each files As String In My.Computer.FileSystem.GetFiles(dir)
-				counter += 1
+				'counter += 1
 				If Ext = "" Or (String.Compare(Ext, files.Split(".").Last, True) = 0) Then      ' find only files with correct extension
-					'counter += 1
+					counter += 1
 					FindStr(files)                                                              ' call the sub to find if the correct string occurs in the file
 				End If
 				BackgroundWorker1.ReportProgress((counter / countFiles) * 100)
