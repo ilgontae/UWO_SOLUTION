@@ -166,12 +166,16 @@ Public Class UWO_REPLACE
 			counter += 1
 		End If
 	End Sub
-	' Does not work at the moment
+
+	' Update the progress bar as the background worker runs
 	Private Sub BackgroundWorker1_ProgressChanged(ByVal sender As Object,
 		ByVal e As System.ComponentModel.ProgressChangedEventArgs) _
 		Handles BackgroundWorker1.ProgressChanged
 		Debug.WriteLine(e.ProgressPercentage)
-		ProgressBar1.Value = e.ProgressPercentage
+		Try
+			ProgressBar1.Value = e.ProgressPercentage
+		Catch
+		End Try
 	End Sub
 
 	' When the background worker has completed running
@@ -183,7 +187,8 @@ Public Class UWO_REPLACE
 		endSearch()
 	End Sub
 
-	' I have no idea
+	' I have no idea, I did not write this part
+	' Appears to change the colour of the directory textbox text based on if the directory exists
 	Private Sub FindCheck()
 		If Not TB_Find.Text = "" And
 		   Not TB_Directory.Text = "" Then
@@ -366,6 +371,11 @@ Public Class UWO_REPLACE
 		Return returnInt
 	End Function
 
+	Private Sub translateCustom(ByVal num As Integer)
+		' Nothing yet
+		'
+	End Sub
+
 	'Event for running the replace macros
 	Private Sub B_Replace_Click(ByVal sender As Object, ByVal e As EventArgs) Handles B_Replace.Click
 		Try
@@ -412,6 +422,23 @@ Public Class UWO_REPLACE
 					Threading.Thread.Sleep(2000)
 
 					'Opens the find and replace 
+					'AppActivate("ORCAview")
+					Try
+						AppActivate("<" + newPath.Split("\").Last + ">")
+					Catch ex As Exception
+						AppActivate("ORCAview")
+						Threading.Thread.Sleep(200)
+						SendKeys.SendWait("%t")
+						Threading.Thread.Sleep(200)
+						SendKeys.SendWait("{DOWN}")
+						Threading.Thread.Sleep(100)
+						SendKeys.SendWait("{DOWN}")
+						Threading.Thread.Sleep(100)
+						SendKeys.SendWait("{DOWN}")
+						Threading.Thread.Sleep(100)
+						SendKeys.SendWait("{ENTER}")
+						Threading.Thread.Sleep(100)
+					End Try
 					AppActivate("ORCAview")
 					Threading.Thread.Sleep(200)
 					SendKeys.SendWait("%S")
@@ -487,6 +514,8 @@ Public Class UWO_REPLACE
 					My.Computer.FileSystem.CopyFile(files, filePath & "\Backups\" & newPath.Split("\").Last, True)  ' copy the file to the backups folder
 				Next
 				MessageBox.Show("COMPLETE" & vbCrLf & "Remember to manually update the" & vbCrLf & "files that have conflicts", "LINKS UPDATED", MessageBoxButtons.OK, MessageBoxIcon.Information)
+				B_Replace.Enabled = False
+				objList.Clear()
 			Else                                    ' original macro, good for replacing any single link
 				L_Left.Visible = True
 				If Not Directory.Exists(TB_Directory.Text) Then
@@ -634,7 +663,7 @@ Public Class UWO_REPLACE
 			ListView1.EnsureVisible(0)
 		Catch
 		End Try
-		'SetLabelText_ThreadSafe(Me.L_Matches, ("Total Matches Found: " + FileList.Count.ToString))
+		SetLabelText_ThreadSafe(Me.L_Matches, ("Total Matches Found: " + FileList.Count.ToString))
 	End Sub
 
 	' Was supposed to update the label to display the total number of files scanned, but doesn't seem to want to work
